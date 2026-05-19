@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /uploads/
+
+# Allow image indexing for SEO (og:image, schema.org)
+User-agent: Googlebot-Image
+Allow: /assets/
+
+Sitemap: https://vidalozzi.com/sitemap.xml
