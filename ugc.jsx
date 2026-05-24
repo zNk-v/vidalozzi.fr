@@ -26,21 +26,76 @@ function UgcHero({ t }) {
 }
 
 function UgcReel({ t }) {
+  const [page, setPage] = React.useState(0);
+  const [paused, setPaused] = React.useState(false);
+  const PAGES = 2;
+  const INTERVAL_MS = 8000;
+
+  React.useEffect(() => {
+    if (paused) return;
+    const id = setInterval(() => setPage((p) => (p + 1) % PAGES), INTERVAL_MS);
+    return () => clearInterval(id);
+  }, [paused]);
+
   return (
     <section style={{ padding: "0 0 80px" }}>
       <div className="wrap">
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 16 }}>
-          {Array.from({ length: 4 }).map((_, i) => (
-            <video-slot
+        <div
+          className="ugc-carousel"
+          style={{ overflow: "hidden", position: "relative" }}
+          onMouseEnter={() => setPaused(true)}
+          onMouseLeave={() => setPaused(false)}>
+          <div
+            style={{
+              display: "flex",
+              transform: `translateX(-${page * 100}%)`,
+              transition: "transform 600ms cubic-bezier(.4,0,.2,1)"
+            }}>
+            {Array.from({ length: PAGES }).map((_, p) => (
+              <div
+                key={p}
+                style={{
+                  flex: "0 0 100%",
+                  display: "grid",
+                  gridTemplateColumns: "repeat(4, 1fr)",
+                  gap: 16
+                }}>
+                {Array.from({ length: 4 }).map((_, i) => {
+                  const n = p * 4 + i + 1;
+                  return (
+                    <video-slot
+                      key={n}
+                      id={`ugc-tile-${n}`}
+                      src={`assets/videos/ugc-tile-${n}.mp4`}
+                      label={`UGC_${String(n).padStart(2, "0")}`}
+                      placeholder="Drop video"
+                      autoplay="autoplay"
+                      loop="loop"
+                      style={{ aspectRatio: "9/16", borderRadius: 4, overflow: "hidden", display: "block" }}>
+                    </video-slot>
+                  );
+                })}
+              </div>
+            ))}
+          </div>
+        </div>
+        <div style={{ display: "flex", justifyContent: "center", gap: 10, marginTop: 24 }}>
+          {Array.from({ length: PAGES }).map((_, i) => (
+            <button
               key={i}
-              id={`ugc-tile-${i + 1}`}
-              src={`assets/videos/ugc-tile-${i + 1}.mp4`}
-              label={`UGC_${String(i + 1).padStart(2, "0")}`}
-              placeholder="Drop video"
-              autoplay="autoplay"
-              loop="loop"
-              style={{ aspectRatio: "9/16", borderRadius: 4, overflow: "hidden", display: "block" }}>
-            </video-slot>
+              onClick={() => setPage(i)}
+              aria-label={`Page ${i + 1}`}
+              style={{
+                width: page === i ? 28 : 10,
+                height: 10,
+                borderRadius: 10,
+                border: "none",
+                background: page === i ? "currentColor" : "rgba(255,255,255,0.25)",
+                cursor: "pointer",
+                padding: 0,
+                transition: "width 300ms ease, background 300ms ease"
+              }}
+            />
           ))}
         </div>
       </div>
