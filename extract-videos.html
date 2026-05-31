@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Extraction des vidéos — VIDALOZZI</title>
+<style>
+  :root {
+    --bg-deep: #0E0B08;
+    --bg: #1A1410;
+    --ink: #F4EFE6;
+    --ink-mute: rgba(244, 239, 230, 0.62);
+    --ink-faint: rgba(244, 239, 230, 0.38);
+    --accent: #C9A87C;
+    --accent-glow: #E6C99B;
+    --line: rgba(244, 239, 230, 0.10);
+    --line-strong: rgba(244, 239, 230, 0.22);
+    --good: #6BA77A;
+    --warn: #D9824A;
+    --bad: #C95745;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--bg); color: var(--ink); min-height: 100%; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
+    font-size: 14px;
+    line-height: 1.55;
+    padding: 48px 24px;
+    max-width: 880px;
+    margin: 0 auto;
+  }
+  h1 { font-family: "Bodoni Moda", Georgia, serif; font-size: 44px; letter-spacing: -0.02em; line-height: 1; margin-bottom: 8px; font-weight: 400; }
+  .eyebrow { font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); margin-bottom: 16px; }
+  p { color: var(--ink-mute); max-width: 640px; }
+  p + p { margin-top: 12px; }
+  a { color: var(--accent); }
+  code { font-family: "JetBrains Mono", monospace; background: rgba(255,255,255,0.06); padding: 2px 6px; border-radius: 3px; font-size: 0.9em; }
+
+  .steps {
+    margin: 36px 0 24px;
+    padding: 24px;
+    border: 0.5px solid var(--line-strong);
+    border-radius: 6px;
+    background: rgba(255,255,255,0.02);
+  }
+  .steps ol { padding-left: 20px; }
+  .steps li { color: var(--ink); padding: 6px 0; }
+  .steps li::marker { color: var(--accent); font-family: "JetBrains Mono", monospace; }
+  .steps strong { color: var(--accent-glow); font-weight: 500; }
+
+  .tools {
+    display: flex; gap: 8px; flex-wrap: wrap;
+    margin: 20px 0 36px;
+  }
+  .tools button {
+    appearance: none; border: 0;
+    padding: 10px 16px;
+    border-radius: 999px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: transform 0.15s;
+  }
+  .tools button.primary {
+    background: var(--accent); color: var(--bg-deep); font-weight: 600;
+  }
+  .tools button.ghost {
+    background: transparent; color: var(--ink-mute);
+    border: 0.5px solid var(--line-strong);
+  }
+  .tools button:hover { transform: translateY(-1px); }
+  .tools button:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+  .list { display: grid; gap: 12px; }
+  .row {
+    display: grid;
+    grid-template-columns: auto 1fr auto auto auto;
+    align-items: center;
+    gap: 16px;
+    padding: 18px 20px;
+    border: 0.5px solid var(--line);
+    border-radius: 6px;
+    background: rgba(255,255,255,0.025);
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .row.done { border-color: rgba(107, 167, 122, 0.4); background: rgba(107, 167, 122, 0.05); }
+  .row.warn { border-color: rgba(217, 130, 74, 0.4); }
+  .row.error { border-color: rgba(201, 87, 69, 0.4); background: rgba(201, 87, 69, 0.04); }
+  .idx {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    min-width: 24px;
+  }
+  .name {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+  }
+  .name small {
+    display: block;
+    font-size: 10px;
+    color: var(--ink-faint);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-top: 4px;
+    font-weight: 400;
+  }
+  .size {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 12px;
+    color: var(--ink-mute);
+    font-variant-numeric: tabular-nums;
+    min-width: 80px;
+    text-align: right;
+  }
+  .size.big { color: var(--warn); }
+  .size.huge { color: var(--bad); font-weight: 600; }
+  .status {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 9.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    min-width: 110px;
+    text-align: right;
+  }
+  .status.done { color: var(--good); }
+  .status.error { color: var(--bad); }
+  .btn-dl {
+    appearance: none; border: 0.5px solid var(--accent);
+    background: var(--accent); color: var(--bg-deep);
+    padding: 8px 14px;
+    border-radius: 999px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.15s;
+    white-space: nowrap;
+  }
+  .btn-dl:hover { background: var(--accent-glow); border-color: var(--accent-glow); transform: translateY(-1px); }
+  .btn-dl:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+  .empty-state {
+    padding: 40px;
+    text-align: center;
+    border: 0.5px dashed var(--line-strong);
+    border-radius: 6px;
+    color: var(--ink-mute);
+  }
+  .empty-state strong { color: var(--ink); display: block; margin-bottom: 8px; font-size: 16px; }
+
+  .next {
+    margin-top: 48px;
+    padding: 24px;
+    border-radius: 6px;
+    background: linear-gradient(180deg, rgba(201,168,124,0.08), rgba(201,168,124,0.02));
+    border: 0.5px solid rgba(201,168,124,0.3);
+  }
+  .next h2 { font-family: "Bodoni Moda", Georgia, serif; font-size: 24px; font-weight: 400; letter-spacing: -0.01em; margin-bottom: 8px; }
+  .next code { display: inline-block; margin: 2px 0; }
+
+  @media (max-width: 600px) {
+    body { padding: 32px 16px; }
+    h1 { font-size: 32px; }
+    .row { grid-template-columns: auto 1fr; gap: 10px; padding: 14px; }
+    .row .size, .row .status, .row .btn-dl { grid-column: 2; justify-self: end; }
+    .row .btn-dl { margin-top: 4px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="eyebrow">— Outil interne · privé</div>
+<h1>Extraction des vidéos</h1>
+
+<p>Tes vidéos UGC sont stockées dans IndexedDB (uniquement dans ton navigateur sur cet ordinateur). Pour qu'elles s'affichent en ligne pour tes visiteurs, il faut les sortir d'ici et les remettre dans <code>assets/videos/</code>.</p>
+
+<div class="steps">
+  <ol>
+    <li><strong>Clique sur chaque "Télécharger"</strong> ci-dessous (un par un, sinon ton navigateur peut bloquer).</li>
+    <li><strong>Compresse</strong> les vidéos lourdes avec <a href="https://handbrake.fr/" target="_blank" rel="noreferrer">HandBrake</a> (preset <em>"Web → Vimeo YouTube HQ 1080p30"</em>). Objectif : &lt;20 Mo par vidéo.</li>
+    <li><strong>Place</strong> les fichiers compressés dans le dossier <code>assets/videos/</code> du projet, avec exactement ces noms : <code>home-showreel.mp4</code>, <code>ugc-tile-1.mp4</code>, etc.</li>
+    <li>Redéploie le ZIP — les vidéos s'afficheront pour tout le monde.</li>
+  </ol>
+</div>
+
+<div class="tools">
+  <button class="primary" id="scan">↻ Scanner IndexedDB</button>
+  <button class="ghost" id="purge" title="Supprime les vidéos de ce navigateur (à faire APRÈS avoir tout téléchargé)">Vider IndexedDB</button>
+</div>
+
+<div class="list" id="list">
+  <div class="empty-state">
+    <strong>Chargement…</strong>
+    Si rien n'apparaît, clique sur "Scanner IndexedDB".
+  </div>
+</div>
+
+<div class="next">
+  <h2>Et après ?</h2>
+  <p>Une fois tes vidéos compressées et placées dans <code>assets/videos/</code>, demande-moi le ZIP de déploiement. Le code a déjà été modifié pour charger ces fichiers à la place d'IndexedDB.</p>
+</div>
+
+<script>
+const VIDEO_KEYS = [
+  { id: 'home-showreel',  page: 'Accueil — Showreel'     },
+  { id: 'ugc-tile-1',     page: 'UGC — Tuile 1'          },
+  { id: 'ugc-tile-2',     page: 'UGC — Tuile 2'          },
+  { id: 'ugc-tile-3',     page: 'UGC — Tuile 3'          },
+  { id: 'ugc-tile-4',     page: 'UGC — Tuile 4'          },
+];
+
+const fmtSize = (bytes) => {
+  if (!bytes) return '—';
+  const mb = bytes / (1024 * 1024);
+  if (mb < 1)  return (bytes / 1024).toFixed(0) + ' Ko';
+  if (mb < 10) return mb.toFixed(1) + ' Mo';
+  return Math.round(mb) + ' Mo';
+};
+const sizeClass = (bytes) => {
+  const mb = bytes / (1024 * 1024);
+  if (mb > 100) return 'huge';
+  if (mb > 30) return 'big';
+  return '';
+};
+
+function openDB() {
+  return new Promise((resolve, reject) => {
+    const req = indexedDB.open('video-slots', 1);
+    req.onupgradeneeded = () => req.result.createObjectStore('videos');
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = () => reject(req.error);
+  });
+}
+
+async function getBlob(db, key) {
+  return new Promise((resolve) => {
+    const tx = db.transaction('videos', 'readonly');
+    const r = tx.objectStore('videos').get(key);
+    r.onsuccess = () => resolve(r.result || null);
+    r.onerror = () => resolve(null);
+  });
+}
+
+async function scan() {
+  const list = document.getElementById('list');
+  list.innerHTML = '<div class="empty-state"><strong>Scan en cours…</strong></div>';
+  try {
+    const db = await openDB();
+    const rows = [];
+    for (let i = 0; i < VIDEO_KEYS.length; i++) {
+      const entry = VIDEO_KEYS[i];
+      const blob = await getBlob(db, entry.id);
+      const exists = !!blob;
+      const size = blob ? blob.size : 0;
+      const type = blob ? blob.type : null;
+      rows.push({ ...entry, exists, size, type, blob, idx: i + 1 });
+    }
+    renderRows(rows);
+  } catch (e) {
+    list.innerHTML = `<div class="empty-state error"><strong>Erreur</strong>${e.message}</div>`;
+  }
+}
+
+function renderRows(rows) {
+  const list = document.getElementById('list');
+  list.innerHTML = '';
+  for (const r of rows) {
+    const row = document.createElement('div');
+    row.className = 'row' + (r.exists ? '' : ' error');
+    const ext = (r.type && r.type.includes('quicktime')) ? '.mov' : '.mp4';
+    const filename = r.id + ext;
+    row.innerHTML = `
+      <span class="idx">${String(r.idx).padStart(2, '0')}</span>
+      <div class="name">${filename}<small>${r.page}</small></div>
+      <span class="size ${sizeClass(r.size)}">${r.exists ? fmtSize(r.size) : 'absent'}</span>
+      <span class="status">${r.exists ? 'À télécharger' : 'Non trouvé'}</span>
+      <button class="btn-dl" ${r.exists ? '' : 'disabled'}>Télécharger</button>
+    `;
+    const btn = row.querySelector('.btn-dl');
+    if (r.exists) {
+      btn.addEventListener('click', () => download(r, row));
+    }
+    list.appendChild(row);
+  }
+}
+
+function download(r, row) {
+  const ext = (r.type && r.type.includes('quicktime')) ? '.mov' : '.mp4';
+  const filename = r.id + ext;
+  const url = URL.createObjectURL(r.blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 2000);
+  row.classList.add('done');
+  row.querySelector('.status').textContent = 'Téléchargé ✓';
+  row.querySelector('.status').classList.add('done');
+  row.querySelector('.btn-dl').textContent = 'Re-télécharger';
+}
+
+document.getElementById('scan').addEventListener('click', scan);
+
+document.getElementById('purge').addEventListener('click', async () => {
+  if (!confirm('Vider IndexedDB ? À faire UNIQUEMENT après avoir téléchargé toutes les vidéos.\n\nCette action est irréversible — tes vidéos seront perdues si elles ne sont pas déjà sur ton disque.')) return;
+  try {
+    const db = await openDB();
+    await new Promise((res) => {
+      const tx = db.transaction('videos', 'readwrite');
+      tx.objectStore('videos').clear();
+      tx.oncomplete = res;
+    });
+    alert('IndexedDB vidé.');
+    scan();
+  } catch (e) {
+    alert('Erreur : ' + e.message);
+  }
+});
+
+scan();
+</script>
+</body>
+</html>

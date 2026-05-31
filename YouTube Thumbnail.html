@@ -1,0 +1,832 @@
+<!doctype html>
+<html lang="fr" data-theme="dark">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>VIDALOZZI — Miniature YouTube · Bande démo</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&family=Montserrat:wght@300..800&family=JetBrains+Mono:wght@300..600&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --bg-deep: #0E0B08;
+    --bg: #1A1410;
+    --surface: #2A201A;
+    --line: rgba(244, 239, 230, 0.10);
+    --line-strong: rgba(244, 239, 230, 0.22);
+    --ink: #F4EFE6;
+    --ink-mute: rgba(244, 239, 230, 0.62);
+    --ink-faint: rgba(244, 239, 230, 0.38);
+    --accent: #C9A87C;
+    --accent-deep: #8B5E3C;
+    --accent-glow: #E6C99B;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #0a0806; color: var(--ink); font-family: "Montserrat", system-ui, sans-serif; }
+
+  /* ─── Thumbnail base ──────────────────────────────────────────── */
+  .yt-thumb {
+    width: 1280px;
+    height: 720px;
+    position: relative;
+    background: var(--bg-deep);
+    color: var(--ink);
+    overflow: hidden;
+    isolation: isolate;
+    font-family: "Montserrat", sans-serif;
+  }
+  /* Film-grain layer shared across variants */
+  .grain {
+    position: absolute; inset: 0;
+    pointer-events: none;
+    opacity: 0.06;
+    z-index: 50;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    mix-blend-mode: overlay;
+  }
+  /* Letterboxing — adds a cinematic frame around the whole thumb */
+  .letterbox {
+    position: absolute; inset: 0;
+    pointer-events: none;
+    z-index: 45;
+  }
+  .letterbox::before, .letterbox::after {
+    content: ""; position: absolute; left: 0; right: 0; height: 14px;
+    background: #050403;
+  }
+  .letterbox::before { top: 0; }
+  .letterbox::after  { bottom: 0; }
+
+  .display { font-family: "DM Serif Display", serif; font-weight: 400; letter-spacing: -0.02em; line-height: 0.88; }
+  .italic-serif { font-family: "Cormorant Garamond", serif; font-style: italic; font-weight: 400; }
+  .mono { font-family: "JetBrains Mono", monospace; }
+  .ui { font-family: "Montserrat", sans-serif; }
+
+  /* ──────────────────────────────────────────────────────────────
+     VARIANT 01 — CONTACT SHEET
+     Grille 3×2 (5 cellules + 1 cellule titre)
+     ────────────────────────────────────────────────────────────── */
+  .v1 {
+    background: var(--bg-deep);
+    padding: 40px;
+  }
+  .v1-grid {
+    position: absolute; inset: 40px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 12px;
+    z-index: 2;
+  }
+  .v1-cell {
+    position: relative;
+    overflow: hidden;
+    background: var(--surface);
+    border: 0.5px solid var(--line-strong);
+  }
+  .v1-cell img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    filter: grayscale(0.08) contrast(1.04) brightness(0.95);
+  }
+  .v1-cell::after {
+    content: "";
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, transparent 55%, rgba(14,11,8,0.78) 100%);
+    pointer-events: none;
+  }
+  .v1-cell .role {
+    position: absolute;
+    left: 14px; bottom: 12px; right: 14px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 13px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ink);
+    display: flex; align-items: center; justify-content: space-between;
+    z-index: 2;
+  }
+  .v1-cell .role .num { color: var(--accent); }
+  .v1-cell .role .name { color: var(--ink-mute); font-size: 11px; }
+  /* Title cell — replaces one position in grid */
+  .v1-title {
+    background: var(--bg-deep);
+    border: 0.5px solid var(--line);
+    padding: 22px 22px 18px;
+    display: flex; flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+  }
+  .v1-title::before {
+    content: "";
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 30% 100%, rgba(201,168,124,0.18), transparent 60%);
+    pointer-events: none;
+  }
+  .v1-title-top {
+    display: flex; align-items: center; justify-content: space-between;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    position: relative;
+  }
+  .v1-title-top .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 10px var(--accent); }
+  .v1-title-main {
+    font-family: "DM Serif Display", serif;
+    font-size: 64px;
+    line-height: 0.86;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    position: relative;
+    margin: 12px 0;
+  }
+  .v1-title-main .ital {
+    font-family: "Cormorant Garamond", serif;
+    font-style: italic;
+    color: var(--accent);
+  }
+  .v1-title-foot {
+    position: relative;
+    display: flex; align-items: center; justify-content: space-between;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    padding-top: 12px;
+    border-top: 0.5px solid var(--line-strong);
+  }
+  .v1-title-foot .acc { color: var(--accent); }
+
+  /* ──────────────────────────────────────────────────────────────
+     VARIANT 02 — HERO + STRIP (cinéma)
+     Grande image héros à droite, strip 4-images en bas, type éditorial à gauche
+     ────────────────────────────────────────────────────────────── */
+  .v2 { background: var(--bg-deep); }
+  .v2-hero {
+    position: absolute;
+    top: 0; right: 0;
+    width: 720px; height: 540px;
+    overflow: hidden;
+  }
+  .v2-hero img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    object-position: 50% 25%;
+    filter: contrast(1.08) brightness(0.95) saturate(0.92);
+  }
+  .v2-hero::after {
+    content: "";
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(to left, transparent 65%, rgba(14,11,8,0.85) 100%),
+      linear-gradient(to bottom, transparent 65%, rgba(14,11,8,0.6));
+  }
+  .v2-left {
+    position: absolute;
+    top: 0; left: 0;
+    width: 620px; height: 540px;
+    padding: 64px 40px 32px 64px;
+    display: flex; flex-direction: column;
+    justify-content: space-between;
+    z-index: 3;
+  }
+  .v2-eyebrow {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 12px;
+    letter-spacing: 0.36em;
+    text-transform: uppercase;
+    color: var(--accent);
+    display: flex; align-items: center; gap: 14px;
+  }
+  .v2-eyebrow .line { width: 40px; height: 0.5px; background: var(--accent); }
+  .v2-title {
+    font-family: "DM Serif Display", serif;
+    font-size: 124px;
+    line-height: 0.86;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+  }
+  .v2-title .ital {
+    font-family: "Cormorant Garamond", serif;
+    font-style: italic;
+    color: var(--accent);
+    font-weight: 400;
+  }
+  .v2-sub {
+    font-family: "Cormorant Garamond", serif;
+    font-style: italic;
+    font-size: 26px;
+    color: var(--ink-mute);
+    margin-top: 12px;
+    line-height: 1.2;
+  }
+  .v2-meta {
+    display: flex; gap: 18px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    align-items: center;
+  }
+  .v2-meta .dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); }
+  .v2-meta .bar { flex: 0 0 24px; height: 0.5px; background: var(--line-strong); }
+  /* Strip bottom — 4 small portraits */
+  .v2-strip {
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    height: 180px;
+    display: grid;
+    grid-template-columns: 280px repeat(4, 1fr);
+    gap: 0;
+    border-top: 0.5px solid var(--line-strong);
+    z-index: 4;
+    background: var(--bg-deep);
+  }
+  .v2-strip-label {
+    padding: 24px 24px 16px 64px;
+    display: flex; flex-direction: column; justify-content: space-between;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+  }
+  .v2-strip-label .big {
+    font-family: "DM Serif Display", serif;
+    font-size: 38px;
+    line-height: 0.9;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+    text-transform: none;
+  }
+  .v2-strip-label .big .ital {
+    font-family: "Cormorant Garamond", serif;
+    font-style: italic;
+    color: var(--accent);
+  }
+  .v2-strip-label .acc { color: var(--accent); }
+  .v2-strip-cell {
+    position: relative;
+    overflow: hidden;
+    border-left: 0.5px solid var(--line-strong);
+  }
+  .v2-strip-cell img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    filter: grayscale(0.15) contrast(1.05) brightness(0.92);
+  }
+  .v2-strip-cell::after {
+    content: "";
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, transparent 60%, rgba(14,11,8,0.78) 100%);
+  }
+  .v2-strip-cell .tag {
+    position: absolute;
+    left: 10px; bottom: 8px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ink);
+  }
+  .v2-strip-cell .tag .num { color: var(--accent); }
+
+  /* ──────────────────────────────────────────────────────────────
+     VARIANT 03 — MOSAIC EDITORIAL
+     5 fenêtres verticales décalées, type massif débordant en arrière-plan
+     ────────────────────────────────────────────────────────────── */
+  .v3 {
+    background:
+      radial-gradient(ellipse at 50% 100%, rgba(139,94,60, 0.22), transparent 60%),
+      var(--bg-deep);
+  }
+  .v3-watermark {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .v3-watermark .wm-text {
+    font-family: "DM Serif Display", serif;
+    font-size: 460px;
+    line-height: 0.85;
+    letter-spacing: -0.045em;
+    color: rgba(244, 239, 230, 0.04);
+    white-space: nowrap;
+  }
+  .v3-mosaic {
+    position: absolute;
+    left: 50%; top: 50%;
+    transform: translate(-50%, -50%);
+    width: 1100px; height: 480px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 14px;
+    z-index: 3;
+  }
+  .v3-tile {
+    position: relative;
+    overflow: hidden;
+    background: var(--surface);
+    border: 0.5px solid var(--line-strong);
+    box-shadow: 0 30px 60px rgba(0,0,0,0.45);
+  }
+  .v3-tile img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    filter: grayscale(0.08) contrast(1.06) brightness(0.95);
+  }
+  .v3-tile::after {
+    content: "";
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, transparent 55%, rgba(14,11,8,0.82) 100%);
+  }
+  .v3-tile .num {
+    position: absolute;
+    top: 10px; left: 12px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 0.24em;
+    color: var(--accent);
+  }
+  .v3-tile .role {
+    position: absolute;
+    bottom: 10px; left: 12px; right: 12px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ink);
+  }
+  /* Subtle vertical offset for editorial rhythm */
+  .v3-tile:nth-child(odd)  { transform: translateY(-14px); }
+  .v3-tile:nth-child(even) { transform: translateY(14px); }
+
+  .v3-top {
+    position: absolute;
+    top: 44px; left: 64px; right: 64px;
+    display: flex; align-items: center; justify-content: space-between;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 12px;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    z-index: 5;
+  }
+  .v3-top .l { display: flex; align-items: center; gap: 12px; }
+  .v3-top .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 10px var(--accent); }
+  .v3-top .acc { color: var(--accent); }
+
+  .v3-bot {
+    position: absolute;
+    bottom: 44px; left: 64px; right: 64px;
+    display: flex; align-items: flex-end; justify-content: space-between;
+    z-index: 5;
+  }
+  .v3-bot .left {
+    font-family: "DM Serif Display", serif;
+    font-size: 56px;
+    line-height: 0.86;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+  .v3-bot .left .ital {
+    font-family: "Cormorant Garamond", serif;
+    font-style: italic;
+    color: var(--accent);
+  }
+  .v3-bot .sub {
+    margin-top: 8px;
+    font-family: "Cormorant Garamond", serif;
+    font-style: italic;
+    font-size: 20px;
+    color: var(--ink-mute);
+  }
+  .v3-bot .right {
+    text-align: right;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    line-height: 1.6;
+  }
+  .v3-bot .right .acc { color: var(--accent); }
+
+  /* ──────────────────────────────────────────────────────────────
+     VARIANT 04 — SINGLE HERO STATEMENT
+     Une seule image héros plein cadre, surimpression éditoriale forte
+     (le visage parle, le titre s'efface dans le grain)
+     ────────────────────────────────────────────────────────────── */
+  .v4 { background: var(--bg-deep); overflow: hidden; }
+  .v4-hero {
+    position: absolute; inset: 0;
+  }
+  .v4-hero img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    object-position: 50% 30%;
+    filter: contrast(1.06) brightness(0.78) saturate(0.85);
+  }
+  .v4-hero::after {
+    content: "";
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(to right, rgba(14,11,8,0.85) 0%, rgba(14,11,8,0.25) 45%, rgba(14,11,8,0) 80%),
+      linear-gradient(to top, rgba(14,11,8,0.85) 0%, transparent 50%);
+  }
+  .v4-content {
+    position: absolute;
+    left: 64px; bottom: 56px; right: 64px;
+    z-index: 3;
+    display: flex; align-items: flex-end; justify-content: space-between;
+  }
+  .v4-left {
+    max-width: 760px;
+  }
+  .v4-eyebrow {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 12px;
+    letter-spacing: 0.36em;
+    text-transform: uppercase;
+    color: var(--accent);
+    display: flex; align-items: center; gap: 14px;
+    margin-bottom: 18px;
+  }
+  .v4-eyebrow .line { width: 36px; height: 0.5px; background: var(--accent); }
+  .v4-title {
+    font-family: "DM Serif Display", serif;
+    font-size: 116px;
+    line-height: 0.86;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+    text-shadow: 0 4px 24px rgba(0,0,0,0.5);
+  }
+  .v4-title .ital {
+    font-family: "Cormorant Garamond", serif;
+    font-style: italic;
+    color: var(--accent);
+  }
+  .v4-sub {
+    margin-top: 14px;
+    font-family: "Cormorant Garamond", serif;
+    font-style: italic;
+    font-size: 26px;
+    color: var(--ink-mute);
+  }
+  .v4-right {
+    display: grid;
+    grid-template-columns: repeat(2, 92px);
+    gap: 8px;
+    z-index: 3;
+  }
+  .v4-thumb {
+    width: 92px; height: 92px;
+    overflow: hidden;
+    border: 0.5px solid var(--line-strong);
+    position: relative;
+  }
+  .v4-thumb img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    filter: grayscale(0.2) contrast(1.05) brightness(0.92);
+  }
+  .v4-thumb::after {
+    content: "";
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, transparent 60%, rgba(14,11,8,0.7));
+  }
+  .v4-thumb .n {
+    position: absolute;
+    left: 6px; bottom: 5px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 9px;
+    letter-spacing: 0.22em;
+    color: var(--accent);
+  }
+  .v4-top {
+    position: absolute;
+    top: 44px; left: 64px; right: 64px;
+    display: flex; align-items: center; justify-content: space-between;
+    z-index: 4;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--ink);
+  }
+  .v4-top .l { display: flex; align-items: center; gap: 12px; }
+  .v4-top .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 10px var(--accent); }
+  .v4-top .r { color: var(--ink-mute); }
+  .v4-top .acc { color: var(--accent); }
+
+  /* ──────────────────────────────────────────────────────────────
+     Download toolbar
+     ────────────────────────────────────────────────────────────── */
+  .toolbar {
+    position: fixed;
+    bottom: 20px; left: 20px;
+    z-index: 9999;
+    display: flex;
+    gap: 8px;
+    background: rgba(20,16,12, 0.88);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 0.5px solid var(--line-strong);
+    border-radius: 999px;
+    padding: 6px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+  .toolbar button {
+    background: transparent; border: 0;
+    color: var(--ink-mute);
+    padding: 10px 16px; border-radius: 999px;
+    cursor: pointer; font: inherit;
+    transition: all 0.2s;
+  }
+  .toolbar button:hover { color: var(--ink); background: rgba(244,239,230,0.06); }
+</style>
+</head>
+<body>
+
+<div id="root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/html-to-image@1.11.11/dist/html-to-image.js"></script>
+<script type="text/babel" src="design-canvas.jsx"></script>
+
+<script type="text/babel" data-presets="env,react">
+
+const { useState } = React;
+
+/* ──────────────────────────────────────────────────────────────
+   Tunables
+   ────────────────────────────────────────────────────────────── */
+const THUMB_TUNE = /*EDITMODE-BEGIN*/{
+  "title_line1": "BANDE",
+  "title_line2": "DÉMO",
+  "title_italic": "démo",
+  "subtitle": "Comédien · Mannequin · UGC",
+  "year": "2026",
+  "handle": "@vidalozzi",
+  "characters": [
+  { "src": "assets/character-1.png", "role": "Steward", "tag": "AIR / FR" },
+  { "src": "assets/character-2.png", "role": "Artiste", "tag": "DRAMA" },
+  { "src": "assets/character-3.png", "role": "Sommelier", "tag": "NICOLAS" },
+  { "src": "assets/character-4.png", "role": "Rockstar", "tag": "PCS / PUB" },
+  { "src": "assets/character-5.png", "role": "Le séducteur", "tag": "PUB / TECH" }],
+
+  "heroIndex": 0
+} /*EDITMODE-END*/;
+
+const C = THUMB_TUNE.characters;
+
+/* ──────────────────────────────────────────────────────────────
+   Variant 01 — Contact sheet
+   ────────────────────────────────────────────────────────────── */
+function Variant01() {
+  // Order: hero/title cell first, then 5 portraits
+  return (
+    <div className="yt-thumb v1">
+      <div className="grain"></div>
+      <div className="letterbox"></div>
+      <div className="v1-grid">
+        <div className="v1-title">
+          <div className="v1-title-top">
+            <span>VIDALOZZI / SHOWREEL</span>
+            <span className="dot"></span>
+          </div>
+          <h1 className="v1-title-main">
+            BANDE<br />
+            <span className="ital">démo.</span>
+          </h1>
+          <div className="v1-title-foot">
+            <span>{THUMB_TUNE.year} · PARIS</span>
+            <span className="acc">{THUMB_TUNE.handle}</span>
+          </div>
+        </div>
+        {C.map((c, i) =>
+        <div className="v1-cell" key={i}>
+            <img src={c.src} alt="" />
+            <div className="role">
+              <span><span className="num">0{i + 1}</span> · {c.role.toUpperCase()}</span>
+              <span className="name">{c.tag}</span>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>);
+
+}
+
+/* ──────────────────────────────────────────────────────────────
+   Variant 02 — Hero + strip
+   ────────────────────────────────────────────────────────────── */
+function Variant02() {
+  const hero = C[THUMB_TUNE.heroIndex];
+  const rest = C.filter((_, i) => i !== THUMB_TUNE.heroIndex);
+  return (
+    <div className="yt-thumb v2">
+      <div className="v2-hero"><img src={hero.src} alt="" /></div>
+      <div className="grain"></div>
+      <div className="letterbox"></div>
+
+      <div className="v2-left">
+        <div className="v2-eyebrow">
+          <span className="line"></span>
+          <span>VIDALOZZI · SHOWREEL {THUMB_TUNE.year}</span>
+        </div>
+        <div>
+          <h1 className="v2-title">
+            Bande<br />
+            <span className="ital">démo.</span>
+          </h1>
+          <div className="v2-sub">5 rôles · 1 comédien · 1 minute.</div>
+        </div>
+        <div className="v2-meta">
+          <span className="dot"></span>
+          <span>POP AGENCY</span>
+          <span className="bar"></span>
+          <span>ENJOY MODEL</span>
+        </div>
+      </div>
+
+      <div className="v2-strip">
+        <div className="v2-strip-label">
+          <div style={{ color: 'var(--accent)' }}>● ROLES</div>
+          <div className="big">5 <span className="ital">visages.</span></div>
+          <div><span className="acc">→</span> {THUMB_TUNE.handle}</div>
+        </div>
+        {rest.map((c, i) =>
+        <div className="v2-strip-cell" key={i}>
+            <img src={c.src} alt="" />
+            <div className="tag"><span className="num">0{i + 2}</span> · {c.role.toUpperCase()}</div>
+          </div>
+        )}
+      </div>
+    </div>);
+
+}
+
+/* ──────────────────────────────────────────────────────────────
+   Variant 03 — Mosaic editorial
+   ────────────────────────────────────────────────────────────── */
+function Variant03() {
+  return (
+    <div className="yt-thumb v3">
+      <div className="v3-watermark"><span className="wm-text display">VIDAL</span></div>
+
+      <div className="v3-top">
+        <span className="l"><span className="dot"></span> VIDALOZZI · {THUMB_TUNE.year}</span>
+        <span><span className="acc">SHOWREEL</span> / 5 rôles</span>
+      </div>
+
+      <div className="v3-mosaic">
+        {C.map((c, i) =>
+        <div className="v3-tile" key={i}>
+            <img src={c.src} alt="" />
+            <div className="num">0{i + 1}</div>
+            <div className="role">{c.role}</div>
+          </div>
+        )}
+      </div>
+
+      <div className="v3-bot">
+        <div>
+          <div className="left">Bande <span className="ital">démo.</span></div>
+          <div className="sub">{THUMB_TUNE.subtitle}</div>
+        </div>
+        <div className="right">
+          <div><span className="acc">●</span> NOUVELLE VIDÉO</div>
+          <div>{THUMB_TUNE.handle}</div>
+        </div>
+      </div>
+
+      <div className="grain"></div>
+      <div className="letterbox"></div>
+    </div>);
+
+}
+
+/* ──────────────────────────────────────────────────────────────
+   Variant 04 — Single hero statement
+   ────────────────────────────────────────────────────────────── */
+function Variant04() {
+  const hero = C[THUMB_TUNE.heroIndex];
+  const rest = C.filter((_, i) => i !== THUMB_TUNE.heroIndex);
+  return (
+    <div className="yt-thumb v4">
+      <div className="v4-hero"><img src={hero.src} alt="" /></div>
+      <div className="grain"></div>
+      <div className="letterbox"></div>
+
+      <div className="v4-top">
+        <span className="l"><span className="dot"></span> VIDALOZZI</span>
+        <span className="r"><span className="acc">SHOWREEL</span> · {THUMB_TUNE.year}</span>
+      </div>
+
+      <div className="v4-content">
+        <div className="v4-left">
+          <div className="v4-eyebrow">
+            <span className="line"></span>
+            <span>NOUVELLE VIDÉO </span>
+          </div>
+          <h1 className="v4-title">
+            Bande<br />
+            <span className="ital">démo.</span>
+          </h1>
+          <div className="v4-sub">{THUMB_TUNE.subtitle}</div>
+        </div>
+        <div className="v4-right">
+          {rest.map((c, i) =>
+          <div className="v4-thumb" key={i}>
+              <img src={c.src} alt="" />
+              <span className="n">0{i + 2}</span>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>);
+
+}
+
+/* ──────────────────────────────────────────────────────────────
+   Toolbar
+   ────────────────────────────────────────────────────────────── */
+function Toolbar() {
+  const downloadActive = async () => {
+    const focused = document.querySelector('.dc-focus-overlay [data-thumb-id]');
+    const target = focused || document.querySelector('[data-thumb-id]');
+    if (!target) return;
+    const id = target.getAttribute('data-thumb-id');
+    try {
+      const dataUrl = await htmlToImage.toPng(target, {
+        width: 1280, height: 720, pixelRatio: 1,
+        backgroundColor: '#0E0B08'
+      });
+      const a = document.createElement('a');
+      a.href = dataUrl;
+      a.download = `vidalozzi-thumbnail-${id}.png`;
+      a.click();
+    } catch (e) {
+      console.error(e);
+      alert("Erreur d'export — clique d'abord sur l'artboard pour l'ouvrir en plein écran.");
+    }
+  };
+  return (
+    <div className="toolbar">
+      <button onClick={downloadActive}>Télécharger PNG (focus)</button>
+    </div>);
+
+}
+
+/* ──────────────────────────────────────────────────────────────
+   App
+   ────────────────────────────────────────────────────────────── */
+function App() {
+  return (
+    <>
+      <DesignCanvas
+        title="VIDALOZZI — Miniature YouTube · Bande démo"
+        subtitle="4 directions · 1280 × 720 · 5 personnages">
+        
+        <DCSection id="thumbnails" title="Variations">
+          <DCArtboard id="v1-contact-sheet" label="01 — Contact sheet" width={1280} height={720}>
+            <div data-thumb-id="v1-contact-sheet"><Variant01 /></div>
+          </DCArtboard>
+          <DCArtboard id="v2-hero-strip" label="02 — Hero + strip" width={1280} height={720}>
+            <div data-thumb-id="v2-hero-strip"><Variant02 /></div>
+          </DCArtboard>
+          <DCArtboard id="v3-mosaic" label="03 — Mosaïque éditoriale" width={1280} height={720}>
+            <div data-thumb-id="v3-mosaic"><Variant03 /></div>
+          </DCArtboard>
+          <DCArtboard id="v4-hero-statement" label="04 — Hero statement" width={1280} height={720}>
+            <div data-thumb-id="v4-hero-statement"><Variant04 /></div>
+          </DCArtboard>
+        </DCSection>
+      </DesignCanvas>
+      <Toolbar />
+    </>);
+
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>

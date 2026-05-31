@@ -37,6 +37,7 @@ function Nav({ active, lang, setLang, t, current }) {
         <a href="index.html" className={current === "home" ? "active" : ""} onClick={closeMenu}>{t.nav.home}</a>
         <a href="ugc.html" className={current === "ugc" ? "active" : ""} onClick={closeMenu}>{t.nav.ugc}</a>
         <a href="talent.html" className={current === "talent" ? "active" : ""} onClick={closeMenu}>{t.nav.talent}</a>
+        <a href="blog.html" className={current === "blog" || current === "article" ? "active" : ""} onClick={closeMenu}>{t.nav.blog}</a>
         <span style={{ opacity: 0.3 }}>·</span>
         <span className="lang-switch">
           <button className={lang === "fr" ? "active" : ""} onClick={() => setLang("fr")}>FR</button>
@@ -368,6 +369,7 @@ function Footer({ t }) {
               <li><a href="index.html">{t.nav.home}</a></li>
               <li><a href="ugc.html">{t.nav.ugc}</a></li>
               <li><a href="talent.html">{t.nav.talent}</a></li>
+              <li><a href="blog.html">{t.nav.blog}</a></li>
             </ul>
           </div>
           <div>
@@ -428,8 +430,8 @@ function Accordion({ items }) {
 
 // ── Mode switch UGC/Talent (sticky) ─────────────────────────────────
 function ModeSwitch({ mode, setMode, current, t }) {
-  // Si "current" est home, ne pas afficher; sinon montrer un toggle pour aller à l'autre
-  if (current === "home") return null;
+  // Si "current" est home/blog/article, ne pas afficher le toggle UGC↔Talent
+  if (current === "home" || current === "blog" || current === "article") return null;
   return (
     <div style={{
       position: "fixed", left: "50%", transform: "translateX(-50%)",

@@ -1,0 +1,672 @@
+<!doctype html>
+<html lang="fr" data-theme="dark">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>VIDALOZZI — Bannière YouTube</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&family=Pinyon+Script&family=Montserrat:wght@300..700&family=JetBrains+Mono:wght@300..600&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --bg-deep: #0E0B08;
+    --bg: #1A1410;
+    --bg-elev: #221A14;
+    --surface: #2A201A;
+    --line: rgba(244, 239, 230, 0.10);
+    --line-strong: rgba(244, 239, 230, 0.22);
+    --ink: #F4EFE6;
+    --ink-mute: rgba(244, 239, 230, 0.62);
+    --ink-faint: rgba(244, 239, 230, 0.38);
+    --accent: #C9A87C;
+    --accent-deep: #8B5E3C;
+    --accent-glow: #E6C99B;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #0a0806; color: var(--ink); font-family: "Montserrat", system-ui, sans-serif; }
+
+  /* ─── Banner ───────────────────────────────────────────────────── */
+  .yt-banner {
+    width: 2560px;
+    height: 1440px;
+    position: relative;
+    background: var(--bg-deep);
+    color: var(--ink);
+    overflow: hidden;
+    isolation: isolate;
+    font-family: "Montserrat", sans-serif;
+  }
+
+  /* Subtle leather grain across all variants */
+  .grain-layer {
+    position: absolute; inset: 0;
+    pointer-events: none;
+    opacity: 0.05;
+    z-index: 10;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    mix-blend-mode: overlay;
+  }
+
+  /* Safe-area markers (toggle) */
+  .safe-overlay {
+    position: absolute; inset: 0; z-index: 20; pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+  }
+  .yt-banner.show-safe .safe-overlay { opacity: 1; }
+  .safe-box {
+    position: absolute;
+    border: 1px dashed rgba(255, 90, 90, 0.65);
+  }
+  .safe-tv     { inset: 0; border-color: rgba(120, 200, 255, 0.5); }
+  .safe-desk   { left: 50%; top: 50%; width: 2560px; height: 423px; transform: translate(-50%, -50%); border-color: rgba(255, 200, 90, 0.6); }
+  .safe-tab    { left: 50%; top: 50%; width: 1855px; height: 423px; transform: translate(-50%, -50%); border-color: rgba(180, 255, 120, 0.65); }
+  .safe-mobile { left: 50%; top: 50%; width: 1546px; height: 423px; transform: translate(-50%, -50%); border-color: rgba(255, 120, 120, 0.85); border-style: solid; border-width: 2px; }
+  .safe-label {
+    position: absolute;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 16px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    padding: 6px 10px;
+    background: rgba(0,0,0,0.7);
+    color: rgba(255,255,255,0.9);
+  }
+
+  /* Typography */
+  .display { font-family: "DM Serif Display", "Bodoni Moda", serif; font-weight: 400; line-height: 0.88; letter-spacing: -0.025em; }
+  .italic-serif { font-family: "Cormorant Garamond", serif; font-style: italic; font-weight: 400; }
+  .script { font-family: "Pinyon Script", cursive; font-weight: 400; letter-spacing: 0; }
+  .mono { font-family: "JetBrains Mono", monospace; font-feature-settings: "ss01"; }
+  .eyebrow {
+    font-family: "Montserrat", sans-serif;
+    font-size: 22px;
+    letter-spacing: 0.42em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    font-weight: 500;
+  }
+
+  /* ──────────────────────────────────────────────────────────────
+     VARIANT 01 — EDITORIAL CENTERED
+     Logotype massif + sous-titre + handle, fond cuir vignetté
+     ────────────────────────────────────────────────────────────── */
+  .v1 {
+    background:
+      radial-gradient(ellipse at 50% 50%, rgba(201,168,124, 0.10), transparent 55%),
+      radial-gradient(ellipse at 50% 100%, rgba(139,94,60, 0.22), transparent 60%),
+      var(--bg-deep);
+  }
+  .v1::before {
+    content: "";
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(45deg, transparent 0 80px, rgba(255,255,255,0.012) 80px 160px);
+    pointer-events: none;
+  }
+  .v1-content {
+    position: absolute; left: 50%; top: 50%;
+    transform: translate(-50%, -50%);
+    width: 1546px; height: 423px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center;
+    z-index: 3;
+  }
+  .v1-mark {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 18px;
+    letter-spacing: 0.42em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    display: flex; align-items: center; gap: 18px;
+  }
+  .v1-mark .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 14px var(--accent); }
+  .v1-mark .bar { width: 80px; height: 0.5px; background: var(--line-strong); }
+  .v1-name {
+    font-size: 220px;
+    line-height: 0.85;
+    margin-bottom: 14px;
+  }
+  .v1-name .amp { font-family: "Cormorant Garamond", serif; font-style: italic; color: var(--accent); }
+  .v1-sub {
+    font-family: "Cormorant Garamond", serif;
+    font-style: italic;
+    font-size: 38px;
+    color: var(--ink-mute);
+    letter-spacing: 0.005em;
+    margin-bottom: 28px;
+  }
+  .v1-footer {
+    display: flex; align-items: center; gap: 28px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 16px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  .v1-footer .sep { color: var(--accent); }
+
+  /* Corner ornaments outside safe zone */
+  .v1-corner {
+    position: absolute;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 18px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    z-index: 2;
+  }
+  .v1-corner.tl { top: 80px; left: 100px; }
+  .v1-corner.tr { top: 80px; right: 100px; text-align: right; }
+  .v1-corner.bl { bottom: 80px; left: 100px; }
+  .v1-corner.br { bottom: 80px; right: 100px; text-align: right; }
+  .v1-corner .acc { color: var(--accent); }
+
+  /* Massive watermark name behind */
+  .v1-watermark {
+    position: absolute;
+    bottom: -40px; left: 50%;
+    transform: translateX(-50%);
+    font-family: "DM Serif Display", serif;
+    font-size: 480px;
+    line-height: 0.85;
+    color: rgba(244, 239, 230, 0.022);
+    letter-spacing: -0.04em;
+    white-space: nowrap;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  /* ──────────────────────────────────────────────────────────────
+     VARIANT 02 — SPLIT EDITORIAL avec portrait
+     Portrait à droite (en placeholder), type éditorial à gauche
+     ────────────────────────────────────────────────────────────── */
+  .v2 {
+    background: var(--bg-deep);
+  }
+  .v2-portrait-pane {
+    position: absolute;
+    right: 0; top: 0; bottom: 0;
+    width: 1100px;
+    overflow: hidden;
+  }
+  .v2-portrait-img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    object-position: 50% 28%;
+    filter: grayscale(0.15) contrast(1.05) brightness(0.92);
+  }
+  /* Vignette over portrait — fade to bg on left edge */
+  .v2-portrait-pane::after {
+    content: "";
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(to right, var(--bg-deep) 0%, transparent 18%, transparent 78%, rgba(14,11,8,0.35) 100%),
+      linear-gradient(to bottom, transparent 60%, rgba(14,11,8,0.4));
+  }
+  /* Fallback when no image: textured placeholder */
+  .v2-portrait-fallback {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(circle at 50% 38%, rgba(201,168,124, 0.32), transparent 30%),
+      radial-gradient(ellipse at 50% 80%, rgba(139,94,60, 0.42), transparent 55%),
+      var(--surface);
+  }
+  .v2-portrait-fallback::after {
+    content: "";
+    position: absolute; inset: 0;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/></svg>");
+    opacity: 0.22; mix-blend-mode: overlay;
+  }
+  .v2-content {
+    position: absolute;
+    left: 50%; top: 50%;
+    transform: translate(-50%, -50%);
+    width: 1546px; height: 423px;
+    display: flex;
+    align-items: center;
+    z-index: 3;
+  }
+  .v2-left {
+    flex: 1;
+    padding-right: 80px;
+    display: flex; flex-direction: column;
+    align-items: flex-start;
+  }
+  .v2-eyebrow {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 16px;
+    letter-spacing: 0.36em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 22px;
+    display: flex; align-items: center; gap: 14px;
+  }
+  .v2-eyebrow .line { width: 60px; height: 0.5px; background: var(--accent); }
+  .v2-name {
+    font-family: "DM Serif Display", serif;
+    font-size: 160px;
+    line-height: 0.86;
+    letter-spacing: -0.025em;
+    margin-bottom: 18px;
+  }
+  .v2-name .last {
+    font-family: "Cormorant Garamond", serif;
+    font-style: italic;
+    font-weight: 400;
+    color: var(--accent);
+  }
+  .v2-tagline {
+    font-family: "Cormorant Garamond", serif;
+    font-style: italic;
+    font-size: 30px;
+    color: var(--ink-mute);
+    margin-bottom: 28px;
+    max-width: 720px;
+    line-height: 1.25;
+  }
+  .v2-meta {
+    display: flex; gap: 28px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 14px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  .v2-meta .acc { color: var(--accent); }
+  .v2-right { width: 0; flex: 0; }
+
+  /* Outer chrome */
+  .v2-stamp {
+    position: absolute;
+    top: 80px; left: 100px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 16px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    z-index: 4;
+  }
+  .v2-stamp .acc { color: var(--accent); }
+  .v2-stamp-br {
+    position: absolute;
+    bottom: 80px; right: 100px;
+    text-align: right;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 16px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    z-index: 4;
+  }
+
+  /* ──────────────────────────────────────────────────────────────
+     VARIANT 03 — TYPE-DRIVEN BOLD
+     Nom géant en pleine largeur (style éditorial magazine)
+     ────────────────────────────────────────────────────────────── */
+  .v3 {
+    background:
+      linear-gradient(180deg, var(--bg-deep) 0%, var(--bg) 60%, var(--bg-deep) 100%);
+  }
+  .v3-massive {
+    position: absolute;
+    left: 50%; top: 50%;
+    transform: translate(-50%, -50%);
+    font-family: "DM Serif Display", serif;
+    font-size: 360px;
+    line-height: 0.88;
+    letter-spacing: -0.045em;
+    color: var(--ink);
+    white-space: nowrap;
+    z-index: 2;
+  }
+  .v3-massive .italic {
+    font-family: "Cormorant Garamond", serif;
+    font-style: italic;
+    color: var(--accent);
+    font-weight: 400;
+  }
+  /* Center metadata block, sits inside the safe zone */
+  .v3-center {
+    position: absolute;
+    left: 50%; top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 3;
+    width: 1546px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding-top: 200px;
+  }
+  .v3-tag {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 18px;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    display: flex; align-items: center; gap: 14px;
+  }
+  .v3-tag .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+  /* Top + bottom rails */
+  .v3-rail {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1546px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 16px;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    z-index: 3;
+  }
+  .v3-rail.top { top: calc(50% - 211px - 32px); }
+  .v3-rail.bot { top: calc(50% + 211px + 32px); }
+  .v3-rail .acc { color: var(--accent); }
+  .v3-rail .bar { flex: 1; height: 0.5px; background: var(--line); margin: 0 28px; }
+
+  /* ──────────────────────────────────────────────────────────────
+     Canvas wrapper / scaling
+     ────────────────────────────────────────────────────────────── */
+  .frame-wrap {
+    transform-origin: top left;
+    position: relative;
+  }
+
+  /* Download toolbar */
+  .toolbar {
+    position: fixed;
+    bottom: 20px; left: 20px;
+    z-index: 9999;
+    display: flex;
+    gap: 8px;
+    background: rgba(20,16,12, 0.88);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 0.5px solid var(--line-strong);
+    border-radius: 999px;
+    padding: 6px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+  .toolbar button {
+    background: transparent;
+    border: 0;
+    color: var(--ink-mute);
+    padding: 10px 16px;
+    border-radius: 999px;
+    cursor: pointer;
+    font: inherit;
+    transition: all 0.2s;
+  }
+  .toolbar button:hover { color: var(--ink); background: rgba(244,239,230,0.06); }
+  .toolbar button.active { background: var(--accent); color: var(--bg-deep); }
+</style>
+</head>
+<body>
+
+<div id="root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/html-to-image@1.11.11/dist/html-to-image.js"></script>
+<script type="text/babel" src="design-canvas.jsx"></script>
+
+<script type="text/babel" data-presets="env,react">
+
+const { useState, useEffect, useRef } = React;
+
+/* ──────────────────────────────────────────────────────────────
+   Tunables — change here, all variants pick them up
+   ────────────────────────────────────────────────────────────── */
+const TUNE = /*EDITMODE-BEGIN*/{
+  "brand": "VIDALOZZI",
+  "firstName": "Teddy",
+  "lastName": "Vidal",
+  "tagline": "Créateur UGC · Mannequin · Comédien",
+  "tagline_v3": "UGC · MODEL · ACTOR",
+  "handle": "@vidalozzi",
+  "location": "Paris, France",
+  "year": "MMXXVI",
+  "portraitSrc": "assets/teddy-vidal-ugc-mannequin-comedien-paris.jpg"
+} /*EDITMODE-END*/;
+
+/* ──────────────────────────────────────────────────────────────
+   Variant 01 — Editorial Centered
+   ────────────────────────────────────────────────────────────── */
+function Variant01({ showSafe }) {
+  return (
+    <div className={"yt-banner v1" + (showSafe ? " show-safe" : "")}>
+      <div className="v1-watermark display">{TUNE.brand}</div>
+      <div className="grain-layer"></div>
+
+      {/* Corner ornaments — visible only on TV/desktop, decorative */}
+      <div className="v1-corner tl">
+        <div>EST. <span className="acc">{TUNE.year}</span></div>
+        <div style={{ marginTop: 8, color: 'var(--ink-faint)' }}>{TUNE.location}</div>
+      </div>
+      <div className="v1-corner tr">
+        <div>BOOKING</div>
+        <div style={{ marginTop: 8, color: 'var(--ink-faint)' }}>POP AGENCY · ENJOY MODEL</div>
+      </div>
+      <div className="v1-corner bl">
+        <div className="acc">● LIVE</div>
+        <div style={{ marginTop: 8, color: 'var(--ink-faint)' }}></div>
+      </div>
+      <div className="v1-corner br">
+        <div>{TUNE.handle}</div>
+        <div style={{ marginTop: 8, color: 'var(--ink-faint)' }}>SUBSCRIBE / S'ABONNER</div>
+      </div>
+
+      {/* Inside safe zone */}
+      <div className="v1-content">
+        <div className="v1-mark">
+          <span className="dot"></span>
+          <span className="bar"></span>
+          <span>EST. {TUNE.year} · PARIS</span>
+          <span className="bar"></span>
+          <span className="dot"></span>
+        </div>
+        <h1 className="v1-name display">
+          TEDDY VIDAL
+        </h1>
+        <div className="v1-sub italic-serif">Mannequin · Comédien · Créateur UGC ·</div>
+        <div className="v1-footer">
+          <span>{TUNE.handle}</span>
+          <span className="sep">/</span>
+          <span>YOUTUBE</span>
+          <span className="sep">/</span>
+          <span>INSTAGRAM</span>
+        </div>
+      </div>
+
+      <SafeOverlay />
+    </div>);
+
+}
+
+/* ──────────────────────────────────────────────────────────────
+   Variant 02 — Split editorial with portrait
+   ────────────────────────────────────────────────────────────── */
+function Variant02({ showSafe }) {
+  const [imgOk, setImgOk] = useState(true);
+  return (
+    <div className={"yt-banner v2" + (showSafe ? " show-safe" : "")}>
+      <div className="v2-portrait-pane">
+        {imgOk ?
+        <img
+          className="v2-portrait-img"
+          src={TUNE.portraitSrc}
+          alt=""
+          onError={() => setImgOk(false)} /> :
+
+
+        <div className="v2-portrait-fallback"></div>
+        }
+      </div>
+
+      <div className="grain-layer"></div>
+
+      <div className="v2-stamp">
+        <div><span className="acc">●</span> VIDALOZZI / YT</div>
+        <div style={{ marginTop: 8, color: 'var(--ink-faint)' }}>EST. {TUNE.year} · {TUNE.location.toUpperCase()}</div>
+      </div>
+
+      <div className="v2-stamp-br">
+        <div>{TUNE.handle}</div>
+        <div style={{ marginTop: 8, color: 'var(--ink-faint)' }}>SUBSCRIBE / S'ABONNER</div>
+      </div>
+
+      <div className="v2-content">
+        <div className="v2-left">
+          <div className="v2-eyebrow">
+            <span className="line"></span>
+            <span>PARIS — UGC · TALENT</span>
+          </div>
+          <h1 className="v2-name">
+            {TUNE.firstName}<br />
+            <span className="last">{TUNE.lastName}</span>
+          </h1>
+          <div className="v2-tagline">{TUNE.tagline}</div>
+          <div className="v2-meta">
+            <span>POP AGENCY</span>
+            <span className="acc">×</span>
+            <span>ENJOY MODEL</span>
+          </div>
+        </div>
+        <div className="v2-right"></div>
+      </div>
+
+      <SafeOverlay />
+    </div>);
+
+}
+
+/* ──────────────────────────────────────────────────────────────
+   Variant 03 — Type-driven bold
+   ────────────────────────────────────────────────────────────── */
+function Variant03({ showSafe }) {
+  return (
+    <div className={"yt-banner v3" + (showSafe ? " show-safe" : "")}>
+      <div className="grain-layer"></div>
+
+      <div className="v3-massive">
+        {TUNE.firstName} <span className="italic">{TUNE.lastName}</span>
+      </div>
+
+      <div className="v3-rail top">
+        <span><span className="acc">●</span>&nbsp;&nbsp;{TUNE.brand}</span>
+        <span className="bar"></span>
+        <span>EST. {TUNE.year}</span>
+        <span className="bar"></span>
+        <span>{TUNE.location.toUpperCase()}</span>
+      </div>
+
+      <div className="v3-rail bot">
+        <span>{TUNE.tagline_v3}</span>
+        <span className="bar"></span>
+        <span className="acc">{TUNE.handle}</span>
+      </div>
+
+      <SafeOverlay />
+    </div>);
+
+}
+
+/* ──────────────────────────────────────────────────────────────
+   Safe-zone overlay (shared)
+   ────────────────────────────────────────────────────────────── */
+function SafeOverlay() {
+  return (
+    <div className="safe-overlay">
+      <div className="safe-box safe-tv"></div>
+      <div className="safe-box safe-desk"></div>
+      <div className="safe-box safe-tab"></div>
+      <div className="safe-box safe-mobile"></div>
+      <div className="safe-label" style={{ top: 12, left: 12, color: 'rgba(120,200,255,0.95)' }}>2560 × 1440 — TV</div>
+      <div className="safe-label" style={{ top: 'calc(50% - 423px / 2 - 28px)', left: 12, color: 'rgba(255,200,90,0.95)' }}>2560 × 423 — DESKTOP</div>
+      <div className="safe-label" style={{ top: 'calc(50% - 423px / 2 - 28px)', left: 'calc(50% - 1855px / 2)', color: 'rgba(180,255,120,0.95)' }}>1855 × 423 — TABLET</div>
+      <div className="safe-label" style={{ top: 'calc(50% - 423px / 2 - 28px)', left: 'calc(50% - 1546px / 2)', color: 'rgba(255,120,120,1)' }}>1546 × 423 — MOBILE SAFE</div>
+    </div>);
+
+}
+
+/* ──────────────────────────────────────────────────────────────
+   Toolbar — safe-zone toggle + download per artboard
+   ────────────────────────────────────────────────────────────── */
+function Toolbar({ showSafe, setShowSafe }) {
+  const downloadActive = async () => {
+    // Find the artboard currently in focus (focus mode) or fall back to the first one
+    const focused = document.querySelector('.dc-focus-overlay [data-banner-id]');
+    const target = focused || document.querySelector('[data-banner-id]');
+    if (!target) return;
+    const id = target.getAttribute('data-banner-id');
+    try {
+      const dataUrl = await htmlToImage.toPng(target, {
+        width: 2560, height: 1440,
+        pixelRatio: 1,
+        backgroundColor: '#0E0B08'
+      });
+      const a = document.createElement('a');
+      a.href = dataUrl;
+      a.download = `vidalozzi-youtube-banner-${id}.png`;
+      a.click();
+    } catch (e) {
+      console.error(e);
+      alert("Erreur d'export — essaie d'ouvrir la variante en plein écran (clic sur l'artboard) puis re-télécharge.");
+    }
+  };
+  return (
+    <div className="toolbar">
+      <button
+        className={showSafe ? 'active' : ''}
+        onClick={() => setShowSafe(!showSafe)}>
+        
+        {showSafe ? 'Masquer zones' : 'Voir zones sécurité'}
+      </button>
+      <button onClick={downloadActive}>Télécharger PNG</button>
+    </div>);
+
+}
+
+/* ──────────────────────────────────────────────────────────────
+   App
+   ────────────────────────────────────────────────────────────── */
+function App() {
+  const [showSafe, setShowSafe] = useState(false);
+  return (
+    <>
+      <DesignCanvas
+        title="VIDALOZZI — Bannière YouTube"
+        subtitle="3 directions éditoriales · 2560 × 1440 · zone safe 1546 × 423">
+        
+        <DCSection id="banners" title="Variations">
+          <DCArtboard id="v1-editorial" label="01 — Editorial centré" width={2560} height={1440}>
+            <div data-banner-id="v1-editorial"><Variant01 showSafe={showSafe} /></div>
+          </DCArtboard>
+          <DCArtboard id="v2-portrait" label="02 — Split portrait" width={2560} height={1440}>
+            <div data-banner-id="v2-portrait"><Variant02 showSafe={showSafe} /></div>
+          </DCArtboard>
+          <DCArtboard id="v3-bold" label="03 — Type bold" width={2560} height={1440}>
+            <div data-banner-id="v3-bold"><Variant03 showSafe={showSafe} /></div>
+          </DCArtboard>
+        </DCSection>
+      </DesignCanvas>
+      <Toolbar showSafe={showSafe} setShowSafe={setShowSafe} />
+    </>);
+
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>

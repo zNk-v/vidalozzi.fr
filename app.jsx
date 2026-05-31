@@ -23,7 +23,7 @@ const FONT_OPTIONS_BODY = [
   { value: "DM Sans", label: "DM Sans" },
 ];
 
-function App({ page }) {
+function App({ page, slug }) {
   const [tweaks, setTweak] = useTweaks(TWEAK_DEFAULTS);
   const [lang, setLang] = useState(localStorage.getItem("vz_lang") || "fr");
   const isDesktop = () => window.matchMedia("(min-width: 861px)").matches;
@@ -96,12 +96,15 @@ function App({ page }) {
   }, [tweaks, editMode]);
 
   const t = window.COPY[lang];
-  const PageComp = page === "home" ? HomePage : page === "ugc" ? UgcPage : TalentPage;
+  const PAGES = { home: HomePage, ugc: UgcPage, talent: TalentPage };
+  // blog.jsx n'est chargé que sur les pages du journal ; on l'ajoute si présent
+  if (typeof window.BlogPage !== "undefined") { PAGES.blog = window.BlogPage; PAGES.article = window.ArticlePage; }
+  const PageComp = PAGES[page] || HomePage;
 
   return (
     <div className="grain">
       <Nav lang={lang} setLang={setLang} t={t} current={page} />
-      <PageComp t={t} />
+      <PageComp t={t} lang={lang} slug={slug} />
       <ModeSwitch current={page} t={t} />
       {editMode && (
         <div style={{
@@ -145,7 +148,7 @@ function App({ page }) {
           </>
         )}
         <TweakSection label="Mode" />
-        <TweakRadio label="Section" value={page} options={[{ value: "home", label: "Home" }, { value: "ugc", label: "UGC" }, { value: "talent", label: "Talent" }]} onChange={(v) => { window.location.href = v === "home" ? "index.html" : v + ".html"; }} />
+        <TweakRadio label="Section" value={page === "article" ? "blog" : page} options={[{ value: "home", label: "Home" }, { value: "ugc", label: "UGC" }, { value: "talent", label: "Talent" }, { value: "blog", label: "Blog" }]} onChange={(v) => { window.location.href = v === "home" ? "index.html" : v + ".html"; }} />
       </TweaksPanel>
     </div>
   );
