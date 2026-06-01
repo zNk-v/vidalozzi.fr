@@ -48,45 +48,5 @@
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
-  <!-- ARTICLES PROGRAMMÉS — décommenter à leur date de publication -->
-  <!-- 2026-06-10 :
-  <url>
-    <loc>https://vidalozzi.fr/choisir-createur-ugc.html</loc>
-    <lastmod>2026-06-10</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  -->
-  <!-- 2026-06-24 :
-  <url>
-    <loc>https://vidalozzi.fr/erreurs-brief-ugc.html</loc>
-    <lastmod>2026-06-24</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  -->
-  <!-- 2026-07-08 :
-  <url>
-    <loc>https://vidalozzi.fr/formats-ugc-meta-ads.html</loc>
-    <lastmod>2026-07-08</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  -->
-  <!-- 2026-07-22 :
-  <url>
-    <loc>https://vidalozzi.fr/ugc-ecommerce-fiches-produit.html</loc>
-    <lastmod>2026-07-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  -->
-  <!-- 2026-08-05 :
-  <url>
-    <loc>https://vidalozzi.fr/modele-brief-ugc.html</loc>
-    <lastmod>2026-08-05</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  -->
+  <!-- Articles programmés : ajoutés automatiquement ici par .github/workflows/publish-articles.yml le jour de leur dateISO -->
 </urlset>
