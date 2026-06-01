@@ -310,12 +310,14 @@ html[data-editmode="0"] .brand-edit-controls { display: none !important; }
 /* Mobile hamburger toggle button (hidden on desktop) */
 .nav-burger {
   display: none;
+  position: relative;
+  z-index: 101;
   width: 40px; height: 40px;
   align-items: center; justify-content: center;
   border-radius: 999px;
   border: 0.5px solid var(--line-strong);
   color: var(--ink);
-  background: rgba(14, 11, 8, 0.6);
+  background: var(--bg-elev);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   flex-direction: column;
@@ -330,6 +332,9 @@ html[data-editmode="0"] .brand-edit-controls { display: none !important; }
   transition: transform 0.25s, opacity 0.25s;
 }
 body.nav-open { overflow: hidden; }
+/* Lift the entire nav (incl. the opaque mobile overlay) above any page
+   element that creates its own stacking context, so nothing bleeds through. */
+body.nav-open .nav { z-index: 1000; }
 body.nav-open .nav-burger span:nth-child(1) { transform: translateY(2.5px) rotate(45deg); }
 body.nav-open .nav-burger span:nth-child(2) { transform: translateY(-2.5px) rotate(-45deg); }
 

@@ -439,7 +439,7 @@ function UgcPacks({ t }) {
               display: "flex", flexDirection: "column",
             }}>
               {p.featured && (
-                <span className="tag" style={{ position: "absolute", top: -12, left: 24, background: "var(--accent)", color: "var(--bg-deep)", border: "0", fontWeight: 600 }}>
+                <span className="tag" style={{ position: "absolute", top: -12, left: 24, background: "var(--accent)", color: "var(--bg-deep)", border: "0", fontWeight: 600, whiteSpace: "nowrap" }}>
                   <span className="tag-dot" style={{ background: "var(--bg-deep)" }} />Most chosen
                 </span>
               )}
