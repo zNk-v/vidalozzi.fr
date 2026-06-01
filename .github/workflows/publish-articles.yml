@@ -1,0 +1,40 @@
+name: Publication auto des articles programmés
+
+# Se déclenche tous les jours à 06:00 UTC (08:00 heure de Paris en été),
+# et peut aussi être lancé manuellement depuis l'onglet « Actions » de GitHub.
+on:
+  schedule:
+    - cron: "0 6 * * *"
+  workflow_dispatch: {}
+
+# Autorise le robot à committer les changements (le token est en lecture seule par défaut).
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Récupérer le dépôt
+        uses: actions/checkout@v4
+
+      - name: Installer Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Publier les articles arrivés à échéance
+        run: node scripts/publish-due-articles.mjs
+
+      - name: Committer et publier si nécessaire
+        run: |
+          if [[ -n "$(git status --porcelain)" ]]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add -A
+            git commit -m "Publication auto d'article(s) programmé(s)"
+            git push
+            echo "✅ Article(s) publié(s) et poussé(s)."
+          else
+            echo "Rien à publier aujourd'hui."
+          fi
