@@ -26,6 +26,17 @@ function Nav({ active, lang, setLang, t, current }) {
     document.body.classList.toggle("nav-open", open);
     return () => document.body.classList.remove("nav-open");
   }, [open]);
+  // Mobile: tapping anywhere except a nav rubrique (or the burger itself) closes the menu.
+  useEffect(() => {
+    if (!open) return;
+    const onDown = (e) => {
+      const el = e.target;
+      if (el && el.closest && (el.closest(".nav-burger") || el.closest(".nav-links a"))) return;
+      setOpen(false);
+    };
+    document.addEventListener("pointerdown", onDown, true);
+    return () => document.removeEventListener("pointerdown", onDown, true);
+  }, [open]);
   const closeMenu = () => setOpen(false);
   return (
     <nav className={"nav " + (scrolled ? "nav-scrolled" : "")}>
