@@ -25,22 +25,179 @@ function UgcHero({ t }) {
   );
 }
 
+// ── Carrousel UGC : 1 rangée de 8 vidéos, auto-slide /3s, drag + swipe + dots ──
+const UGC_GAP = 16;
+const UGC_ROW = ["ugc-tile-1", "ugc-tile-2", "ugc-tile-3", "ugc-tile-4", "ugc-tile-5", "ugc-tile-6", "ugc-tile-7", "ugc-tile-8"];
+
 function UgcReel({ t }) {
+  const len = UGC_ROW.length;            // 8 vidéos uniques
+  const COPIES = 2;                       // clones pour boucle infinie
+
+  const [tileW, setTileW] = React.useState(280);
+  const [step, setStep] = React.useState(0);
+  const [anim, setAnim] = React.useState(true);
+  const [dragDX, setDragDX] = React.useState(0);
+
+  const wrapRef = React.useRef(null);
+  const drag = React.useRef({ active: false, startX: 0, dx: 0, moved: false, captured: false });
+  const paused = React.useRef(false);   // pause après interaction manuelle
+  const hover = React.useRef(false);    // pause tant que la souris est sur le carrousel
+
+  const tileFull = tileW + UGC_GAP;
+
+  // Mesure responsive du tile
+  React.useEffect(() => {
+    const el = wrapRef.current;
+    if (!el) return;
+    const measure = () => {
+      const w = el.clientWidth;
+      let tw;
+      if (w >= 900) tw = (w - UGC_GAP * 3) / 4;        // desktop : 4 par vue
+      else if (w >= 560) tw = (w - UGC_GAP) / 2;       // tablette : 2 par vue
+      else tw = w * 0.78;                              // mobile : 1 + peek
+      setTileW(tw);
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
+  // Auto-slide toutes les 3 s
+  React.useEffect(() => {
+    const id = setInterval(() => {
+      if (paused.current || hover.current) return;
+      setAnim(true);
+      setStep((s) => s + 1);
+    }, 3000);
+    return () => clearInterval(id);
+  }, []);
+
+  // Reset transparent en fin de transition (boucle infinie)
+  const onEnd = () => {
+    setStep((s) => {
+      if (s >= len) { setAnim(false); return s - len; }
+      if (s < 0) { setAnim(false); return s + len; }
+      return s;
+    });
+  };
+
+  // Détecte un appui sur un contrôle du player (boutons / volume / barre de progression)
+  const isControl = (e) => {
+    const path = e.composedPath ? e.composedPath() : [];
+    return path.some((n) => n && n.nodeType === 1 && (
+      n.tagName === "BUTTON" || n.tagName === "INPUT" ||
+      (n.classList && (n.classList.contains("progress") || n.classList.contains("ctl-wrap")))
+    ));
+  };
+
+  // Drag / swipe — ne démarre qu'après un vrai déplacement, et jamais sur un contrôle
+  const onDown = (e) => {
+    if (e.button === 2) return;
+    if (isControl(e)) return;                 // laisse play/pause, volume, seek au player
+    drag.current = { active: true, startX: e.clientX, dx: 0, moved: false, captured: false };
+  };
+  const onMove = (e) => {
+    const d = drag.current;
+    if (!d.active) return;
+    d.dx = e.clientX - d.startX;
+    if (!d.moved && Math.abs(d.dx) > 6) {
+      d.moved = true;
+      paused.current = true;
+      setAnim(false);
+      try { e.currentTarget.setPointerCapture(e.pointerId); d.captured = true; } catch (_) {}
+    }
+    if (d.moved) setDragDX(d.dx);
+  };
+  const onUp = () => {
+    const d = drag.current;
+    if (!d.active) return;
+    d.active = false;
+    if (!d.moved) return;                     // simple clic → on laisse le player gérer
+    const moved = Math.round(-d.dx / tileFull);
+    setDragDX(0);
+    setAnim(true);
+    setStep((s) => s + moved);
+    setTimeout(() => { paused.current = false; }, 4000);
+  };
+
+  const dots = ((step % len) + len) % len;
+  const goTo = (i) => {
+    setAnim(true);
+    setStep((prev) => Math.floor(prev / len) * len + i);
+    paused.current = true;
+    setTimeout(() => { paused.current = false; }, 5000);
+  };
+
+  const renderRow = (slots) => {
+    const tiles = Array.from({ length: len * COPIES });
+    const x = -(step * tileFull) + dragDX;
+    return (
+      <div
+        style={{ overflow: "hidden", touchAction: "pan-y", cursor: drag.current.active && drag.current.moved ? "grabbing" : "grab" }}
+        onMouseEnter={() => { hover.current = true; }}
+        onMouseLeave={() => { hover.current = false; }}
+        onPointerDown={onDown}
+        onPointerMove={onMove}
+        onPointerUp={onUp}
+        onPointerCancel={onUp}
+      >
+        <div
+          onTransitionEnd={onEnd}
+          style={{
+            display: "flex",
+            gap: UGC_GAP,
+            transform: `translate3d(${x}px,0,0)`,
+            transition: anim ? "transform 0.7s cubic-bezier(0.4,0,0.1,1)" : "none",
+            willChange: "transform",
+          }}
+        >
+          {tiles.map((_, k) => {
+            const id = slots[k % len];
+            return (
+              <div key={`${id}-${k}`} style={{ flex: `0 0 ${tileW}px`, width: tileW }}>
+                <video-slot
+                  id={id}
+                  src={`assets/videos/${id}.mp4`}
+                  label={`UGC_${id.split("-")[2].padStart(2, "0")}`}
+                  placeholder="Drop video"
+                  autoplay="autoplay"
+                  loop="loop"
+                  muted="muted"
+                  draggable="false"
+                  style={{ aspectRatio: "9/16", borderRadius: 4, overflow: "hidden", display: "block" }}>
+                </video-slot>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    );
+  };
+
   return (
     <section style={{ padding: "0 0 80px" }}>
       <div className="wrap">
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 16 }}>
-          {Array.from({ length: 4 }).map((_, i) => (
-            <video-slot
+        <div ref={wrapRef} style={{ userSelect: "none" }}>
+          {renderRow(UGC_ROW)}
+        </div>
+        {/* Pavé de navigation */}
+        <div style={{ display: "flex", justifyContent: "center", gap: 10, marginTop: 28 }}>
+          {Array.from({ length: len }).map((_, i) => (
+            <button
               key={i}
-              id={`ugc-tile-${i + 1}`}
-              src={`assets/videos/ugc-tile-${i + 1}.mp4`}
-              label={`UGC_${String(i + 1).padStart(2, "0")}`}
-              placeholder="Drop video"
-              autoplay="autoplay"
-              loop="loop"
-              style={{ aspectRatio: "9/16", borderRadius: 4, overflow: "hidden", display: "block" }}>
-            </video-slot>
+              onClick={() => goTo(i)}
+              aria-label={`Aller à la position ${i + 1}`}
+              style={{
+                all: "unset",
+                cursor: "pointer",
+                width: dots === i ? 26 : 8,
+                height: 8,
+                borderRadius: 999,
+                background: dots === i ? "var(--accent)" : "var(--line-strong)",
+                transition: "width 0.35s ease, background 0.35s ease",
+              }}
+            />
           ))}
         </div>
       </div>

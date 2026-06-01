@@ -279,12 +279,14 @@ function Testimonials({ t }) {
                 {it.q}
               </p>
               <div style={{ borderTop: "0.5px solid var(--line)", paddingTop: 16, display: "flex", alignItems: "center", gap: 16 }}>
-                <div className="ph ph-portrait" style={{ width: 44, height: 44, borderRadius: "50%" }}>
-                  <span className="ph-coords" style={{ display: "none" }}></span>
+                <div className="ph ph-portrait" style={{ width: 44, height: 44, borderRadius: "50%", overflow: "hidden", background: it.logo ? "var(--ivory, #F4EFE6)" : undefined, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  {it.logo
+                    ? <img src={it.logo} alt={it.a} style={{ width: "72%", height: "72%", objectFit: "contain" }} />
+                    : <span className="ph-coords" style={{ display: "none" }}></span>}
                 </div>
                 <div>
-                  <div style={{ fontSize: 14, fontWeight: 500 }}>{it.a}</div>
-                  <div style={{ fontSize: 11, color: "var(--ink-faint)", letterSpacing: "0.06em", textTransform: "uppercase", marginTop: 2 }}>{it.r}</div>
+                  <div style={{ fontSize: 14, fontWeight: 500, lineHeight: 1.25 }}>{it.a}</div>
+                  <div style={{ fontSize: 11, color: "var(--ink-faint)", letterSpacing: "0.06em", textTransform: "uppercase", marginTop: 5, lineHeight: 1.3 }}>{it.r}</div>
                 </div>
               </div>
             </div>

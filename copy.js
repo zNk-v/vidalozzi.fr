@@ -127,9 +127,9 @@ window.COPY = {
     testimonialsLabel: "Témoignages",
     testimonialsHead: "Ce qu'ils en disent.",
     testimonials: [
-      { q: "Teddy comprend une marque en un brief. Le contenu livré performe au-dessus de nos benchmarks paid, à chaque fois.", a: "Léa Marchand", r: "Head of Growth · Maison du Café" },
+      { q: "La collaboration avec Teddy s'est très bien passée. Teddy a été réactif et arrangeant durant toute la durée du projet. Nous n'hésiterons pas à refaire appel à lui pour de futurs projets.", a: "DIGITAL VIRGO FRANCE", r: "OUEST FRANCE", logo: "assets/logos/digital-virgo.png" },
       { q: "Une présence rare à la caméra. On sent l'acteur derrière le mannequin — exactement ce qu'on cherchait pour la campagne.", a: "Stéphane R.", r: "Directeur artistique · Atelier Hervé" },
-      { q: "Process carré, livraison toujours en avance. C'est le genre de collaborateur qu'on rappelle.", a: "Karim B.", r: "Founder · Studio Néon" },
+      { q: "La collab avec Teddy a été super fluide. Niveau son et images, tout est impeccable. de plus, il a été rapide pour délivrer les rushs et a su interpréter le script avec justesse.", a: "COSMY", r: "Marie Michelle", logo: "assets/logos/cosmy.png" },
       { q: "Un vrai partenaire créatif. Teddy propose, ajuste, et finit par élever le brief plutôt que simplement l'exécuter. On gagne du temps et de la qualité.", a: "Camille D.", r: "Brand Manager · Maison Lumen" },
     ],
     contact: {
