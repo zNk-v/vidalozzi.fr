@@ -1,2 +1,2 @@
 # vidalozzi.fr
-Portfolio Teddy Vidal - UGC, mannequin, comedien Paris
+Portfolio Teddy Vidal - UGC, mannequin, comedien 
