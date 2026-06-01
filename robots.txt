@@ -1,9 +1,13 @@
 User-agent: *
 Allow: /
 Disallow: /uploads/
+Disallow: /vidalozzi-clean/
+Disallow: /scraps/
+Disallow: /VIDALOZZI%20-%20UGC.html
+Disallow: /ugc.bundle.html
 
 # Allow image indexing for SEO (og:image, schema.org)
 User-agent: Googlebot-Image
 Allow: /assets/
 
-Sitemap: https://vidalozzi.com/sitemap.xml
+Sitemap: https://vidalozzi.fr/sitemap.xml

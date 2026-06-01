@@ -2,48 +2,48 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://vidalozzi.com/</loc>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://vidalozzi.com/" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://vidalozzi.com/?lang=en" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://vidalozzi.com/" />
+    <loc>https://vidalozzi.fr/</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://vidalozzi.fr/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://vidalozzi.fr/?lang=en" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://vidalozzi.fr/" />
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://vidalozzi.com/ugc.html</loc>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://vidalozzi.com/ugc.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://vidalozzi.com/ugc.html?lang=en" />
+    <loc>https://vidalozzi.fr/ugc.html</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://vidalozzi.fr/ugc.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://vidalozzi.fr/ugc.html?lang=en" />
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://vidalozzi.com/talent.html</loc>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://vidalozzi.com/talent.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://vidalozzi.com/talent.html?lang=en" />
+    <loc>https://vidalozzi.fr/talent.html</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://vidalozzi.fr/talent.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://vidalozzi.fr/talent.html?lang=en" />
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://vidalozzi.com/blog.html</loc>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://vidalozzi.com/blog.html" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://vidalozzi.com/blog.html?lang=en" />
+    <loc>https://vidalozzi.fr/blog.html</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://vidalozzi.fr/blog.html" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://vidalozzi.fr/blog.html?lang=en" />
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://vidalozzi.com/ugc-convertit-mieux-que-pub-classique.html</loc>
+    <loc>https://vidalozzi.fr/ugc-convertit-mieux-que-pub-classique.html</loc>
     <lastmod>2026-04-28</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://vidalozzi.com/prix-createur-ugc-france.html</loc>
+    <loc>https://vidalozzi.fr/prix-createur-ugc-france.html</loc>
     <lastmod>2026-05-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://vidalozzi.com/ugc-vs-influenceur.html</loc>
+    <loc>https://vidalozzi.fr/ugc-vs-influenceur.html</loc>
     <lastmod>2026-05-26</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -51,7 +51,7 @@
   <!-- ARTICLES PROGRAMMÉS — décommenter à leur date de publication -->
   <!-- 2026-06-10 :
   <url>
-    <loc>https://vidalozzi.com/choisir-createur-ugc.html</loc>
+    <loc>https://vidalozzi.fr/choisir-createur-ugc.html</loc>
     <lastmod>2026-06-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -59,7 +59,7 @@
   -->
   <!-- 2026-06-24 :
   <url>
-    <loc>https://vidalozzi.com/erreurs-brief-ugc.html</loc>
+    <loc>https://vidalozzi.fr/erreurs-brief-ugc.html</loc>
     <lastmod>2026-06-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -67,7 +67,7 @@
   -->
   <!-- 2026-07-08 :
   <url>
-    <loc>https://vidalozzi.com/formats-ugc-meta-ads.html</loc>
+    <loc>https://vidalozzi.fr/formats-ugc-meta-ads.html</loc>
     <lastmod>2026-07-08</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -75,7 +75,7 @@
   -->
   <!-- 2026-07-22 :
   <url>
-    <loc>https://vidalozzi.com/ugc-ecommerce-fiches-produit.html</loc>
+    <loc>https://vidalozzi.fr/ugc-ecommerce-fiches-produit.html</loc>
     <lastmod>2026-07-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -83,7 +83,7 @@
   -->
   <!-- 2026-08-05 :
   <url>
-    <loc>https://vidalozzi.com/modele-brief-ugc.html</loc>
+    <loc>https://vidalozzi.fr/modele-brief-ugc.html</loc>
     <lastmod>2026-08-05</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
