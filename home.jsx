@@ -3,21 +3,30 @@ const { useState, useEffect } = React;
 
 function HomeHero({ t }) {
   const [scrollY, setScrollY] = useState(0);
+  const [mobile, setMobile] = useState(() => window.matchMedia("(max-width: 860px)").matches);
   useEffect(() => {
     const onScroll = () => setScrollY(window.scrollY);
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
-  // Parallax: image moves slower than scroll, content fades up
-  const imgTranslate = Math.min(scrollY * 0.4, 240);
-  const imgScale = 1 + Math.min(scrollY / 3000, 0.08);
-  const overlayOpacity = Math.min(0.55 + scrollY / 1200, 0.92);
-  const contentOpacity = Math.max(1 - scrollY / 600, 0);
-  const contentTranslate = -scrollY * 0.25;
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 860px)");
+    const on = () => setMobile(mq.matches);
+    mq.addEventListener ? mq.addEventListener("change", on) : mq.addListener(on);
+    return () => { mq.removeEventListener ? mq.removeEventListener("change", on) : mq.removeListener(on); };
+  }, []);
+  // Parallax: image moves slower than scroll, content fades up.
+  // Désactivé sur mobile : la barre d'URL qui se rétracte fait varier la hauteur
+  // et provoque des sauts de scroll si on anime au scroll.
+  const imgTranslate = mobile ? 0 : Math.min(scrollY * 0.4, 240);
+  const imgScale = mobile ? 1 : 1 + Math.min(scrollY / 3000, 0.08);
+  const overlayOpacity = mobile ? 0.78 : Math.min(0.55 + scrollY / 1200, 0.92);
+  const contentOpacity = mobile ? 1 : Math.max(1 - scrollY / 600, 0);
+  const contentTranslate = mobile ? 0 : -scrollY * 0.25;
 
   return (
     <>
-      <section style={{ position: "relative", height: "100vh", minHeight: 680, marginTop: 0, overflow: "hidden" }}>
+      <section className="home-hero" style={{ position: "relative", height: "100vh", minHeight: 680, marginTop: 0, overflow: "hidden" }}>
         <div style={{
           position: "absolute", inset: 0,
           transform: `translate3d(0, ${imgTranslate}px, 0) scale(${imgScale})`,

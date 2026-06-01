@@ -339,6 +339,8 @@ body.nav-open .nav-burger span:nth-child(2) { transform: translateY(-2.5px) rota
 
   /* Nav: compact, hamburger reveals overlay menu */
   .nav { padding: 14px 20px; }
+  /* Hero plein écran : svh évite le saut quand la barre d'URL mobile se rétracte */
+  .home-hero { height: 100svh !important; min-height: 560px !important; }
   .nav .logo { font-size: 17px; }
   .nav .logo-mark { font-size: 8px; }
   .nav .nav-cta { display: none; }
@@ -347,9 +349,7 @@ body.nav-open .nav-burger span:nth-child(2) { transform: translateY(-2.5px) rota
   .nav-links {
     position: fixed;
     inset: 0;
-    background: rgba(14, 11, 8, 0.96);
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
+    background: var(--bg-deep);
     display: flex !important;
     flex-direction: column;
     align-items: flex-start;
