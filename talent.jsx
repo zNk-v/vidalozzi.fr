@@ -87,6 +87,7 @@ function TalentPortfolio({ t }) {
             <image-slot
               key={i}
               id={`portfolio-${i + 1}`}
+              src={`assets/portfolio-${i + 1}.webp`}
               shape="rounded"
               radius="4"
               fit="cover"
@@ -111,30 +112,12 @@ function PortfolioMobileCarousel() {
   const [paused, setPaused] = React.useState(false);
 
   React.useEffect(() => {
-    let cancelled = false;
-    const tryFetch = async () => {
-      // Two paths: production (no leading dot) and OmeLette dev (.image-slots…)
-      for (const p of ["image-slots.state.json", ".image-slots.state.json"]) {
-        try {
-          const r = await fetch(p, { cache: "no-store" });
-          if (r.ok) return await r.json();
-        } catch (e) {/* try next */}
-      }
-      return null;
-    };
-    tryFetch().then((data) => {
-      if (cancelled || !data) return;
-      const arr = [];
-      for (let i = 1; i <= 9; i++) {
-        const slot = data[`portfolio-${i}`];
-        if (slot && slot.u) arr.push({ src: slot.u, alt: `Editorial ${i}` });
-      }
-      if (arr.length) {
-        setImages(arr);
-        setCurrentIndex(Math.floor(arr.length / 2));
-      }
-    });
-    return () => {cancelled = true;};
+    // Photos are baked into real files (assets/portfolio-N.webp) so the
+    // carousel works online without depending on the state sidecar.
+    const arr = [];
+    for (let i = 1; i <= 9; i++) arr.push({ src: `assets/portfolio-${i}.webp`, alt: `Editorial ${i}` });
+    setImages(arr);
+    setCurrentIndex(Math.floor(arr.length / 2));
   }, []);
 
   const next = React.useCallback(() => {
@@ -298,6 +281,7 @@ function TalentStats({ t }) {
               <image-slot
                 key={id}
                 id={id}
+                src={`assets/${id}.webp`}
                 shape="rounded"
                 radius="4"
                 fit="contain"

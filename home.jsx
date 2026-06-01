@@ -150,7 +150,7 @@ function HomeAbout({ t }) {
       <div className="wrap">
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1.4fr", gap: 80, alignItems: "flex-start", marginBottom: 80 }}>
           <div style={{ aspectRatio: "3/4", position: "sticky", top: 100, borderRadius: 4 }}>
-            <image-slot id="home-portrait" src="assets/teddy-vidal-ugc-mannequin-comedien-paris.jpg" shape="rect" fit="contain" placeholder="Drop portrait" style={{ display: "block", width: "100%", height: "100%" }}></image-slot>
+            <image-slot id="home-portrait" src="assets/home-portrait.webp" shape="rect" fit="contain" placeholder="Drop portrait" style={{ display: "block", width: "100%", height: "100%" }}></image-slot>
             <span className="ph-label" style={{ position: "absolute", top: 14, left: 14, color: "rgba(244,239,230,0.92)", pointerEvents: "none", zIndex: 3 }}>PORTRAIT · 02</span>
             <span className="ph-coords" style={{ position: "absolute", bottom: 14, right: 14, color: "rgba(244,239,230,0.7)", pointerEvents: "none", zIndex: 3 }}>TEDDY_VIDAL_01.RAW</span>
           </div>
@@ -177,15 +177,16 @@ function HomeShowreel({ t }) {
   return (
     <section style={{ padding: "0 0 120px" }}>
       <div className="wrap">
-        <video-slot
-          id="home-showreel"
-          src="assets/teddy-vidal-showreel-ugc-paris-2026.mp4"
-          label="Showreel · 2026"
-          placeholder="Drop your reel — MP4"
-          autoplay="autoplay"
-          loop="loop"
-          style={{ aspectRatio: "16/9", borderRadius: 4, overflow: "hidden", display: "block" }}>
-        </video-slot>
+        <div style={{ position: "relative", aspectRatio: "16/9", borderRadius: 4, overflow: "hidden", background: "#000", display: "block" }}>
+          <iframe
+            src="https://www.youtube-nocookie.com/embed/6tnX98pOnJw?autoplay=1&mute=1&loop=1&playlist=6tnX98pOnJw&controls=1&modestbranding=1&rel=0&playsinline=1"
+            title="Showreel · 2026"
+            loading="lazy"
+            allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
+            allowFullScreen
+            style={{ position: "absolute", inset: 0, width: "100%", height: "100%", border: 0, display: "block" }}>
+          </iframe>
+        </div>
       </div>
     </section>);
 
