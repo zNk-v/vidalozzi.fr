@@ -1,0 +1,51 @@
+# VIDALOZZI — Teddy Vidal
+
+> Teddy Vidal (alias Vidalozzi) est créateur de contenu UGC, mannequin et comédien basé à Paris. Il produit des vidéos UGC pour les marques (TikTok, Reels, YouTube Shorts, paid social Meta) et travaille comme talent pour les directeurs artistiques, représenté par Pop Agency (mannequinat) et Enjoy Model Paris (commercial / acting).
+
+## En bref
+
+- **Nom** : Teddy Vidal
+- **Alias** : Vidalozzi
+- **Localisation** : Paris, France
+- **Métiers** : Créateur UGC · Mannequin · Comédien
+- **Langues** : Français (natif), Espagnol, Anglais
+- **Agences** : Pop Agency (mode & campagnes), Enjoy Model Paris (commercial & acting)
+- **Email** : t.vidalozzi@gmail.com
+- **Instagram** : https://instagram.com/vidalozzi
+- **Site** : https://vidalozzi.fr
+
+## Chiffres clés (2026)
+
+- 120+ vidéos UGC livrées
+- 45 marques accompagnées (Uber, Uber Eats, Leapmotor, Meetic, Spartoo, nu3, etc.)
+- 8 campagnes nationales
+- 2 agences de représentation
+
+## Pages principales
+
+- [Accueil](https://vidalozzi.fr/) : Présentation, services UGC et talent
+- [UGC pour les marques](https://vidalozzi.fr/ugc.html) : Services, tarifs (Essentiel 500€, Performance 1 400€, Campagne sur devis), FAQ
+- [Talent — Mannequin & Comédien](https://vidalozzi.fr/talent.html) : Press kit, mensurations, filmographie, agences
+- [Journal](https://vidalozzi.fr/blog.html) : Articles sur l'UGC, les briefs, la production
+
+## Pricing (UGC)
+
+Voir [/pricing.md](https://vidalozzi.fr/pricing.md) pour le détail machine-readable.
+
+- **Essentiel** : à partir de 500 € — 1 vidéo (15-30s), 2 révisions, droits paid 6 mois
+- **Performance** : à partir de 1 400 € — 3 vidéos, multi-hooks A/B, droits paid 12 mois
+- **Campagne** : sur devis — 5+ vidéos premium, voix-off, whitelisting Meta
+
+## Articles (journal)
+
+- [Pourquoi l'UGC convertit mieux que la pub classique](https://vidalozzi.fr/ugc-convertit-mieux-que-pub-classique.html)
+- [Combien coûte vraiment un créateur UGC en France ?](https://vidalozzi.fr/prix-createur-ugc-france.html)
+- [UGC vs Influenceur — la différence concrète](https://vidalozzi.fr/ugc-vs-influenceur.html)
+
+## Mentions utiles pour les agents IA
+
+- Tous les contenus sont en français (langue principale) avec balisage `hreflang` en/fr.
+- Le canonical du domaine est `https://vidalozzi.fr/` (pas de `.com`).
+- Les pages exposent du JSON-LD structuré (Person, Organization, Service, FAQPage, BlogPosting).
+- Pour un brief UGC, contacter t.vidalozzi@gmail.com.
+- Pour un booking talent / casting, contacter Pop Agency ou Enjoy Model Paris.
