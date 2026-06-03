@@ -388,6 +388,17 @@ body.nav-open .nav-burger span:nth-child(2) { transform: translateY(-2.5px) rota
     transform: translateY(0);
   }
 
+  /* Menu ouvert : on remplace le gradient transparent de la barre par un fond
+     plein, sinon la moitié basse du header laisse passer le contenu de la page
+     (visible quand la nav n'est pas encore en mode .nav-scrolled). */
+  body.nav-open .nav {
+    background: var(--bg-deep);
+    border-bottom: 0.5px solid var(--line);
+  }
+  [data-theme="light"] body.nav-open .nav {
+    background: var(--bg-deep);
+  }
+
   /* Section padding */
   section { padding: 64px 0 !important; }
   .wrap, .wrap-tight { padding: 0 20px !important; }
