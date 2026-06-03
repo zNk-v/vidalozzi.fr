@@ -352,9 +352,22 @@ body.nav-open .nav-burger span:nth-child(2) { transform: translateY(-2.5px) rota
   .nav-burger { display: inline-flex; }
 
   .nav-links {
-    position: fixed;
-    inset: 0;
-    background: var(--bg-deep);
+    /* Overlay plein écran. On évite le shorthand `inset: 0` (mal interprété
+       par certaines versions d'iOS Safari sur un position: fixed enfant) et
+       on force la hauteur en 100dvh pour gérer la barre d'URL Safari qui
+       se rétracte. Dimensions explicites + !important pour parer les
+       surcharges de la règle .nav-links de base (ligne 124). */
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    height: 100dvh !important;
+    background: var(--bg-deep) !important;
+    background-color: var(--bg-deep) !important;
+    isolation: isolate;
     display: flex !important;
     flex-direction: column;
     align-items: flex-start;
