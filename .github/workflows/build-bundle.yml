@@ -1,0 +1,58 @@
+name: Build JS bundle
+
+# Recompiles dist/vidalozzi.bundle.js whenever a .jsx source or the build script changes.
+# Commits the regenerated bundle back to main with [skip ci] so we don't loop.
+#
+# Teddy: tu n'as rien à faire. Tu pushes ton .jsx, la CI compile, le site se met à jour.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "**/*.jsx"
+      - "scripts/build.mjs"
+      - "package.json"
+      - "package-lock.json"
+      - ".github/workflows/build-bundle.yml"
+
+# Avoid two builds stomping on each other if pushes come fast.
+concurrency:
+  group: build-bundle
+  cancel-in-progress: false
+
+# Allow the workflow to push the regenerated bundle back to the repo.
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          # We need write access via the default token to commit the bundle back.
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build bundle
+        run: npm run build
+
+      - name: Commit regenerated bundle
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git diff --quiet dist/; then
+            echo "No bundle changes — skipping commit."
+            exit 0
+          fi
+          git add dist/vidalozzi.bundle.js dist/vidalozzi.bundle.js.map
+          git commit -m "build: regenerate dist/vidalozzi.bundle.js [skip ci]"
+          git push

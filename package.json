@@ -1,0 +1,12 @@
+{
+  "name": "vidalozzi-site",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Site vidalozzi.fr — build pipeline JSX -> JS",
+  "scripts": {
+    "build": "node scripts/build.mjs"
+  },
+  "devDependencies": {
+    "esbuild": "0.25.0"
+  }
+}
