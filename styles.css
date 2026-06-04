@@ -131,36 +131,33 @@ button { font: inherit; color: inherit; cursor: pointer; background: none; borde
    intérieur très différent (tight vs spacieux), le seul moyen est
    d'ajuster la box height per-brand. Valeurs calibrées à l'œil sur
    le rendu live, à raffiner si besoin. */
-/* Calibrage mathématique basé sur le ratio largeur/hauteur de chaque PNG
-   (mesuré sur les vraies images via sips). Objectif : texte visible ~15px
-   sur tous, équivalent à la taille perçue d'OMA & ME (qui sert de
-   référence par choix utilisateur).
-   - Wordmark dense (ratio > 3, texte rempli 80-100% du PNG) -> box 18px
-   - Médian (ratio 1.5-2, texte 70% du PNG) -> box 22-36px
-   - Carré (ratio 1.0, beaucoup de padding ~50% du PNG) -> box 28px */
-
-/* Référence — OMA & ME (ratio 1.73, stacké 2 lignes) */
-.brand-logo[data-brand="brand-omame"]          { height: 36px; max-width: 80px; }
-
-/* Wordmarks denses (ratio > 3) — box petite, le texte est presque
-   l'intégralité du PNG. */
-.brand-logo[data-brand="brand-eflexplus"]      { height: 16px; max-width: 140px; } /* ratio 7.08 */
-.brand-logo[data-brand="brand-adopte"]         { height: 18px; max-width: 100px; } /* ratio 3.15 */
-.brand-logo[data-brand="brand-meetic"]         { height: 18px; max-width: 100px; } /* ratio 3.06 */
+/* Nouveau cap : TOUS les logos à la même hauteur de box que OMA & ME
+   (36px). Max-width généreux ajusté au ratio pour ne pas brider les
+   wordmarks très larges ni gonfler les carrés.
+   Chaque logo occupe désormais la même empreinte verticale que la
+   référence. */
+.brand-logo {
+  height: 36px;
+}
+/* Logos très larges (ratio > 3) — max-width étendue, sinon ils sont
+   capés et l'image rétrécit. */
+.brand-logo[data-brand="brand-eflexplus"]      { max-width: 200px; }
+.brand-logo[data-brand="brand-meetic"]         { max-width: 170px; }
+.brand-logo[data-brand="brand-adopte"]         { max-width: 160px; }
 
 /* Médians (ratio 1.5-2) */
-.brand-logo[data-brand="brand-uber"]           { height: 22px; max-width: 70px; }  /* ratio 1.50 */
-.brand-logo[data-brand="brand-leapmotor"]      { height: 22px; max-width: 80px; }  /* ratio 1.78 */
+.brand-logo[data-brand="brand-uber"]           { max-width: 90px; }
+.brand-logo[data-brand="brand-leapmotor"]      { max-width: 110px; }
+.brand-logo[data-brand="brand-omame"]          { max-width: 80px; }
 
-/* Carrés (ratio ≈ 1.0) — padding intérieur ~50%, on agrandit la box
-   pour que le texte/logo visible atteigne ~15px. */
-.brand-logo[data-brand="brand-spartoo"]        { height: 28px; max-width: 60px; }
-.brand-logo[data-brand="brand-ubereats"]       { height: 28px; max-width: 60px; }
-.brand-logo[data-brand="brand-ouestfrance"]    { height: 28px; max-width: 60px; }
-.brand-logo[data-brand="brand-ozers"]          { height: 28px; max-width: 60px; }
-.brand-logo[data-brand="brand-nu3"]            { height: 28px; max-width: 60px; }
-.brand-logo[data-brand="brand-lamarqueenmoins"]{ height: 28px; max-width: 60px; }
-.brand-logo[data-brand="brand-mustache"]       { height: 28px; max-width: 60px; }
+/* Carrés (ratio ≈ 1.0) — max-width modérée. */
+.brand-logo[data-brand="brand-spartoo"]        { max-width: 100px; }
+.brand-logo[data-brand="brand-ubereats"]       { max-width: 80px; }
+.brand-logo[data-brand="brand-ouestfrance"]    { max-width: 80px; }
+.brand-logo[data-brand="brand-ozers"]          { max-width: 80px; }
+.brand-logo[data-brand="brand-nu3"]            { max-width: 80px; }
+.brand-logo[data-brand="brand-lamarqueenmoins"]{ max-width: 80px; }
+.brand-logo[data-brand="brand-mustache"]       { max-width: 80px; }
 .nav { background: transparent; }
 .nav-scrolled { background: rgba(30, 29, 29, 0.78); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-bottom: 0.5px solid var(--line); }
 [data-theme="light"] .nav-scrolled { background: rgba(244, 239, 230, 0.82); }
