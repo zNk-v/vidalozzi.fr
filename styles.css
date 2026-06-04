@@ -92,13 +92,16 @@ button { font: inherit; color: inherit; cursor: pointer; background: none; borde
   background: linear-gradient(to bottom, var(--bg-deep) 30%, transparent 100%);
   transition: background 0.3s;
 }
-/* Brand logos — unified to single tone via filter, AND unified visual size.
-   Boîte fixe 150x38 avec object-fit: contain : tous les logos (Uber Eats
-   très large, nu3 carré court, Oma & Me wordmark moyen) s'inscrivent
-   dans la même empreinte. Le contenu s'adapte tout en gardant son ratio.
-   Référence visuelle: Oma & Me et eFlexPlus. */
+/* Brand logos — unified to single tone via filter, AND empreinte visuelle
+   homogène. width: auto + max-width: 150px laisse chaque logo respecter
+   son ratio naturel tout en cappant les très larges (Uber Eats, Spartoo)
+   à la même empreinte que Oma & Me et eFlexPlus. display: block évite
+   un bug Safari où object-fit + filter combiné peut faire disparaître
+   l'image en inline. */
 .brand-logo {
-  width: 150px;
+  display: block;
+  width: auto;
+  max-width: 150px;
   height: 38px;
   object-fit: contain;
   object-position: center;
@@ -325,10 +328,13 @@ html[data-editmode="0"] .brand-edit-controls { display: none !important; }
    Au survol d'une carte .spotlight-tilt, le JS met à jour:
    --mx/--my : position du curseur (0..100%) pour le radial-gradient
    --rx/--ry : rotation X/Y en deg pour le tilt 3D
-   On rend les deux effets ici via un pseudo ::before pour le spotlight
-   et transform: rotate3d pour le tilt. */
+   Le spotlight est en ::after (pas ::before) avec mix-blend-mode: screen
+   et z-index élevé pour "éclairer" par-dessus les overlays opaques des
+   cartes home (gradient 0.92) sans être obscurci. pointer-events: none
+   évite de bloquer les clics dans la carte. */
 .spotlight-tilt {
   position: relative;
+  isolation: isolate;
   --mx: 50%;
   --my: 50%;
   --rx: 0deg;
@@ -336,42 +342,39 @@ html[data-editmode="0"] .brand-edit-controls { display: none !important; }
   transition: transform 0.3s cubic-bezier(0.2, 0.7, 0.2, 1);
   transform: perspective(900px) rotateX(var(--rx)) rotateY(var(--ry));
 }
-.spotlight-tilt::before {
+.spotlight-tilt::after {
   content: "";
   position: absolute;
   inset: 0;
   border-radius: inherit;
   background: radial-gradient(
-    420px circle at var(--mx) var(--my),
-    rgba(201, 168, 124, 0.14),
-    transparent 60%
+    520px circle at var(--mx) var(--my),
+    rgba(230, 201, 155, 0.45),
+    rgba(201, 168, 124, 0.18) 35%,
+    transparent 65%
   );
   opacity: 0;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.35s ease;
   pointer-events: none;
-  z-index: 1;
+  mix-blend-mode: screen;
+  z-index: 99;
 }
-.spotlight-tilt:hover::before {
+.spotlight-tilt:hover::after {
   opacity: 1;
-}
-/* Le contenu de la carte doit rester au-dessus du spotlight */
-.spotlight-tilt > * {
-  position: relative;
-  z-index: 2;
 }
 /* Désactivation tactile + reduce-motion */
 @media (hover: none) {
   .spotlight-tilt {
     transform: none !important;
   }
-  .spotlight-tilt::before { display: none; }
+  .spotlight-tilt::after { display: none; }
 }
 @media (prefers-reduced-motion: reduce) {
   .spotlight-tilt {
     transform: none !important;
     transition: none !important;
   }
-  .spotlight-tilt::before { display: none; }
+  .spotlight-tilt::after { display: none; }
 }
 
 /* Accordion */
@@ -670,7 +673,7 @@ body.nav-open .nav-burger span:nth-child(2) { transform: translateY(-2.5px) rota
 
   /* Marquee: slightly slower visual, smaller logos */
   .marquee-track { gap: 40px !important; animation-duration: 28s; }
-  .brand-logo { width: 110px; height: 28px; }
+  .brand-logo { max-width: 110px; height: 28px; }
 
   /* Hide decorative SECTION 02 / TALENT type label that crowds hero */
   section [style*="font-size: 11px"][style*="ink-faint"] {
