@@ -157,7 +157,7 @@ function BrandLogo({ brand }) {
         if (f && f.type.startsWith("image/")) onFile(f);
       }}>
       <span style={{ position: "relative", display: "inline-flex", alignItems: "center" }}>
-        <img src={src} alt={brand.name} className="brand-logo" />
+        <img src={src} alt={brand.name} className="brand-logo" data-brand={brand.id} />
         <span className="brand-edit-controls" style={{
           position: "absolute", inset: "-8px -10px", display: (editable && hover) ? "flex" : "none",
           alignItems: "center", justifyContent: "center", gap: 6,
