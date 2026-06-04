@@ -403,10 +403,17 @@ body.nav-open .nav-burger span:nth-child(2) { transform: translateY(-2.5px) rota
 
   /* Menu ouvert : on remplace le gradient transparent de la barre par un fond
      plein, sinon la moitié basse du header laisse passer le contenu de la page
-     (visible quand la nav n'est pas encore en mode .nav-scrolled). */
+     (visible quand la nav n'est pas encore en mode .nav-scrolled).
+     On retire aussi le backdrop-filter : sur iOS Safari, backdrop-filter
+     crée un containing block pour les position:fixed enfants, ce qui
+     confine .nav-links à la zone de la nav (~50px) quand on ouvre le menu
+     depuis une position scrollée. Sans ce reset, les boutons FR/EN se
+     retrouvent hors écran ou inaccessibles. */
   body.nav-open .nav {
     background: var(--bg-deep);
     border-bottom: 0.5px solid var(--line);
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
   }
   [data-theme="light"] body.nav-open .nav {
     background: var(--bg-deep);
