@@ -1016,35 +1016,25 @@ body.nav-open .nav-burger span:nth-child(2) { transform: translateY(-2.5px) rota
   .filmo-table .filmo-role  { grid-area: role;  font-size: 13px !important; }
   .filmo-table .filmo-dir   { grid-area: dir;   font-size: 12px !important; color: var(--ink-faint) !important; }
   .filmo-table .filmo-type  { grid-area: type;  justify-self: start; margin-top: 6px; }
-  .filmo-table .filmo-poster-slot { grid-area: poster; align-self: center !important; }
+  .filmo-table .filmo-end-marker  { grid-area: poster; align-self: center !important; justify-self: end; }
 }
 
-/* ─── Filmo hover preview + poster slot visibility ───────────────────
-   En mode normal: le poster-slot est caché (utilisé seulement comme
-   source pour la preview flottante au hover). En mode édition: visible
-   pour drag-drop de l'affiche du projet. */
-.filmo-poster-slot {
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.2s ease;
-}
-[data-editmode="1"] .filmo-poster-slot {
-  opacity: 1;
-  pointer-events: auto;
-}
-/* Ligne active (hover) : léger highlight pour signaler la corrélation
-   ligne ↔ preview flottante. */
+/* ─── Filmo hover preview + ligne cliquable ───────────────────────
+   Hover desktop -> vidéo 9:16 muette + autoplay loop flotte près du
+   curseur. Clic (si finale dispo) -> lightbox plein écran avec son. */
 .filmo-row.is-active {
   background: linear-gradient(90deg, rgba(201,168,124,0.04), rgba(201,168,124,0));
 }
 .filmo-row.is-active .filmo-title {
   color: var(--accent-glow, #E6C99B);
-  transition: color 0.2s ease;
 }
 .filmo-row .filmo-title {
   transition: color 0.2s ease;
 }
-/* Preview flottant: animation d'entrée subtile */
+.filmo-row.has-final .filmo-end-marker {
+  transition: opacity 0.2s ease;
+}
+/* Preview vidéo 9:16 flottante : animation d'entrée subtile */
 .filmo-hover-preview {
   animation: filmo-preview-in 0.2s cubic-bezier(0.2, 0.7, 0.2, 1);
 }
@@ -1052,7 +1042,11 @@ body.nav-open .nav-burger span:nth-child(2) { transform: translateY(-2.5px) rota
   from { opacity: 0; transform: translate(24px, -50%) scale(0.96); }
   to   { opacity: 1; transform: translate(24px, -50%) scale(1); }
 }
-/* Pas de hover-preview sur tactile / reduce-motion */
+@keyframes lb-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+/* Pas de hover-preview sur tactile */
 @media (hover: none) {
   .filmo-hover-preview { display: none !important; }
 }

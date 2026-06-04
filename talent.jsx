@@ -223,10 +223,13 @@ function PortfolioMobileCarousel() {
 }
 
 function TalentFilmo({ t }) {
-  // Hover preview qui suit le curseur sur desktop. Sur mobile (hover: none)
-  // ou en mode édition, on désactive complètement le mécanisme.
-  const [preview, setPreview] = React.useState(null); // { src, x, y } | null
+  // Hover: vidéo BTS 9:16 qui suit le curseur (loop muet, autoplay).
+  // Clic: lightbox plein écran avec le projet final (avec son).
+  // Mobile / edit mode: tout désactivé pour ne pas gêner.
+  const [hover, setHover] = React.useState(null);  // { src, x, y } | null
   const [active, setActive] = React.useState(-1);
+  const [open, setOpen] = React.useState(null);    // { src, title } | null
+  const previewVideoRef = React.useRef(null);
 
   const isInteractive = () => {
     if (typeof window === "undefined") return false;
@@ -235,28 +238,67 @@ function TalentFilmo({ t }) {
     return true;
   };
 
-  const getSlotSrc = (i) => {
-    const slot = document.getElementById("filmo-" + i);
-    if (!slot) return null;
-    const img = slot.shadowRoot && slot.shadowRoot.querySelector("img");
-    return img && img.src ? img.src : null;
-  };
+  // Convention de nommage des assets (pas de copy.js change requis):
+  //   assets/filmo-<i>-hover.mp4  -> vidéo loop muette pour le hover
+  //   assets/filmo-<i>-final.mp4  -> vidéo finie pour la lightbox
+  // Si un fichier manque, l'interaction correspondante est ignorée.
+  const hoverSrc = (i) => "assets/filmo-" + i + "-hover.mp4";
+  const finalSrc = (i) => "assets/filmo-" + i + "-final.mp4";
+
+  // On vérifie si le fichier hover existe en HEAD-requesting au mount.
+  // Stocké dans un set pour ne pas refaire l'aller-retour à chaque hover.
+  const [availability, setAvailability] = React.useState({});
+  React.useEffect(() => {
+    let cancelled = false;
+    const check = async () => {
+      const avail = {};
+      for (let i = 0; i < t.talent.films.length; i++) {
+        const [h, fin] = await Promise.all([
+          fetch(hoverSrc(i), { method: "HEAD" }).then((r) => r.ok).catch(() => false),
+          fetch(finalSrc(i), { method: "HEAD" }).then((r) => r.ok).catch(() => false),
+        ]);
+        avail[i] = { hover: h, final: fin };
+      }
+      if (!cancelled) setAvailability(avail);
+    };
+    check();
+    return () => { cancelled = true; };
+  }, [t.talent.films.length]);
 
   const onRowEnter = (i, e) => {
     if (!isInteractive()) return;
     setActive(i);
-    const src = getSlotSrc(i);
-    if (!src) return;
-    setPreview({ src, x: e.clientX, y: e.clientY });
+    const a = availability[i];
+    if (!a || !a.hover) return;
+    setHover({ src: hoverSrc(i), x: e.clientX, y: e.clientY });
   };
   const onRowMove = (e) => {
     if (!isInteractive()) return;
-    setPreview((p) => (p ? { src: p.src, x: e.clientX, y: e.clientY } : null));
+    setHover((h) => (h ? { src: h.src, x: e.clientX, y: e.clientY } : null));
   };
   const onRowLeave = () => {
     setActive(-1);
-    setPreview(null);
+    setHover(null);
   };
+  const onRowClick = (i, f) => {
+    if (window.matchMedia("(max-width: 860px)").matches) return; // mobile: pas d'interaction
+    const a = availability[i];
+    if (!a || !a.final) return;
+    setOpen({ src: finalSrc(i), title: f.t });
+  };
+
+  const close = () => setOpen(null);
+
+  React.useEffect(() => {
+    if (!open) return;
+    const onKey = (e) => { if (e.key === "Escape") close(); };
+    document.addEventListener("keydown", onKey);
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.body.style.overflow = "";
+    };
+  }, [open]);
 
   return (
     <section style={{ borderTop: "0.5px solid var(--line)" }}>
@@ -271,69 +313,146 @@ function TalentFilmo({ t }) {
           <div className="filmo-row filmo-head" style={{ display: "grid", gridTemplateColumns: "80px 2fr 1.4fr 2fr 1fr 60px", padding: "16px 0", borderBottom: "0.5px solid var(--line)", color: "var(--ink-faint)", fontSize: 10, letterSpacing: "0.16em", textTransform: "uppercase", fontFamily: "JetBrains Mono" }}>
             <span>ANNÉE</span><span>Title</span><span>Role</span><span>Direction · Studio</span><span>Type</span><span></span>
           </div>
-          {t.talent.films.map((f, i) =>
-          <div
-            key={i}
-            className={"lift filmo-row" + (active === i ? " is-active" : "")}
-            style={{
-              display: "grid",
-              gridTemplateColumns: "80px 2fr 1.4fr 2fr 1fr 60px",
-              padding: "28px 0",
-              borderBottom: "0.5px solid var(--line)",
-              alignItems: "center",
-              cursor: "pointer"
-            }}
-            onMouseEnter={(e) => onRowEnter(i, e)}
-            onMouseMove={onRowMove}
-            onMouseLeave={onRowLeave}
-          >
-              <span className="filmo-year mono" style={{ fontSize: 12, color: "var(--accent)" }}>{f.y}</span>
-              <span className="filmo-title display" style={{ fontSize: 28 }}>{f.t}</span>
-              <span className="filmo-role" style={{ fontSize: 14, color: "var(--ink-mute)" }}>{f.role}</span>
-              <span className="filmo-dir" style={{ fontSize: 13, color: "var(--ink-mute)" }}>{f.dir}</span>
-              <span className="filmo-type tag" style={{ alignSelf: "center", height: "28.5px" }}><span className="tag-dot" />{f.type}</span>
-              {/* Indicateur subtil au lieu de la flèche morte. En mode édition,
-                  le slot poster prend la place pour drag-drop d'une image. */}
-              <span className="filmo-poster-slot" style={{ textAlign: "right" }}>
-                <image-slot
-                  id={"filmo-" + i}
-                  src={"assets/filmo-" + i + ".webp"}
-                  shape="rounded"
-                  radius="3"
-                  fit="cover"
-                  placeholder="Poster"
-                  style={{ display: "inline-block", width: 56, height: 32, verticalAlign: "middle" }}
-                ></image-slot>
-              </span>
-            </div>
-          )}
+          {t.talent.films.map((f, i) => {
+            const avail = availability[i] || { hover: false, final: false };
+            return (
+              <div
+                key={i}
+                className={"lift filmo-row" + (active === i ? " is-active" : "") + (avail.final ? " has-final" : "")}
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "80px 2fr 1.4fr 2fr 1fr 60px",
+                  padding: "28px 0",
+                  borderBottom: "0.5px solid var(--line)",
+                  alignItems: "center",
+                  cursor: avail.final ? "pointer" : "default"
+                }}
+                onMouseEnter={(e) => onRowEnter(i, e)}
+                onMouseMove={onRowMove}
+                onMouseLeave={onRowLeave}
+                onClick={() => onRowClick(i, f)}
+              >
+                <span className="filmo-year mono" style={{ fontSize: 12, color: "var(--accent)" }}>{f.y}</span>
+                <span className="filmo-title display" style={{ fontSize: 28 }}>{f.t}</span>
+                <span className="filmo-role" style={{ fontSize: 14, color: "var(--ink-mute)" }}>{f.role}</span>
+                <span className="filmo-dir" style={{ fontSize: 13, color: "var(--ink-mute)" }}>{f.dir}</span>
+                <span className="filmo-type tag" style={{ alignSelf: "center", height: "28.5px" }}><span className="tag-dot" />{f.type}</span>
+                {/* Indicateur de disponibilité d'une vidéo : un petit cercle
+                    or quand un final est dispo. Discret mais lisible. */}
+                <span className="filmo-end-marker" style={{ textAlign: "right" }}>
+                  {avail.final && (
+                    <span style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: 6,
+                      fontFamily: "JetBrains Mono, monospace",
+                      fontSize: 10,
+                      letterSpacing: "0.14em",
+                      color: "var(--accent)",
+                      textTransform: "uppercase",
+                    }}>
+                      <span style={{ width: 7, height: 7, borderRadius: 999, background: "var(--accent)", boxShadow: "0 0 8px var(--accent)" }} />
+                      Play
+                    </span>
+                  )}
+                </span>
+              </div>
+            );
+          })}
         </div>
       </div>
 
-      {/* Preview flottant qui suit le curseur. Rendu en position: fixed pour
-          ne pas perturber le layout. Désactivé via affichage conditionnel. */}
-      {preview && (
+      {/* Preview vidéo 9:16 flottante qui suit le curseur */}
+      {hover && (
         <div
           className="filmo-hover-preview"
           style={{
             position: "fixed",
-            top: preview.y,
-            left: preview.x,
+            top: hover.y,
+            left: hover.x,
             transform: "translate(24px, -50%)",
             pointerEvents: "none",
             zIndex: 1500,
-            width: 280,
-            aspectRatio: "4 / 3",
+            width: 160,
+            aspectRatio: "9 / 16",
             borderRadius: 6,
             overflow: "hidden",
             border: "0.5px solid var(--line-strong)",
             boxShadow: "0 24px 60px rgba(0,0,0,0.45), 0 0 0 0.5px rgba(201,168,124,0.25)",
-            backgroundImage: "url(" + preview.src + ")",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            transition: "opacity 0.18s ease",
+            background: "var(--bg-deep)",
           }}
-        />
+        >
+          <video
+            ref={previewVideoRef}
+            key={hover.src}
+            src={hover.src}
+            autoPlay
+            muted
+            loop
+            playsInline
+            style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+          />
+        </div>
+      )}
+
+      {/* Lightbox vidéo finale (clic) */}
+      {open && (
+        <div
+          onClick={close}
+          style={{
+            position: "fixed", inset: 0, zIndex: 9999,
+            background: "rgba(10,8,6,0.94)",
+            backdropFilter: "blur(8px)",
+            display: "flex", alignItems: "center", justifyContent: "center",
+            padding: 24,
+            cursor: "zoom-out",
+            animation: "lb-fade 0.25s ease",
+          }}
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              position: "relative",
+              width: "min(1200px, 92vw)",
+              aspectRatio: "16 / 9",
+              borderRadius: 6,
+              overflow: "hidden",
+              boxShadow: "0 40px 80px rgba(0,0,0,0.6)",
+              background: "#000",
+            }}
+          >
+            <video
+              key={open.src}
+              src={open.src}
+              controls
+              autoPlay
+              playsInline
+              style={{ width: "100%", height: "100%", display: "block", background: "#000" }}
+            />
+          </div>
+          <div style={{
+            position: "absolute", bottom: 24, left: "50%", transform: "translateX(-50%)",
+            fontFamily: "JetBrains Mono", fontSize: 10, letterSpacing: "0.16em",
+            color: "rgba(244,239,230,0.5)", textTransform: "uppercase",
+            pointerEvents: "none",
+          }}>
+            {open.title} · ESC pour fermer
+          </div>
+          <button
+            onClick={(e) => { e.stopPropagation(); close(); }}
+            aria-label="Close"
+            style={{
+              position: "absolute", top: 24, right: 24,
+              width: 44, height: 44, borderRadius: 999,
+              background: "rgba(244,239,230,0.1)",
+              border: "0.5px solid rgba(244,239,230,0.3)",
+              color: "var(--ink)",
+              fontFamily: "JetBrains Mono", fontSize: 14,
+              cursor: "pointer",
+              backdropFilter: "blur(8px)",
+            }}
+          >✕</button>
+        </div>
       )}
     </section>);
 
