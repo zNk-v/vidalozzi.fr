@@ -91,17 +91,32 @@ function UgcReel({ t }) {
     ));
   };
 
-  // Drag / swipe — ne démarre qu'après un vrai déplacement, et jamais sur un contrôle
+  // Drag / swipe — direction-aware. On ne capture le pointer pour un swipe
+  // horizontal que si le mouvement est clairement plus horizontal que
+  // vertical. Sinon on "decline" et le navigateur scrolle la page
+  // verticalement comme attendu. Évite que le carrousel ne fige le
+  // scroll vertical quand l'utilisateur swipe en oblique pour descendre.
   const onDown = (e) => {
     if (e.button === 2) return;
     if (isControl(e)) return;                 // laisse play/pause, volume, seek au player
-    drag.current = { active: true, startX: e.clientX, dx: 0, moved: false, captured: false };
+    drag.current = { active: true, startX: e.clientX, startY: e.clientY, dx: 0, dy: 0, moved: false, captured: false, declined: false };
   };
   const onMove = (e) => {
     const d = drag.current;
-    if (!d.active) return;
+    if (!d.active || d.declined) return;
     d.dx = e.clientX - d.startX;
-    if (!d.moved && Math.abs(d.dx) > 6) {
+    d.dy = e.clientY - d.startY;
+    if (!d.moved) {
+      const ax = Math.abs(d.dx);
+      const ay = Math.abs(d.dy);
+      // Pas encore assez de mouvement pour décider de la direction
+      if (ax < 10 && ay < 10) return;
+      // Vertical domine -> on lâche, le navigateur fait son scroll
+      if (ay >= ax) {
+        d.declined = true;
+        return;
+      }
+      // Horizontal confirmé -> on capture le pointer et on démarre le drag
       d.moved = true;
       paused.current = true;
       setAnim(false);

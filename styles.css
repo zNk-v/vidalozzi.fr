@@ -772,8 +772,11 @@ body.nav-open .nav-burger span:nth-child(2) { transform: translateY(-2.5px) rota
     grid-template-columns: none !important;
     overflow-x: auto;
     overflow-y: hidden;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
+    /* Voir .mobile-carousel : proximity > mandatory pour la fluidité iOS,
+       overscroll-behavior-x: contain pour ne pas voler le scroll vertical,
+       -webkit-overflow-scrolling déprécié retiré. */
+    scroll-snap-type: x proximity;
+    overscroll-behavior-x: contain;
     scrollbar-width: none;
     gap: 14px !important;
     padding: 4px 20px;
@@ -842,8 +845,13 @@ body.nav-open .nav-burger span:nth-child(2) { transform: translateY(-2.5px) rota
     grid-template-columns: none !important;
     overflow-x: auto;
     overflow-y: visible;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
+    /* "proximity" au lieu de "mandatory" : Safari iOS bloquait des swipes
+       partiels parce que mandatory force le snap à chaque arrêt même tiny.
+       proximity ne snap que lorsque l'utilisateur s'arrête près d'un point. */
+    scroll-snap-type: x proximity;
+    /* Empêche le swipe horizontal de propager au scroll vertical de la page */
+    overscroll-behavior-x: contain;
+    /* -webkit-overflow-scrolling: touch retiré : déprécié, source de bugs iOS 15+ */
     scrollbar-width: none;
     -ms-overflow-style: none;
     margin: 0 -20px;
