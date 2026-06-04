@@ -9,8 +9,13 @@ function TalentHero({ t }) {
           <span className="mono" style={{ fontSize: 11, color: "var(--ink-faint)" }}>SECTION 01 / UGC</span>
         </div>
         <h1 className="display" style={{ fontSize: "clamp(80px, 14vw, 220px)", marginBottom: 56, lineHeight: 0.88 }}>
-          <span>{t.talent.heroLine1}</span><br />
-          <span className="script" style={{ color: "var(--accent)", fontSize: "1.1em", lineHeight: 0.8, display: "inline-block", transform: "translateY(0.05em) rotate(-2deg)" }}>{t.talent.heroLine2}</span>
+          <SplitText>{t.talent.heroLine1}</SplitText><br />
+          <SplitText
+            className="script"
+            delay={0.25}
+            stagger={0.08}
+            style={{ color: "var(--accent)", fontSize: "1.1em", lineHeight: 0.8, display: "inline-block", transform: "translateY(0.05em) rotate(-2deg)" }}
+          >{t.talent.heroLine2}</SplitText>
         </h1>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 40, alignItems: "flex-end" }}>
           <p style={{ fontSize: 18, lineHeight: 1.55, color: "var(--ink-mute)", maxWidth: 520 }}>{t.talent.heroSub}</p>

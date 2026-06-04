@@ -31,6 +31,10 @@ function App({ page, slug }) {
   const [editMode, setEditMode] = useState(() => isDesktop() && localStorage.getItem("vz_edit") === "1");
   useEffect(() => { localStorage.setItem("vz_lang", lang); }, [lang]);
 
+  // ── Premium FX (batch 1) ──────────────────────────────────────────
+  useLenis();
+  useMagneticButtons(".btn-primary, .nav-cta");
+
   // Force off when shrinking past the desktop breakpoint
   useEffect(() => {
     const mq = window.matchMedia("(min-width: 861px)");

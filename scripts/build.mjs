@@ -26,6 +26,7 @@ const DIST = join(ROOT, "dist");
 const SOURCES = [
   "tweaks-panel.jsx",
   "shared.jsx",
+  "premium-fx.jsx",   // useLenis, <SplitText>, useMagneticButtons — utilisés par les pages
   "home.jsx",
   "ugc.jsx",
   "talent.jsx",

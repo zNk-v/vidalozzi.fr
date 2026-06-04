@@ -61,8 +61,13 @@ function HomeHero({ t }) {
         }}>
           <span className="eyebrow" style={{ marginBottom: 32, color: "rgba(244,239,230,0.85)" }}>— {t.home.eyebrow}</span>
           <h1 className="display" style={{ fontSize: "clamp(80px, 13vw, 220px)", color: "var(--ink)", textShadow: "0 4px 40px rgba(0,0,0,0.45)", lineHeight: 0.88 }}>
-            <span>{t.home.heroLine1}</span>{" "}
-            <span className="script" style={{ color: "var(--accent-glow)", fontSize: "1.15em", lineHeight: 0.7, display: "inline-block", transform: "translateY(0.06em) rotate(-2deg)" }}>{t.home.heroLine2}</span>
+            <SplitText>{t.home.heroLine1}</SplitText>{" "}
+            <SplitText
+              className="script"
+              delay={0.25}
+              stagger={0.08}
+              style={{ color: "var(--accent-glow)", fontSize: "1.15em", lineHeight: 0.7, display: "inline-block", transform: "translateY(0.06em) rotate(-2deg)" }}
+            >{t.home.heroLine2}</SplitText>
           </h1>
         </div>
 
