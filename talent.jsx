@@ -239,22 +239,31 @@ function TalentFilmo({ t }) {
   };
 
   // Convention de nommage des assets (pas de copy.js change requis):
-  //   assets/filmo-<i>-hover.mp4  -> vidéo loop muette pour le hover
-  //   assets/filmo-<i>-final.mp4  -> vidéo finie pour la lightbox
+  //   assets/filmo-<i>-hover.{webp,jpg,png,mp4}  -> image OU vidéo pour le hover
+  //   assets/filmo-<i>-final.mp4                  -> vidéo finie pour la lightbox
   // Si un fichier manque, l'interaction correspondante est ignorée.
-  const hoverSrc = (i) => "assets/filmo-" + i + "-hover.mp4";
+  // L'ordre de priorité pour le hover : webp > jpg > png > mp4.
+  const HOVER_EXTS = ["webp", "jpg", "png", "mp4"];
   const finalSrc = (i) => "assets/filmo-" + i + "-final.mp4";
 
-  // On vérifie si le fichier hover existe en HEAD-requesting au mount.
-  // Stocké dans un set pour ne pas refaire l'aller-retour à chaque hover.
+  // On vérifie en HEAD au mount quels assets existent par ligne.
+  // availability[i] = { hover: {src, kind: "image"|"video"} | null, final: bool }
   const [availability, setAvailability] = React.useState({});
   React.useEffect(() => {
     let cancelled = false;
+    const tryHover = async (i) => {
+      for (const ext of HOVER_EXTS) {
+        const src = "assets/filmo-" + i + "-hover." + ext;
+        const ok = await fetch(src, { method: "HEAD" }).then((r) => r.ok).catch(() => false);
+        if (ok) return { src, kind: ext === "mp4" ? "video" : "image" };
+      }
+      return null;
+    };
     const check = async () => {
       const avail = {};
       for (let i = 0; i < t.talent.films.length; i++) {
         const [h, fin] = await Promise.all([
-          fetch(hoverSrc(i), { method: "HEAD" }).then((r) => r.ok).catch(() => false),
+          tryHover(i),
           fetch(finalSrc(i), { method: "HEAD" }).then((r) => r.ok).catch(() => false),
         ]);
         avail[i] = { hover: h, final: fin };
@@ -270,11 +279,11 @@ function TalentFilmo({ t }) {
     setActive(i);
     const a = availability[i];
     if (!a || !a.hover) return;
-    setHover({ src: hoverSrc(i), x: e.clientX, y: e.clientY });
+    setHover({ src: a.hover.src, kind: a.hover.kind, x: e.clientX, y: e.clientY });
   };
   const onRowMove = (e) => {
     if (!isInteractive()) return;
-    setHover((h) => (h ? { src: h.src, x: e.clientX, y: e.clientY } : null));
+    setHover((h) => (h ? { ...h, x: e.clientX, y: e.clientY } : null));
   };
   const onRowLeave = () => {
     setActive(-1);
@@ -382,16 +391,25 @@ function TalentFilmo({ t }) {
             background: "var(--bg-deep)",
           }}
         >
-          <video
-            ref={previewVideoRef}
-            key={hover.src}
-            src={hover.src}
-            autoPlay
-            muted
-            loop
-            playsInline
-            style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
-          />
+          {hover.kind === "video" ? (
+            <video
+              ref={previewVideoRef}
+              key={hover.src}
+              src={hover.src}
+              autoPlay
+              muted
+              loop
+              playsInline
+              style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+            />
+          ) : (
+            <img
+              key={hover.src}
+              src={hover.src}
+              alt=""
+              style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+            />
+          )}
         </div>
       )}
 
