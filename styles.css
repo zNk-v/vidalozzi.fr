@@ -92,12 +92,16 @@ button { font: inherit; color: inherit; cursor: pointer; background: none; borde
   background: linear-gradient(to bottom, var(--bg-deep) 30%, transparent 100%);
   transition: background 0.3s;
 }
-/* Brand logos — unified to single tone via filter */
+/* Brand logos — unified to single tone via filter, AND unified visual size.
+   Boîte fixe 150x38 avec object-fit: contain : tous les logos (Uber Eats
+   très large, nu3 carré court, Oma & Me wordmark moyen) s'inscrivent
+   dans la même empreinte. Le contenu s'adapte tout en gardant son ratio.
+   Référence visuelle: Oma & Me et eFlexPlus. */
 .brand-logo {
+  width: 150px;
   height: 38px;
-  width: auto;
-  max-width: 180px;
   object-fit: contain;
+  object-position: center;
   /* Dark theme default: knock out color, invert to white, soften */
   filter: brightness(0) invert(1);
   opacity: 0.62;
@@ -666,7 +670,7 @@ body.nav-open .nav-burger span:nth-child(2) { transform: translateY(-2.5px) rota
 
   /* Marquee: slightly slower visual, smaller logos */
   .marquee-track { gap: 40px !important; animation-duration: 28s; }
-  .brand-logo { height: 28px; }
+  .brand-logo { width: 110px; height: 28px; }
 
   /* Hide decorative SECTION 02 / TALENT type label that crowds hero */
   section [style*="font-size: 11px"][style*="ink-faint"] {

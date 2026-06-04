@@ -108,7 +108,7 @@ function HomeSplit({ t }) {
           { card: t.home.ugcCard, href: "ugc.html", label: "UGC" },
           { card: t.home.talentCard, href: "talent.html", label: "TALENT" }].
           map((c, i) =>
-          <a key={i} href={c.href} className="lift" style={{
+          <a key={i} href={c.href} className="lift spotlight-tilt" style={{
             position: "relative",
             display: "block",
             padding: 40,
