@@ -109,18 +109,20 @@ button { font: inherit; color: inherit; cursor: pointer; background: none; borde
   opacity: 0.62;
   transition: opacity 0.3s ease, filter 0.35s ease;
 }
-/* Hover: on révèle la couleur d'origine du logo (le filter saute).
-   Effet "ils s'allument" — chaque marque retrouve son identité. */
+/* Hover: tint OR uniforme. Approche fiable : on enchaîne les filtres
+   pour passer du blanc (état au repos) à la couleur accent #C9A87C.
+   Marche sur tous les logos (blancs, noirs, colorés) sans risque
+   d'invisibilité. Effet "premium embossé doré". */
 .brand-logo:hover {
   opacity: 1;
-  filter: none;
+  filter: brightness(0) saturate(100%) invert(74%) sepia(20%) saturate(700%) hue-rotate(355deg) brightness(95%) contrast(90%);
 }
 [data-theme="light"] .brand-logo {
   filter: brightness(0);
   opacity: 0.55;
 }
 [data-theme="light"] .brand-logo:hover {
-  filter: none;
+  filter: brightness(0) saturate(100%) invert(54%) sepia(40%) saturate(650%) hue-rotate(355deg) brightness(85%) contrast(90%);
   opacity: 1;
 }
 
@@ -129,27 +131,29 @@ button { font: inherit; color: inherit; cursor: pointer; background: none; borde
    intérieur très différent (tight vs spacieux), le seul moyen est
    d'ajuster la box height per-brand. Valeurs calibrées à l'œil sur
    le rendu live, à raffiner si besoin. */
-/* PNGs très "tight" (le wordmark remplit la quasi-totalité du PNG) :
-   on réduit fortement la box pour que le texte ne soit pas géant. */
-.brand-logo[data-brand="brand-adopte"]         { height: 22px; max-width: 110px; }
-.brand-logo[data-brand="brand-spartoo"]        { height: 24px; max-width: 110px; }
-.brand-logo[data-brand="brand-ubereats"]       { height: 26px; max-width: 120px; }
-.brand-logo[data-brand="brand-uber"]           { height: 24px; max-width: 80px; }
-.brand-logo[data-brand="brand-eflexplus"]      { height: 26px; max-width: 130px; }
-.brand-logo[data-brand="brand-lamarqueenmoins"]{ height: 28px; max-width: 130px; }
-
-/* PNGs avec un peu de padding : taille moyenne. */
-.brand-logo[data-brand="brand-meetic"]         { height: 30px; max-width: 130px; }
-.brand-logo[data-brand="brand-leapmotor"]      { height: 30px; max-width: 140px; }
-.brand-logo[data-brand="brand-mustache"]       { height: 32px; max-width: 130px; }
+/* Référence : OMA & ME à 36px de box (wordmark stacké 2 lignes, ~14-16px
+   par ligne). Tous les autres logos sont calibrés pour atteindre la même
+   hauteur de texte perçue (~14-16px). */
 .brand-logo[data-brand="brand-omame"]          { height: 36px; max-width: 80px; }
 
-/* PNGs très "spacieux" (beaucoup de padding autour du wordmark) :
-   on agrandit la box pour que le texte ne paraisse pas microscopique.
-   Max-width généreux pour ne pas brider. */
-.brand-logo[data-brand="brand-ouestfrance"]    { height: 44px; max-width: 110px; }
-.brand-logo[data-brand="brand-ozers"]          { height: 40px; max-width: 120px; }
-.brand-logo[data-brand="brand-nu3"]            { height: 38px; max-width: 80px; }
+/* PNGs très "tight" (wordmark colle aux bords du PNG) : box réduite. */
+.brand-logo[data-brand="brand-adopte"]         { height: 18px; max-width: 100px; }
+.brand-logo[data-brand="brand-spartoo"]        { height: 20px; max-width: 100px; }
+.brand-logo[data-brand="brand-uber"]           { height: 20px; max-width: 70px; }
+.brand-logo[data-brand="brand-ubereats"]       { height: 22px; max-width: 110px; }
+.brand-logo[data-brand="brand-lamarqueenmoins"]{ height: 22px; max-width: 120px; }
+.brand-logo[data-brand="brand-eflexplus"]      { height: 26px; max-width: 130px; }
+
+/* PNGs avec un peu de padding : box médiane. */
+.brand-logo[data-brand="brand-meetic"]         { height: 24px; max-width: 110px; }
+.brand-logo[data-brand="brand-leapmotor"]      { height: 24px; max-width: 130px; }
+.brand-logo[data-brand="brand-mustache"]       { height: 28px; max-width: 120px; }
+
+/* PNGs très "spacieux" (gros padding autour du wordmark) : box agrandie
+   pour que le texte ne paraisse pas microscopique. */
+.brand-logo[data-brand="brand-ouestfrance"]    { height: 40px; max-width: 110px; }
+.brand-logo[data-brand="brand-ozers"]          { height: 34px; max-width: 110px; }
+.brand-logo[data-brand="brand-nu3"]            { height: 32px; max-width: 75px; }
 .nav { background: transparent; }
 .nav-scrolled { background: rgba(30, 29, 29, 0.78); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-bottom: 0.5px solid var(--line); }
 [data-theme="light"] .nav-scrolled { background: rgba(244, 239, 230, 0.82); }
@@ -298,7 +302,7 @@ html[data-editmode="0"] .brand-edit-controls { display: none !important; }
 }
 .marquee:hover .marquee-track > span:hover .brand-logo {
   opacity: 1;
-  filter: none;
+  filter: brightness(0) saturate(100%) invert(74%) sepia(20%) saturate(700%) hue-rotate(355deg) brightness(95%) contrast(90%);
 }
 .brand-logo {
   transition: opacity 0.3s ease, filter 0.3s ease;
