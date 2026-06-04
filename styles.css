@@ -274,10 +274,12 @@ html[data-editmode="0"] .brand-edit-controls { display: none !important; }
 .split-text.in .split-word {
   opacity: 1;
   transform: translateY(0);
-  /* -50% top/bottom : ample marge pour les fonts cursives (Pinyon Script,
-     Allura) dont les jambages et flourishes dépassent largement le baseline
-     et l'x-height. Sans ça, "fait foi" était clippé en haut et en bas. */
-  clip-path: inset(-50% 0 -50% 0);
+  /* Marge généreuse sur les 4 côtés : les fonts cursives (Pinyon Script,
+     Allura) ont des jambages et flourishes qui dépassent largement la
+     bounding box du glyphe, autant en haut/bas qu'à gauche/droite (le
+     "F" notamment a un long trait horizontal qui sort du cadre).
+     -50% partout = visuellement aucun clip une fois révélé. */
+  clip-path: inset(-50% -50% -50% -50%);
 }
 /* Pas d'animation si l'utilisateur demande reduce-motion. */
 @media (prefers-reduced-motion: reduce) {
