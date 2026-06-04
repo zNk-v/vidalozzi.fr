@@ -160,6 +160,118 @@ function useMagneticButtons(selector, strength) {
   }, [selector, strength]);
 }
 
+// ── 4) Spotlight + 3D tilt sur les cartes ────────────────────────────
+// Au mousemove sur une carte ciblée, on met à jour deux CSS custom
+// properties: --mx/--my (position du curseur en % dans la carte, pour
+// le spotlight radial-gradient) et --rx/--ry (rotation X/Y en deg pour
+// le tilt 3D). Le CSS s'occupe du rendu.
+// Désactivé sur tactile et reduce-motion.
+function useSpotlightTilt(selector, tiltMax) {
+  if (!selector) selector = ".spotlight-tilt";
+  if (typeof tiltMax !== "number") tiltMax = 6; // degrés max
+
+  useEffect(() => {
+    if (window.matchMedia("(hover: none)").matches) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const cleanups = [];
+    const attach = (el) => {
+      if (el.dataset.spotlightAttached === "1") return;
+      el.dataset.spotlightAttached = "1";
+      el.style.transformStyle = "preserve-3d";
+      el.style.willChange = "transform";
+      const onMove = (e) => {
+        const r = el.getBoundingClientRect();
+        const px = (e.clientX - r.left) / r.width;     // 0..1
+        const py = (e.clientY - r.top) / r.height;
+        el.style.setProperty("--mx", (px * 100).toFixed(2) + "%");
+        el.style.setProperty("--my", (py * 100).toFixed(2) + "%");
+        // Tilt : on inverse Y pour que la carte penche "vers" le curseur
+        const ry = (px - 0.5) * tiltMax * 2;            // -tiltMax..tiltMax
+        const rx = -(py - 0.5) * tiltMax * 2;
+        el.style.setProperty("--rx", rx.toFixed(2) + "deg");
+        el.style.setProperty("--ry", ry.toFixed(2) + "deg");
+      };
+      const onLeave = () => {
+        el.style.setProperty("--rx", "0deg");
+        el.style.setProperty("--ry", "0deg");
+        el.style.setProperty("--mx", "50%");
+        el.style.setProperty("--my", "50%");
+      };
+      el.addEventListener("mousemove", onMove);
+      el.addEventListener("mouseleave", onLeave);
+      cleanups.push(() => {
+        el.removeEventListener("mousemove", onMove);
+        el.removeEventListener("mouseleave", onLeave);
+        delete el.dataset.spotlightAttached;
+      });
+    };
+
+    const scan = () => document.querySelectorAll(selector).forEach(attach);
+    scan();
+    const mo = new MutationObserver(() => scan());
+    mo.observe(document.body, { childList: true, subtree: true });
+    cleanups.push(() => mo.disconnect());
+
+    return () => cleanups.forEach((fn) => fn());
+  }, [selector, tiltMax]);
+}
+
+// ── 5) Scroll progress bar ───────────────────────────────────────────
+// Barre fine de 1px en haut du viewport, accent or, qui se remplit selon
+// la position de scroll. Le transform: scaleX est ce qu'il y a de plus
+// performant côté GPU (pas de reflow).
+function ScrollProgress() {
+  const fillRef = useRef(null);
+  useEffect(() => {
+    const onScroll = () => {
+      const doc = document.documentElement;
+      const total = doc.scrollHeight - window.innerHeight;
+      if (total <= 0) {
+        if (fillRef.current) fillRef.current.style.transform = "scaleX(0)";
+        return;
+      }
+      const p = Math.max(0, Math.min(1, window.scrollY / total));
+      if (fillRef.current) fillRef.current.style.transform = "scaleX(" + p + ")";
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, []);
+  return (
+    <div
+      aria-hidden="true"
+      className="scroll-progress"
+      style={{
+        position: "fixed",
+        top: 0, left: 0, right: 0,
+        height: 2,
+        background: "rgba(244, 239, 230, 0.06)",
+        zIndex: 2000,
+        pointerEvents: "none",
+      }}
+    >
+      <div
+        ref={fillRef}
+        style={{
+          height: "100%",
+          width: "100%",
+          transformOrigin: "left center",
+          transform: "scaleX(0)",
+          background: "linear-gradient(90deg, var(--accent), var(--accent-glow, #E6C99B))",
+          boxShadow: "0 0 12px rgba(201, 168, 124, 0.6)",
+          willChange: "transform",
+        }}
+      />
+    </div>
+  );
+}
+
 // Expose au scope global pour que les autres .jsx puissent les utiliser via
-// JSX (<SplitText>) ou via les hooks (useLenis, useMagneticButtons).
-Object.assign(window, { useLenis, SplitText, useMagneticButtons });
+// JSX (<SplitText>, <ScrollProgress>) ou via les hooks (useLenis,
+// useMagneticButtons, useSpotlightTilt).
+Object.assign(window, { useLenis, SplitText, useMagneticButtons, useSpotlightTilt, ScrollProgress });

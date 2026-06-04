@@ -248,6 +248,23 @@ html[data-editmode="0"] .brand-edit-controls { display: none !important; }
 .marquee-track { display: inline-flex; gap: 64px; animation: marquee 38s linear infinite; padding-right: 64px; }
 .marquee:hover .marquee-track { animation-play-state: paused; }
 
+/* Focus magnétique au hover du marquee : tous les logos s'estompent,
+   sauf celui sous le curseur. Donne immédiatement un sens "explorable". */
+.marquee:hover .brand-logo {
+  opacity: 0.3;
+  transition: opacity 0.3s ease, filter 0.3s ease;
+}
+.marquee:hover .marquee-track > span:hover .brand-logo {
+  opacity: 1;
+  filter: none;
+}
+.brand-logo {
+  transition: opacity 0.3s ease, filter 0.3s ease;
+}
+@media (hover: none) {
+  .marquee:hover .brand-logo { opacity: 1; }
+}
+
 /* Reveal on scroll */
 .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.9s cubic-bezier(0.2, 0.6, 0.2, 1), transform 0.9s cubic-bezier(0.2, 0.6, 0.2, 1); }
 .reveal.in { opacity: 1; transform: translateY(0); }
@@ -298,6 +315,59 @@ html[data-editmode="0"] .brand-edit-controls { display: none !important; }
 .btn-primary[data-magnetic-attached="1"],
 .nav-cta[data-magnetic-attached="1"] {
   transition: transform 0.25s cubic-bezier(0.2, 0.7, 0.2, 1), background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+/* ── Spotlight + 3D tilt (premium-fx.jsx) ───────────────────────────
+   Au survol d'une carte .spotlight-tilt, le JS met à jour:
+   --mx/--my : position du curseur (0..100%) pour le radial-gradient
+   --rx/--ry : rotation X/Y en deg pour le tilt 3D
+   On rend les deux effets ici via un pseudo ::before pour le spotlight
+   et transform: rotate3d pour le tilt. */
+.spotlight-tilt {
+  position: relative;
+  --mx: 50%;
+  --my: 50%;
+  --rx: 0deg;
+  --ry: 0deg;
+  transition: transform 0.3s cubic-bezier(0.2, 0.7, 0.2, 1);
+  transform: perspective(900px) rotateX(var(--rx)) rotateY(var(--ry));
+}
+.spotlight-tilt::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    420px circle at var(--mx) var(--my),
+    rgba(201, 168, 124, 0.14),
+    transparent 60%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+.spotlight-tilt:hover::before {
+  opacity: 1;
+}
+/* Le contenu de la carte doit rester au-dessus du spotlight */
+.spotlight-tilt > * {
+  position: relative;
+  z-index: 2;
+}
+/* Désactivation tactile + reduce-motion */
+@media (hover: none) {
+  .spotlight-tilt {
+    transform: none !important;
+  }
+  .spotlight-tilt::before { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .spotlight-tilt {
+    transform: none !important;
+    transition: none !important;
+  }
+  .spotlight-tilt::before { display: none; }
 }
 
 /* Accordion */
@@ -869,10 +939,10 @@ body.nav-open .nav-burger span:nth-child(2) { transform: translateY(-2.5px) rota
   .filmo-table .filmo-row {
     grid-template-columns: 56px 1fr auto !important;
     grid-template-areas:
-      "year title arrow"
-      "year role  arrow"
-      ".    dir   arrow"
-      ".    type  arrow" !important;
+      "year title poster"
+      "year role  poster"
+      ".    dir   poster"
+      ".    type  poster" !important;
     column-gap: 14px !important;
     row-gap: 4px !important;
     padding: 20px 0 !important;
@@ -883,7 +953,45 @@ body.nav-open .nav-burger span:nth-child(2) { transform: translateY(-2.5px) rota
   .filmo-table .filmo-role  { grid-area: role;  font-size: 13px !important; }
   .filmo-table .filmo-dir   { grid-area: dir;   font-size: 12px !important; color: var(--ink-faint) !important; }
   .filmo-table .filmo-type  { grid-area: type;  justify-self: start; margin-top: 6px; }
-  .filmo-table .filmo-arrow { grid-area: arrow; align-self: center !important; }
+  .filmo-table .filmo-poster-slot { grid-area: poster; align-self: center !important; }
+}
+
+/* ─── Filmo hover preview + poster slot visibility ───────────────────
+   En mode normal: le poster-slot est caché (utilisé seulement comme
+   source pour la preview flottante au hover). En mode édition: visible
+   pour drag-drop de l'affiche du projet. */
+.filmo-poster-slot {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+[data-editmode="1"] .filmo-poster-slot {
+  opacity: 1;
+  pointer-events: auto;
+}
+/* Ligne active (hover) : léger highlight pour signaler la corrélation
+   ligne ↔ preview flottante. */
+.filmo-row.is-active {
+  background: linear-gradient(90deg, rgba(201,168,124,0.04), rgba(201,168,124,0));
+}
+.filmo-row.is-active .filmo-title {
+  color: var(--accent-glow, #E6C99B);
+  transition: color 0.2s ease;
+}
+.filmo-row .filmo-title {
+  transition: color 0.2s ease;
+}
+/* Preview flottant: animation d'entrée subtile */
+.filmo-hover-preview {
+  animation: filmo-preview-in 0.2s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+@keyframes filmo-preview-in {
+  from { opacity: 0; transform: translate(24px, -50%) scale(0.96); }
+  to   { opacity: 1; transform: translate(24px, -50%) scale(1); }
+}
+/* Pas de hover-preview sur tactile / reduce-motion */
+@media (hover: none) {
+  .filmo-hover-preview { display: none !important; }
 }
 
 /* ─── Generic mobile carousel ───────────────────────────────────────── */

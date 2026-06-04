@@ -31,9 +31,10 @@ function App({ page, slug }) {
   const [editMode, setEditMode] = useState(() => isDesktop() && localStorage.getItem("vz_edit") === "1");
   useEffect(() => { localStorage.setItem("vz_lang", lang); }, [lang]);
 
-  // ── Premium FX (batch 1) ──────────────────────────────────────────
+  // ── Premium FX (batch 1 + 2) ──────────────────────────────────────
   useLenis();
   useMagneticButtons(".btn-primary, .nav-cta");
+  useSpotlightTilt(".spotlight-tilt", 5);
 
   // Force off when shrinking past the desktop breakpoint
   useEffect(() => {
@@ -107,6 +108,7 @@ function App({ page, slug }) {
 
   return (
     <div className="grain">
+      <ScrollProgress />
       <Nav lang={lang} setLang={setLang} t={t} current={page} />
       <PageComp t={t} lang={lang} slug={slug} />
       <ModeSwitch current={page} t={t} />

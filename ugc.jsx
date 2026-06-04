@@ -449,7 +449,7 @@ function UgcPacks({ t }) {
           </div>
         </div>
         <div className="mobile-carousel" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16 }}>
-          {t.ugc.packs.map((p, i) => (            <div key={i} className="lift" style={{
+          {t.ugc.packs.map((p, i) => (            <div key={i} className="lift spotlight-tilt pack-card" style={{
               padding: 32,
               border: p.featured ? "0.5px solid var(--accent)" : "0.5px solid var(--line-strong)",
               borderRadius: 4,

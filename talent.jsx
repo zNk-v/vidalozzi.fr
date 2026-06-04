@@ -223,6 +223,41 @@ function PortfolioMobileCarousel() {
 }
 
 function TalentFilmo({ t }) {
+  // Hover preview qui suit le curseur sur desktop. Sur mobile (hover: none)
+  // ou en mode édition, on désactive complètement le mécanisme.
+  const [preview, setPreview] = React.useState(null); // { src, x, y } | null
+  const [active, setActive] = React.useState(-1);
+
+  const isInteractive = () => {
+    if (typeof window === "undefined") return false;
+    if (window.matchMedia("(hover: none)").matches) return false;
+    if (document.documentElement.dataset.editmode === "1") return false;
+    return true;
+  };
+
+  const getSlotSrc = (i) => {
+    const slot = document.getElementById("filmo-" + i);
+    if (!slot) return null;
+    const img = slot.shadowRoot && slot.shadowRoot.querySelector("img");
+    return img && img.src ? img.src : null;
+  };
+
+  const onRowEnter = (i, e) => {
+    if (!isInteractive()) return;
+    setActive(i);
+    const src = getSlotSrc(i);
+    if (!src) return;
+    setPreview({ src, x: e.clientX, y: e.clientY });
+  };
+  const onRowMove = (e) => {
+    if (!isInteractive()) return;
+    setPreview((p) => (p ? { src: p.src, x: e.clientX, y: e.clientY } : null));
+  };
+  const onRowLeave = () => {
+    setActive(-1);
+    setPreview(null);
+  };
+
   return (
     <section style={{ borderTop: "0.5px solid var(--line)" }}>
       <div className="wrap">
@@ -237,24 +272,69 @@ function TalentFilmo({ t }) {
             <span>ANNÉE</span><span>Title</span><span>Role</span><span>Direction · Studio</span><span>Type</span><span></span>
           </div>
           {t.talent.films.map((f, i) =>
-          <div key={i} className="lift filmo-row" style={{
-            display: "grid",
-            gridTemplateColumns: "80px 2fr 1.4fr 2fr 1fr 60px",
-            padding: "28px 0",
-            borderBottom: "0.5px solid var(--line)",
-            alignItems: "center",
-            cursor: "pointer"
-          }}>
+          <div
+            key={i}
+            className={"lift filmo-row" + (active === i ? " is-active" : "")}
+            style={{
+              display: "grid",
+              gridTemplateColumns: "80px 2fr 1.4fr 2fr 1fr 60px",
+              padding: "28px 0",
+              borderBottom: "0.5px solid var(--line)",
+              alignItems: "center",
+              cursor: "pointer"
+            }}
+            onMouseEnter={(e) => onRowEnter(i, e)}
+            onMouseMove={onRowMove}
+            onMouseLeave={onRowLeave}
+          >
               <span className="filmo-year mono" style={{ fontSize: 12, color: "var(--accent)" }}>{f.y}</span>
               <span className="filmo-title display" style={{ fontSize: 28 }}>{f.t}</span>
               <span className="filmo-role" style={{ fontSize: 14, color: "var(--ink-mute)" }}>{f.role}</span>
               <span className="filmo-dir" style={{ fontSize: 13, color: "var(--ink-mute)" }}>{f.dir}</span>
               <span className="filmo-type tag" style={{ alignSelf: "center", height: "28.5px" }}><span className="tag-dot" />{f.type}</span>
-              <span className="filmo-arrow" style={{ textAlign: "right", color: "var(--accent)" }}>→</span>
+              {/* Indicateur subtil au lieu de la flèche morte. En mode édition,
+                  le slot poster prend la place pour drag-drop d'une image. */}
+              <span className="filmo-poster-slot" style={{ textAlign: "right" }}>
+                <image-slot
+                  id={"filmo-" + i}
+                  src={"assets/filmo-" + i + ".webp"}
+                  shape="rounded"
+                  radius="3"
+                  fit="cover"
+                  placeholder="Poster"
+                  style={{ display: "inline-block", width: 56, height: 32, verticalAlign: "middle" }}
+                ></image-slot>
+              </span>
             </div>
           )}
         </div>
       </div>
+
+      {/* Preview flottant qui suit le curseur. Rendu en position: fixed pour
+          ne pas perturber le layout. Désactivé via affichage conditionnel. */}
+      {preview && (
+        <div
+          className="filmo-hover-preview"
+          style={{
+            position: "fixed",
+            top: preview.y,
+            left: preview.x,
+            transform: "translate(24px, -50%)",
+            pointerEvents: "none",
+            zIndex: 1500,
+            width: 280,
+            aspectRatio: "4 / 3",
+            borderRadius: 6,
+            overflow: "hidden",
+            border: "0.5px solid var(--line-strong)",
+            boxShadow: "0 24px 60px rgba(0,0,0,0.45), 0 0 0 0.5px rgba(201,168,124,0.25)",
+            backgroundImage: "url(" + preview.src + ")",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            transition: "opacity 0.18s ease",
+          }}
+        />
+      )}
     </section>);
 
 }
