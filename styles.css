@@ -274,7 +274,10 @@ html[data-editmode="0"] .brand-edit-controls { display: none !important; }
 .split-text.in .split-word {
   opacity: 1;
   transform: translateY(0);
-  clip-path: inset(-10% 0 -10% 0);
+  /* -50% top/bottom : ample marge pour les fonts cursives (Pinyon Script,
+     Allura) dont les jambages et flourishes dépassent largement le baseline
+     et l'x-height. Sans ça, "fait foi" était clippé en haut et en bas. */
+  clip-path: inset(-50% 0 -50% 0);
 }
 /* Pas d'animation si l'utilisateur demande reduce-motion. */
 @media (prefers-reduced-motion: reduce) {
