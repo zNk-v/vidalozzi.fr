@@ -348,10 +348,10 @@ html[data-editmode="0"] .brand-edit-controls { display: none !important; }
   inset: 0;
   border-radius: inherit;
   background: radial-gradient(
-    520px circle at var(--mx) var(--my),
-    rgba(230, 201, 155, 0.45),
-    rgba(201, 168, 124, 0.18) 35%,
-    transparent 65%
+    380px circle at var(--mx) var(--my),
+    rgba(230, 201, 155, 0.4),
+    rgba(201, 168, 124, 0.14) 35%,
+    transparent 70%
   );
   opacity: 0;
   transition: opacity 0.35s ease;
@@ -361,6 +361,19 @@ html[data-editmode="0"] .brand-edit-controls { display: none !important; }
 }
 .spotlight-tilt:hover::after {
   opacity: 1;
+}
+
+/* La classe .lift a une règle :hover { transform: translateY(-3px) }
+   qui, au survol, écrasait le perspective + rotateX/Y du spotlight-tilt
+   (même spécificité, mais :hover gagne). On combine explicitement les
+   deux transforms via un sélecteur plus spécifique. Effet net : la
+   carte se penche selon la position du curseur ET remonte légèrement
+   au survol. */
+.lift.spotlight-tilt {
+  transform: perspective(900px) rotateX(var(--rx)) rotateY(var(--ry));
+}
+.lift.spotlight-tilt:hover {
+  transform: perspective(900px) rotateX(var(--rx)) rotateY(var(--ry)) translateY(-3px);
 }
 /* Désactivation tactile + reduce-motion */
 @media (hover: none) {
