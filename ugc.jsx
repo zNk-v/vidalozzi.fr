@@ -439,8 +439,8 @@ function UgcPacks({ t }) {
               display: "flex", flexDirection: "column",
             }}>
               {p.featured && (
-                <span className="tag" style={{ position: "absolute", top: -12, left: 24, background: "var(--accent)", color: "var(--bg-deep)", border: "0", fontWeight: 600, whiteSpace: "nowrap" }}>
-                  <span className="tag-dot" style={{ background: "var(--bg-deep)" }} />Most chosen
+                <span className="tag pack-featured-badge" style={{ position: "absolute", top: -12, left: 24, background: "var(--accent)", color: "var(--bg-deep)", border: "0", fontWeight: 600, whiteSpace: "nowrap" }}>
+                  <span className="tag-dot" style={{ background: "var(--bg-deep)" }} />{t.ugc.featuredLabel}
                 </span>
               )}
               <div className="display" style={{ fontSize: 14, color: p.featured ? "var(--accent)" : "var(--ink-faint)", textTransform: "uppercase", letterSpacing: "0.16em", fontFamily: "JetBrains Mono", marginBottom: 16 }}>

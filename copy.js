@@ -48,6 +48,7 @@ window.COPY = {
       ],
       packsLabel: "Packs",
       packsHead: "Trois formules. Une exécution.",
+      featuredLabel: "Le plus choisi",
       addonsLabel: "Add-on",
       addons: [
         { n: "Script / concept (si Essentiel)", p: "+150€" },
@@ -202,6 +203,7 @@ window.COPY = {
       ],
       packsLabel: "Packs",
       packsHead: "Three packs. One execution.",
+      featuredLabel: "Most chosen",
       addonsLabel: "Add-on",
       addons: [
         { n: "Script / concept (if Essential)", p: "+€150" },

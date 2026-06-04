@@ -864,6 +864,19 @@ body.nav-open .nav-burger span:nth-child(2) { transform: translateY(-2.5px) rota
   .mobile-carousel > .lift[style*="var(--accent)"] {
     border-color: var(--accent) !important;
   }
+  /* Badge "Le plus choisi" dans le pack featured.
+     Sur desktop le badge dépasse au-dessus de la carte (top: -12).
+     Sur mobile, la carousel a overflow-x: auto, ce qui force CSS à clipper
+     l'overflow-y et le badge disparaît / se replace mal. On le ramène en
+     premier élément du flux flex de la carte, calé en haut à gauche. */
+  .mobile-carousel .pack-featured-badge {
+    position: static !important;
+    top: auto !important;
+    left: auto !important;
+    align-self: flex-start;
+    order: -1;
+    margin-bottom: 16px;
+  }
   /* Subtle hint at the right edge that more content is available */
   .mobile-carousel-wrap { position: relative; }
 }
