@@ -26,12 +26,19 @@ function Nav({ active, lang, setLang, t, current }) {
     document.body.classList.toggle("nav-open", open);
     return () => document.body.classList.remove("nav-open");
   }, [open]);
-  // Mobile: tapping anywhere except a nav rubrique (or the burger itself) closes the menu.
+  // Mobile: tapping anywhere except a nav item (link OR button — the FR/EN
+  // switch uses <button>) or the burger itself closes the menu. Before, the
+  // selector only whitelisted ".nav-links a", so tapping FR/EN closed the
+  // menu instead of switching the language.
   useEffect(() => {
     if (!open) return;
     const onDown = (e) => {
       const el = e.target;
-      if (el && el.closest && (el.closest(".nav-burger") || el.closest(".nav-links a"))) return;
+      if (el && el.closest && (
+        el.closest(".nav-burger") ||
+        el.closest(".nav-links a") ||
+        el.closest(".nav-links button")
+      )) return;
       setOpen(false);
     };
     document.addEventListener("pointerdown", onDown, true);
