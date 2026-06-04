@@ -124,22 +124,32 @@ button { font: inherit; color: inherit; cursor: pointer; background: none; borde
   opacity: 1;
 }
 
-/* ── Ajustements per-brand : caler chaque wordmark sur la taille de
-   texte d'Adopte (référence visuelle). Réduit la hauteur de boîte des
-   logos dont le PNG est "tight" (peu de padding intérieur), ce qui
-   les fait paraître plus gros à hauteur égale. À ajuster à l'œil. */
-.brand-logo[data-brand="brand-spartoo"]        { height: 26px; max-width: 130px; }
-.brand-logo[data-brand="brand-ubereats"]       { height: 28px; max-width: 130px; }
-.brand-logo[data-brand="brand-uber"]           { height: 28px; max-width: 110px; }
+/* ── Ajustements per-brand : on vise une hauteur de TEXTE perçue
+   d'environ 18-20px sur tous les logos. Chaque PNG ayant un padding
+   intérieur très différent (tight vs spacieux), le seul moyen est
+   d'ajuster la box height per-brand. Valeurs calibrées à l'œil sur
+   le rendu live, à raffiner si besoin. */
+/* PNGs très "tight" (le wordmark remplit la quasi-totalité du PNG) :
+   on réduit fortement la box pour que le texte ne soit pas géant. */
+.brand-logo[data-brand="brand-adopte"]         { height: 22px; max-width: 110px; }
+.brand-logo[data-brand="brand-spartoo"]        { height: 24px; max-width: 110px; }
+.brand-logo[data-brand="brand-ubereats"]       { height: 26px; max-width: 120px; }
+.brand-logo[data-brand="brand-uber"]           { height: 24px; max-width: 80px; }
+.brand-logo[data-brand="brand-eflexplus"]      { height: 26px; max-width: 130px; }
+.brand-logo[data-brand="brand-lamarqueenmoins"]{ height: 28px; max-width: 130px; }
+
+/* PNGs avec un peu de padding : taille moyenne. */
 .brand-logo[data-brand="brand-meetic"]         { height: 30px; max-width: 130px; }
 .brand-logo[data-brand="brand-leapmotor"]      { height: 30px; max-width: 140px; }
-.brand-logo[data-brand="brand-ouestfrance"]    { height: 30px; max-width: 140px; }
 .brand-logo[data-brand="brand-mustache"]       { height: 32px; max-width: 130px; }
-.brand-logo[data-brand="brand-lamarqueenmoins"]{ height: 34px; max-width: 140px; }
-.brand-logo[data-brand="brand-ozers"]          { height: 32px; max-width: 130px; }
-.brand-logo[data-brand="brand-nu3"]            { height: 32px; max-width: 80px; }
-/* Adopte / Oma & Me / eFlexPlus restent à la valeur par défaut (38px,
-   150px) puisque ce sont les références. */
+.brand-logo[data-brand="brand-omame"]          { height: 36px; max-width: 80px; }
+
+/* PNGs très "spacieux" (beaucoup de padding autour du wordmark) :
+   on agrandit la box pour que le texte ne paraisse pas microscopique.
+   Max-width généreux pour ne pas brider. */
+.brand-logo[data-brand="brand-ouestfrance"]    { height: 44px; max-width: 110px; }
+.brand-logo[data-brand="brand-ozers"]          { height: 40px; max-width: 120px; }
+.brand-logo[data-brand="brand-nu3"]            { height: 38px; max-width: 80px; }
 .nav { background: transparent; }
 .nav-scrolled { background: rgba(30, 29, 29, 0.78); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-bottom: 0.5px solid var(--line); }
 [data-theme="light"] .nav-scrolled { background: rgba(244, 239, 230, 0.82); }
