@@ -381,7 +381,26 @@ function Footer({ t }) {
               <span className="logo-mark">V/</span>
               <span>VIDALOZZI</span>
             </div>
-            <p style={{ color: "var(--ink-mute)", fontSize: 14, maxWidth: 340 }}>{t.footer.tagline}</p>
+            <p style={{ color: "var(--ink-mute)", fontSize: 14, maxWidth: 340, marginBottom: 28 }}>{t.footer.tagline}</p>
+            <div className="footer-social" aria-label="Réseaux sociaux">
+              <a href="https://www.instagram.com/vidalozzi" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <rect x="3" y="3" width="18" height="18" rx="5" />
+                  <circle cx="12" cy="12" r="4" />
+                  <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
+                </svg>
+              </a>
+              <a href="https://www.linkedin.com/in/vidalozzi" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M4.98 3.5a2.5 2.5 0 1 1 0 5.001 2.5 2.5 0 0 1 0-5zM3 9.75h4v11.25H3V9.75zm7 0h3.83v1.54h.05c.53-1 1.83-2.06 3.77-2.06 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.4c0-1.29-.02-2.95-1.8-2.95-1.8 0-2.08 1.4-2.08 2.85V21h-4V9.75z" />
+                </svg>
+              </a>
+              <a href="https://www.youtube.com/@vidalozzi" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M23.5 6.2a3 3 0 0 0-2.1-2.13C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.57A3 3 0 0 0 .5 6.2 31.4 31.4 0 0 0 0 12a31.4 31.4 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.13C4.5 20.5 12 20.5 12 20.5s7.5 0 9.4-.57a3 3 0 0 0 2.1-2.13A31.4 31.4 0 0 0 24 12a31.4 31.4 0 0 0-.5-5.8zM9.6 15.6V8.4l6.3 3.6-6.3 3.6z" />
+                </svg>
+              </a>
+            </div>
           </div>
           <div>
             <div className="label-xs" style={{ marginBottom: 16 }}>{t.footer.cols.navigate}</div>
@@ -413,25 +432,6 @@ function Footer({ t }) {
         <div className="footer-display display" style={{ overflow: "hidden", whiteSpace: "nowrap" }}>VIDALOZZI<span style={{ color: "var(--accent)" }}>®</span></div>
         <div className="footer-bottom">
           <span>{t.footer.copyright}</span>
-          <span className="footer-social" aria-label="Réseaux sociaux">
-            <a href="https://www.instagram.com/vidalozzi" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <rect x="3" y="3" width="18" height="18" rx="5" />
-                <circle cx="12" cy="12" r="4" />
-                <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
-              </svg>
-            </a>
-            <a href="https://www.linkedin.com/in/vidalozzi" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                <path d="M4.98 3.5a2.5 2.5 0 1 1 0 5.001 2.5 2.5 0 0 1 0-5zM3 9.75h4v11.25H3V9.75zm7 0h3.83v1.54h.05c.53-1 1.83-2.06 3.77-2.06 4.03 0 4.78 2.65 4.78 6.1V21h-4v-5.4c0-1.29-.02-2.95-1.8-2.95-1.8 0-2.08 1.4-2.08 2.85V21h-4V9.75z" />
-              </svg>
-            </a>
-            <a href="https://www.youtube.com/@vidalozzi" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                <path d="M23.5 6.2a3 3 0 0 0-2.1-2.13C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.57A3 3 0 0 0 .5 6.2 31.4 31.4 0 0 0 0 12a31.4 31.4 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.13C4.5 20.5 12 20.5 12 20.5s7.5 0 9.4-.57a3 3 0 0 0 2.1-2.13A31.4 31.4 0 0 0 24 12a31.4 31.4 0 0 0-.5-5.8zM9.6 15.6V8.4l6.3 3.6-6.3 3.6z" />
-              </svg>
-            </a>
-          </span>
           <span className="links">
             <a href="#">Mentions légales</a>
             <a href="#">Privacy</a>
