@@ -469,13 +469,18 @@ function UgcPacks({ t }) {
               <h3 className="display" style={{ fontSize: 56, marginBottom: 8 }}>{p.name}</h3>
               <div style={{ fontSize: 18, color: "var(--accent)", marginBottom: 24, fontFamily: "Instrument Serif, serif", fontStyle: "italic" }}>{p.price}</div>
               <p style={{ color: "var(--ink-mute)", fontSize: 14, lineHeight: 1.6, marginBottom: 32 }}>{p.desc}</p>
-              <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: 10, fontSize: 13, marginBottom: 32, flex: 1 }}>
+              <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: 10, fontSize: 13, marginBottom: p.footer ? 20 : 32, flex: 1 }}>
                 {p.features.map((f, j) => (
                   <li key={j} style={{ display: "flex", gap: 12, alignItems: "flex-start", color: "var(--ink-mute)" }}>
                     <span style={{ color: "var(--accent)", marginTop: 2 }}>+</span>{f}
                   </li>
                 ))}
               </ul>
+              {p.footer && (
+                <p style={{ fontSize: 12, lineHeight: 1.55, color: "var(--ink-faint)", fontStyle: "italic", borderTop: "0.5px solid var(--line)", paddingTop: 16, marginBottom: 24 }}>
+                  {p.footer}
+                </p>
+              )}
               <a className={p.featured ? "btn-primary" : "btn-ghost"} href="https://calendly.com/vidalozzi" style={{ justifyContent: "space-between" }}>
                 {t.book}<span>→</span>
               </a>
