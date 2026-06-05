@@ -179,10 +179,13 @@ function HomeAbout({ t }) {
 }
 
 function HomeShowreel({ t }) {
+  const [interactive, setInteractive] = React.useState(false);
   return (
     <section style={{ padding: "0 0 120px" }}>
       <div className="wrap">
-        <div style={{ position: "relative", aspectRatio: "16/9", borderRadius: 4, overflow: "hidden", background: "#000", display: "block" }}>
+        <div
+          onMouseLeave={() => setInteractive(false)}
+          style={{ position: "relative", aspectRatio: "16/9", borderRadius: 4, overflow: "hidden", background: "#000", display: "block" }}>
           <iframe
             src="https://www.youtube-nocookie.com/embed/6tnX98pOnJw?autoplay=1&mute=1&loop=1&playlist=6tnX98pOnJw&controls=1&modestbranding=1&rel=0&playsinline=1"
             title="Showreel · 2026"
@@ -191,6 +194,12 @@ function HomeShowreel({ t }) {
             allowFullScreen
             style={{ position: "absolute", inset: 0, width: "100%", height: "100%", border: 0, display: "block" }}>
           </iframe>
+          {!interactive &&
+          <div
+            onClick={() => setInteractive(true)}
+            aria-hidden="true"
+            style={{ position: "absolute", inset: 0, zIndex: 2, cursor: "pointer", background: "transparent" }} />
+          }
         </div>
       </div>
     </section>);
