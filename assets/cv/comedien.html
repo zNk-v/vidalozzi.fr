@@ -20,6 +20,7 @@
     --font-name: 'DM Serif Display', serif;
     --font-display: 'DM Serif Display', serif;
     --name-size: 60px;
+    --photo-width: 50mm;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -72,7 +73,7 @@
   /* ============ HEADER ============ */
   .cv-header {
     display: grid;
-    grid-template-columns: 50mm 1fr;
+    grid-template-columns: var(--photo-width) 1fr;
     gap: 7mm;
     align-items: stretch;
     padding-bottom: 4mm;
@@ -80,7 +81,7 @@
   }
 
   .photo-wrap {
-    width: 50mm;
+    width: var(--photo-width);
     aspect-ratio: 3 / 4;
     overflow: hidden;
     border: 0.5px solid var(--line-strong);
@@ -730,6 +731,15 @@
     </div>
 
     <div class="group">
+      <label>Taille de la photo</label>
+      <div class="row">
+        <input type="range" id="photoSlider" min="25" max="80" value="50" step="1" />
+        <span class="value" id="photoValue">50mm</span>
+      </div>
+      <div class="hint-text">Réduire la photo libère de l'espace pour le texte.</div>
+    </div>
+
+    <div class="group">
       <label>Couleur — sélection</label>
       <div class="row">
         <span class="value">Couleur du texte sélectionné</span>
@@ -884,6 +894,16 @@
     saveState();
   });
 
+  // ===== Taille de la photo =====
+  const photoSlider = document.getElementById('photoSlider');
+  const photoValue = document.getElementById('photoValue');
+  photoSlider.addEventListener('input', () => {
+    const mm = photoSlider.value + 'mm';
+    photoValue.textContent = mm;
+    root.style.setProperty('--photo-width', mm);
+    saveState();
+  });
+
   // ===== Couleur sur sélection =====
   document.getElementById('selColor').addEventListener('input', e => {
     const hadSel = restoreSelection();
@@ -944,6 +964,7 @@
       ink: getComputedStyle(root).getPropertyValue('--ink').trim(),
       font: getComputedStyle(root).getPropertyValue('--font-name').trim(),
       size: getComputedStyle(root).getPropertyValue('--name-size').trim(),
+      photo: getComputedStyle(root).getPropertyValue('--photo-width').trim(),
     };
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch(e) {}
   }
@@ -959,6 +980,7 @@
       if (state.font) root.style.setProperty('--font-name', state.font);
       if (state.font) root.style.setProperty('--font-display', state.font);
       if (state.size) { root.style.setProperty('--name-size', state.size); const px = parseInt(state.size); if (px) { sizeSlider.value = px; sizeValue.textContent = px + 'px'; } }
+      if (state.photo) { root.style.setProperty('--photo-width', state.photo); const mm = parseInt(state.photo); if (mm) { photoSlider.value = mm; photoValue.textContent = mm + 'mm'; } }
     } catch(e) {}
   }
   loadState();
