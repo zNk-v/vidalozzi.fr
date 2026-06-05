@@ -44,6 +44,20 @@
     outline: 1.5px solid var(--accent);
     outline-offset: 4px;
   }
+  .multi-selected {
+    outline: 1.5px solid var(--accent) !important;
+    outline-offset: 4px !important;
+    background: rgba(201, 168, 124, 0.10);
+    box-shadow: 0 0 0 4px rgba(201, 168, 124, 0.06);
+    border-radius: 2px;
+  }
+  body.cmd-down [contenteditable="true"] {
+    cursor: copy !important;
+  }
+  body.cmd-down [contenteditable="true"]:hover {
+    outline-color: var(--accent);
+    outline-style: solid;
+  }
 
   /* ============ PAGE A4 ============ */
   .page {
@@ -566,6 +580,41 @@
     font-size: 16px;
   }
 
+  #multiBadge {
+    position: fixed;
+    bottom: 16px;
+    right: 16px;
+    background: var(--accent);
+    color: var(--bg-deep);
+    padding: 10px 16px;
+    font-family: 'Inter', sans-serif;
+    font-size: 11.5px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    border-radius: 4px;
+    z-index: 999;
+    box-shadow: 0 6px 20px rgba(201, 168, 124, 0.4);
+    display: none;
+    align-items: center;
+    gap: 8px;
+  }
+  #multiBadge button {
+    background: rgba(26, 20, 16, 0.25);
+    color: var(--bg-deep);
+    border: none;
+    padding: 4px 9px;
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    border-radius: 3px;
+    cursor: pointer;
+    margin-left: 4px;
+  }
+  #multiBadge button:hover { background: rgba(26, 20, 16, 0.4); }
+
   /* ============ PRINT ============ */
   @page {
     size: A4 portrait;
@@ -582,9 +631,14 @@
       box-shadow: none !important;
       outline: none !important;
     }
-    .edit-toolbar, .toggle-btn, .edit-hint, #overflowBadge { display: none !important; }
+    .edit-toolbar, .toggle-btn, .edit-hint, #overflowBadge, #multiBadge { display: none !important; }
     [contenteditable]:hover, [contenteditable]:focus {
       outline: none !important;
+    }
+    .multi-selected {
+      outline: none !important;
+      background: transparent !important;
+      box-shadow: none !important;
     }
   }
 </style>
@@ -731,8 +785,8 @@
     <div class="sub">Modifie tout, imprime en PDF</div>
 
     <div class="group">
-      <label>Typo — sélection ou global</label>
-      <div class="hint-text">Sélectionne un mot pour ne le changer que lui. Sinon ça change tout.</div>
+      <label>Typo — multi-zones, sélection ou global</label>
+      <div class="hint-text">⌘+clic sur plusieurs zones → s'applique à tout le groupe. Sinon sélection texte = ciblé. Sinon = global.</div>
       <div class="font-btns">
         <button class="font-btn active" data-font="'DM Serif Display', serif">DM Serif<span class="preview" style="font-family:'DM Serif Display',serif">Teddy <i>Vidal</i></span></button>
         <button class="font-btn" data-font="'Bodoni Moda', serif">Bodoni<span class="preview" style="font-family:'Bodoni Moda',serif">Teddy <i>Vidal</i></span></button>
@@ -759,7 +813,7 @@
         <input type="range" id="sizeSlider" min="8" max="140" value="60" step="1" />
         <span class="value" id="sizeValue">60px</span>
       </div>
-      <div class="hint-text">Sélectionne du texte pour changer sa taille. Sinon ça change le nom.</div>
+      <div class="hint-text">⌘+clic sur les zones à grouper, puis bouge le slider. Sinon : sélection texte ou nom global.</div>
     </div>
 
     <div class="group">
@@ -820,12 +874,61 @@
   </div>
 
   <div id="overflowBadge">Dépasse 1 page A4</div>
+  <div id="multiBadge"><span id="multiCount">0</span> zone(s) groupée(s) <button id="clearMultiBtn">Effacer</button></div>
 
 <script>
   const root = document.documentElement;
   const toolbar = document.getElementById('toolbar');
   const showBtn = document.getElementById('showBtn');
   const page = document.querySelector('main.page');
+
+  // ===== Multi-sélection Cmd+clic (groupage de zones) =====
+  const multiSelected = new Set();
+  const multiBadge = document.getElementById('multiBadge');
+  const multiCount = document.getElementById('multiCount');
+  function updateMultiBadge() {
+    if (multiSelected.size > 0) {
+      multiBadge.style.display = 'inline-flex';
+      multiCount.textContent = multiSelected.size;
+    } else {
+      multiBadge.style.display = 'none';
+    }
+  }
+  function toggleMulti(el) {
+    if (multiSelected.has(el)) {
+      multiSelected.delete(el);
+      el.classList.remove('multi-selected');
+    } else {
+      multiSelected.add(el);
+      el.classList.add('multi-selected');
+    }
+    updateMultiBadge();
+  }
+  function clearMulti() {
+    multiSelected.forEach(el => el.classList.remove('multi-selected'));
+    multiSelected.clear();
+    updateMultiBadge();
+  }
+  document.getElementById('clearMultiBtn').addEventListener('click', clearMulti);
+
+  // Cmd/Ctrl + clic sur un élément éditable = toggle dans le groupe
+  document.addEventListener('mousedown', (e) => {
+    if (!(e.metaKey || e.ctrlKey)) return;
+    const el = e.target.closest('[contenteditable="true"]');
+    if (!el || el.closest('.edit-toolbar')) return;
+    e.preventDefault();
+    e.stopPropagation();
+    toggleMulti(el);
+  }, true);
+
+  // Indicateur visuel quand Cmd/Ctrl est maintenu
+  document.addEventListener('keydown', (e) => {
+    if (e.metaKey || e.ctrlKey) document.body.classList.add('cmd-down');
+  });
+  document.addEventListener('keyup', (e) => {
+    if (!e.metaKey && !e.ctrlKey) document.body.classList.remove('cmd-down');
+  });
+  window.addEventListener('blur', () => document.body.classList.remove('cmd-down'));
 
   // ===== Préserver la sélection quand on clique sur la toolbar =====
   let lastSelection = null;
@@ -861,23 +964,27 @@
   document.querySelectorAll('.font-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       const font = btn.dataset.font;
-      const hadSel = restoreSelection();
 
-      if (hadSel && hasActiveSelection()) {
-        // Appliquer à la sélection
-        document.execCommand('styleWithCSS', false, true);
-        document.execCommand('fontName', false, font.replace(/['"]/g, '').split(',')[0].trim());
-        // execCommand génère parfois sans la fallback : on cible et on met la vraie valeur
-        document.querySelectorAll('[style*="font-family"]').forEach(el => {
-          const family = el.style.fontFamily;
-          if (family && !family.includes(',')) el.style.fontFamily = font;
-        });
+      if (multiSelected.size > 0) {
+        // Priorité 1 : zones groupées
+        multiSelected.forEach(el => el.style.fontFamily = font);
       } else {
-        // Appliquer globalement
-        document.querySelectorAll('.font-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        root.style.setProperty('--font-name', font);
-        root.style.setProperty('--font-display', font);
+        const hadSel = restoreSelection();
+        if (hadSel && hasActiveSelection()) {
+          // Priorité 2 : sélection de texte
+          document.execCommand('styleWithCSS', false, true);
+          document.execCommand('fontName', false, font.replace(/['"]/g, '').split(',')[0].trim());
+          document.querySelectorAll('[style*="font-family"]').forEach(el => {
+            const family = el.style.fontFamily;
+            if (family && !family.includes(',')) el.style.fontFamily = font;
+          });
+        } else {
+          // Priorité 3 : global
+          document.querySelectorAll('.font-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          root.style.setProperty('--font-name', font);
+          root.style.setProperty('--font-display', font);
+        }
       }
       saveState();
     });
@@ -886,10 +993,24 @@
   // ===== Style sur sélection (Gras / Italique / Souligné / Effacer) =====
   document.querySelectorAll('.style-btn[data-cmd]').forEach(btn => {
     btn.addEventListener('click', () => {
-      const hadSel = restoreSelection();
-      if (!hadSel) return;
-      document.execCommand('styleWithCSS', false, true);
-      document.execCommand(btn.dataset.cmd, false, null);
+      const cmd = btn.dataset.cmd;
+      if (multiSelected.size > 0) {
+        // Toggle sur les zones groupées
+        multiSelected.forEach(el => {
+          if (cmd === 'bold') {
+            el.style.fontWeight = (el.style.fontWeight === '700' || el.style.fontWeight === 'bold') ? '' : '700';
+          } else if (cmd === 'italic') {
+            el.style.fontStyle = (el.style.fontStyle === 'italic') ? '' : 'italic';
+          } else if (cmd === 'underline') {
+            el.style.textDecoration = (el.style.textDecoration === 'underline') ? '' : 'underline';
+          }
+        });
+      } else {
+        const hadSel = restoreSelection();
+        if (!hadSel) return;
+        document.execCommand('styleWithCSS', false, true);
+        document.execCommand(cmd, false, null);
+      }
       saveState();
     });
   });
@@ -908,31 +1029,37 @@
     saveState();
   });
 
-  // ===== Taille (sélection ou nom global) =====
+  // ===== Taille (multi-zones, sélection texte, ou nom global) =====
   const sizeSlider = document.getElementById('sizeSlider');
   const sizeValue = document.getElementById('sizeValue');
   sizeSlider.addEventListener('input', () => {
     const px = sizeSlider.value + 'px';
     sizeValue.textContent = px;
-    const hadSel = restoreSelection();
-    if (hadSel && hasActiveSelection()) {
-      // Wrap selection dans un span avec font-size
-      const sel = window.getSelection();
-      const range = sel.getRangeAt(0);
-      const span = document.createElement('span');
-      span.style.fontSize = px;
-      try {
-        span.appendChild(range.extractContents());
-        range.insertNode(span);
-        // re-sélectionner pour pouvoir continuer à ajuster
-        sel.removeAllRanges();
-        const newRange = document.createRange();
-        newRange.selectNodeContents(span);
-        sel.addRange(newRange);
-        lastSelection = newRange.cloneRange();
-      } catch(e) { /* ignore si range invalide */ }
+
+    if (multiSelected.size > 0) {
+      // Priorité 1 : zones groupées
+      multiSelected.forEach(el => el.style.fontSize = px);
     } else {
-      root.style.setProperty('--name-size', px);
+      const hadSel = restoreSelection();
+      if (hadSel && hasActiveSelection()) {
+        // Priorité 2 : sélection de texte
+        const sel = window.getSelection();
+        const range = sel.getRangeAt(0);
+        const span = document.createElement('span');
+        span.style.fontSize = px;
+        try {
+          span.appendChild(range.extractContents());
+          range.insertNode(span);
+          sel.removeAllRanges();
+          const newRange = document.createRange();
+          newRange.selectNodeContents(span);
+          sel.addRange(newRange);
+          lastSelection = newRange.cloneRange();
+        } catch(e) {}
+      } else {
+        // Priorité 3 : nom global
+        root.style.setProperty('--name-size', px);
+      }
     }
     saveState();
   });
@@ -975,12 +1102,17 @@
   window.addEventListener('resize', checkOverflow);
   setTimeout(checkOverflow, 200);
 
-  // ===== Couleur sur sélection =====
+  // ===== Couleur sur sélection ou multi-zones =====
   document.getElementById('selColor').addEventListener('input', e => {
-    const hadSel = restoreSelection();
-    if (!hadSel) return;
-    document.execCommand('styleWithCSS', false, true);
-    document.execCommand('foreColor', false, e.target.value);
+    const color = e.target.value;
+    if (multiSelected.size > 0) {
+      multiSelected.forEach(el => el.style.color = color);
+    } else {
+      const hadSel = restoreSelection();
+      if (!hadSel) return;
+      document.execCommand('styleWithCSS', false, true);
+      document.execCommand('foreColor', false, color);
+    }
     saveState();
   });
 
@@ -1076,7 +1208,7 @@
     }
   });
 
-  // Escape : sortir du mode édit
+  // Escape : sortir du mode édit + clear multi-select
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
       if (document.activeElement && document.activeElement.blur) {
@@ -1084,6 +1216,7 @@
       }
       const sel = window.getSelection ? window.getSelection() : null;
       if (sel && sel.removeAllRanges) sel.removeAllRanges();
+      clearMulti();
     }
   });
 </script>
