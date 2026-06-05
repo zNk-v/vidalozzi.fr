@@ -21,6 +21,7 @@
     --font-display: 'DM Serif Display', serif;
     --name-size: 60px;
     --photo-width: 50mm;
+    --spacing-mult: 1;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -54,9 +55,14 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    gap: 5mm;
+    gap: calc(5mm * var(--spacing-mult));
     box-shadow: 0 10px 60px rgba(0,0,0,0.6);
-    overflow: hidden;
+    outline: 1.5px dashed rgba(255, 90, 90, 0.55);
+    outline-offset: -1px;
+  }
+  .page.overflow {
+    outline-color: rgba(255, 60, 60, 0.95);
+    outline-style: solid;
   }
 
   .eyebrow {
@@ -76,7 +82,7 @@
     grid-template-columns: var(--photo-width) 1fr;
     gap: 7mm;
     align-items: stretch;
-    padding-bottom: 4mm;
+    padding-bottom: calc(4mm * var(--spacing-mult));
     border-bottom: 0.5px solid var(--line-strong);
   }
 
@@ -138,7 +144,7 @@
   }
 
   /* ============ FILMO ============ */
-  .section-head { margin-bottom: 3mm; }
+  .section-head { margin-bottom: calc(3mm * var(--spacing-mult)); }
   .section-head .eyebrow { margin-bottom: 1mm; }
   .section-title {
     font-family: var(--font-display);
@@ -148,7 +154,7 @@
     color: var(--ink);
   }
 
-  .filmo { display: flex; flex-direction: column; gap: 4mm; }
+  .filmo { display: flex; flex-direction: column; gap: calc(4mm * var(--spacing-mult)); }
   .year-block {
     display: grid;
     grid-template-columns: 18mm 1fr;
@@ -169,13 +175,13 @@
     font-style: italic;
     line-height: 1.2;
   }
-  .year-entries { display: flex; flex-direction: column; gap: 2mm; }
+  .year-entries { display: flex; flex-direction: column; gap: calc(2mm * var(--spacing-mult)); }
 
   .entry {
     display: grid;
     grid-template-columns: 28mm 1fr;
     gap: 4mm;
-    padding-bottom: 1.8mm;
+    padding-bottom: calc(1.8mm * var(--spacing-mult));
     border-bottom: 0.5px solid var(--line);
     align-items: baseline;
   }
@@ -217,7 +223,7 @@
   .figurations-list {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    gap: 1.5mm 5mm;
+    gap: calc(1.5mm * var(--spacing-mult)) 5mm;
   }
   .fig-item {
     font-family: var(--font-display);
@@ -225,7 +231,7 @@
     font-size: 9.5px;
     color: var(--ink-mute);
     line-height: 1.25;
-    padding-bottom: 1mm;
+    padding-bottom: calc(1mm * var(--spacing-mult));
     border-bottom: 0.5px solid var(--line);
     letter-spacing: -0.005em;
   }
@@ -241,7 +247,7 @@
     display: grid;
     grid-template-columns: 1fr 1.7fr;
     gap: 7mm;
-    padding-top: 4mm;
+    padding-top: calc(4mm * var(--spacing-mult));
     border-top: 0.5px solid var(--line-strong);
   }
 
@@ -259,14 +265,14 @@
   .skills-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 1.5mm 5mm;
+    gap: calc(1.5mm * var(--spacing-mult)) 5mm;
   }
   .skill-row {
     display: grid;
     grid-template-columns: 18mm 1fr;
     gap: 2mm;
     align-items: baseline;
-    padding-bottom: 1.2mm;
+    padding-bottom: calc(1.2mm * var(--spacing-mult));
     border-bottom: 0.5px solid var(--line);
   }
   .skill-label {
@@ -288,7 +294,7 @@
   /* ============ FOOTER ============ */
   .cv-footer {
     margin-top: auto;
-    padding-top: 3mm;
+    padding-top: calc(3mm * var(--spacing-mult));
     border-top: 0.5px solid var(--line-strong);
     display: flex;
     justify-content: space-between;
@@ -535,6 +541,31 @@
   }
   .edit-hint b { font-weight: 600; }
 
+  #overflowBadge {
+    position: fixed;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255, 60, 60, 0.95);
+    color: white;
+    padding: 10px 18px;
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    border-radius: 4px;
+    z-index: 999;
+    box-shadow: 0 6px 20px rgba(255, 60, 60, 0.4);
+    display: none;
+    align-items: center;
+    gap: 8px;
+  }
+  #overflowBadge::before {
+    content: "⚠";
+    font-size: 16px;
+  }
+
   /* ============ PRINT ============ */
   @page {
     size: A4 portrait;
@@ -549,8 +580,9 @@
     .page {
       margin: 0 !important;
       box-shadow: none !important;
+      outline: none !important;
     }
-    .edit-toolbar, .toggle-btn, .edit-hint { display: none !important; }
+    .edit-toolbar, .toggle-btn, .edit-hint, #overflowBadge { display: none !important; }
     [contenteditable]:hover, [contenteditable]:focus {
       outline: none !important;
     }
@@ -740,6 +772,15 @@
     </div>
 
     <div class="group">
+      <label>Espacement vertical (interlignes)</label>
+      <div class="row">
+        <input type="range" id="spacingSlider" min="50" max="200" value="100" step="5" />
+        <span class="value" id="spacingValue">100%</span>
+      </div>
+      <div class="hint-text">Réduit ou agrandit tous les espaces entre sections, entries et éléments.</div>
+    </div>
+
+    <div class="group">
       <label>Couleur — sélection</label>
       <div class="row">
         <span class="value">Couleur du texte sélectionné</span>
@@ -777,6 +818,8 @@
   <div class="edit-hint">
     <b>Astuce :</b> clique sur n'importe quel texte pour le modifier directement.
   </div>
+
+  <div id="overflowBadge">Dépasse 1 page A4</div>
 
 <script>
   const root = document.documentElement;
@@ -902,7 +945,35 @@
     photoValue.textContent = mm;
     root.style.setProperty('--photo-width', mm);
     saveState();
+    checkOverflow();
   });
+
+  // ===== Espacement vertical =====
+  const spacingSlider = document.getElementById('spacingSlider');
+  const spacingValue = document.getElementById('spacingValue');
+  spacingSlider.addEventListener('input', () => {
+    const pct = spacingSlider.value;
+    spacingValue.textContent = pct + '%';
+    root.style.setProperty('--spacing-mult', (pct / 100).toString());
+    saveState();
+    checkOverflow();
+  });
+
+  // ===== Détection débordement de page =====
+  const overflowBadge = document.getElementById('overflowBadge');
+  function checkOverflow() {
+    const p = page;
+    const real = p.scrollHeight;
+    const max = p.clientHeight;
+    const isOver = real > max + 2;
+    p.classList.toggle('overflow', isOver);
+    overflowBadge.style.display = isOver ? 'inline-flex' : 'none';
+  }
+  // observe les changements de contenu
+  const overflowObserver = new MutationObserver(() => requestAnimationFrame(checkOverflow));
+  overflowObserver.observe(page, { childList: true, subtree: true, characterData: true, attributes: true });
+  window.addEventListener('resize', checkOverflow);
+  setTimeout(checkOverflow, 200);
 
   // ===== Couleur sur sélection =====
   document.getElementById('selColor').addEventListener('input', e => {
@@ -965,6 +1036,7 @@
       font: getComputedStyle(root).getPropertyValue('--font-name').trim(),
       size: getComputedStyle(root).getPropertyValue('--name-size').trim(),
       photo: getComputedStyle(root).getPropertyValue('--photo-width').trim(),
+      spacing: getComputedStyle(root).getPropertyValue('--spacing-mult').trim(),
     };
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch(e) {}
   }
@@ -981,6 +1053,7 @@
       if (state.font) root.style.setProperty('--font-display', state.font);
       if (state.size) { root.style.setProperty('--name-size', state.size); const px = parseInt(state.size); if (px) { sizeSlider.value = px; sizeValue.textContent = px + 'px'; } }
       if (state.photo) { root.style.setProperty('--photo-width', state.photo); const mm = parseInt(state.photo); if (mm) { photoSlider.value = mm; photoValue.textContent = mm + 'mm'; } }
+      if (state.spacing) { root.style.setProperty('--spacing-mult', state.spacing); const pct = Math.round(parseFloat(state.spacing) * 100); if (pct) { spacingSlider.value = pct; spacingValue.textContent = pct + '%'; } }
     } catch(e) {}
   }
   loadState();
