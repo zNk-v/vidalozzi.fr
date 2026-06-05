@@ -348,7 +348,7 @@ function Contact({ t }) {
                 {t.contact.ctaCalendly}
                 <span style={{ marginLeft: "auto" }}>→</span>
               </a>
-              <a className="btn-ghost" href="#" download>
+              <a className="btn-ghost" href="assets/cv/cv-teddy-vidal-comedien-2026.pdf" download="CV-Teddy-Vidal-Comedien-2026.pdf">
                 {t.contact.ctaPressKit}
                 <span style={{ marginLeft: "auto" }}>↓</span>
               </a>

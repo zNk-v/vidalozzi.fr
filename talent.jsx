@@ -495,7 +495,7 @@ function TalentStats({ t }) {
             <div className="eyebrow" style={{ marginBottom: 16 }}>— {t.talent.statsLabel}</div>
             <h2 className="display">{t.talent.statsHead}</h2>
           </div>
-          <a className="btn-ghost" href="#" download id="press">↓ {t.talent.pressKit}</a>
+          <a className="btn-ghost" href="assets/cv/cv-teddy-vidal-comedien-2026.pdf" download="CV-Teddy-Vidal-Comedien-2026.pdf" id="press">↓ {t.talent.pressKit}</a>
         </div>
         <div className="talent-stats-grid">
           <div className="talent-polaroids-grid">

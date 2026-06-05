@@ -1,0 +1,995 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Teddy Vidal — CV Comédien 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400;0,500;1,400;1,500&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=DM+Serif+Display:ital@0;1&family=Instrument+Serif:ital@0;1&family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-deep: #1A1410;
+    --bg-soft: #221A14;
+    --ink: #F2EBDD;
+    --ink-mute: #C2B8A4;
+    --ink-faint: #8A8273;
+    --accent: #C9A87C;
+    --line: rgba(242, 235, 221, 0.14);
+    --line-strong: rgba(242, 235, 221, 0.26);
+    --font-name: 'DM Serif Display', serif;
+    --font-display: 'DM Serif Display', serif;
+    --name-size: 82px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    background: #0A0805;
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Edit mode visual indicator */
+  [contenteditable="true"]:hover {
+    outline: 1px dashed var(--accent);
+    outline-offset: 4px;
+    cursor: text;
+  }
+  [contenteditable="true"]:focus {
+    outline: 1.5px solid var(--accent);
+    outline-offset: 4px;
+  }
+
+  /* ============ PAGE A4 ============ */
+  .page {
+    width: 210mm;
+    min-height: 297mm;
+    padding: 15mm 15mm 13mm;
+    background: var(--bg-deep);
+    margin: 20px auto;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 9mm;
+    box-shadow: 0 10px 60px rgba(0,0,0,0.6);
+  }
+
+  .eyebrow {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.24em;
+    color: var(--accent);
+    font-weight: 500;
+  }
+
+  .eyebrow-mute { color: var(--ink-faint); }
+
+  /* ============ HEADER ============ */
+  .cv-header {
+    display: grid;
+    grid-template-columns: 62mm 1fr;
+    gap: 10mm;
+    align-items: stretch;
+    padding-bottom: 7mm;
+    border-bottom: 0.5px solid var(--line-strong);
+  }
+
+  .photo-wrap {
+    width: 62mm;
+    aspect-ratio: 3 / 4;
+    overflow: hidden;
+    border: 0.5px solid var(--line-strong);
+    background: var(--bg-soft);
+  }
+  .photo-wrap img {
+    width: 100%; height: 100%;
+    object-fit: cover; object-position: center top;
+    filter: contrast(1.02);
+  }
+
+  .identity {
+    display: flex; flex-direction: column;
+    justify-content: space-between;
+    padding-top: 2mm; padding-bottom: 2mm;
+  }
+  .id-top .eyebrow { margin-bottom: 5mm; }
+
+  .name {
+    font-family: var(--font-name);
+    font-weight: 400;
+    font-size: var(--name-size);
+    line-height: 0.92;
+    letter-spacing: -0.025em;
+    margin-bottom: 6mm;
+    color: var(--ink);
+  }
+  .name .accent {
+    font-family: var(--font-name);
+    font-style: italic;
+    font-weight: 400;
+    color: var(--accent);
+  }
+
+  .tagline {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 18px;
+    color: var(--ink-mute);
+    line-height: 1.3;
+    letter-spacing: -0.005em;
+    max-width: 105mm;
+  }
+
+  .id-bottom { margin-top: auto; }
+  .contact-block .eyebrow {
+    color: var(--ink-faint);
+    margin-bottom: 3mm;
+  }
+  .contact-block .line {
+    font-size: 12.5px;
+    color: var(--ink);
+    line-height: 1.55;
+  }
+
+  /* ============ FILMO ============ */
+  .section-head { margin-bottom: 5mm; }
+  .section-head .eyebrow { margin-bottom: 3mm; }
+  .section-title {
+    font-family: var(--font-display);
+    font-size: 38px;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+
+  .filmo { display: flex; flex-direction: column; gap: 7mm; }
+  .year-block {
+    display: grid;
+    grid-template-columns: 26mm 1fr;
+    gap: 7mm;
+    align-items: start;
+  }
+  .year-label {
+    font-family: var(--font-display);
+    font-size: 22px;
+    color: var(--accent);
+    padding-top: 1mm;
+    letter-spacing: -0.01em;
+    line-height: 1;
+  }
+  .year-label.mute {
+    color: var(--ink-faint);
+    font-size: 15px;
+    font-style: italic;
+    line-height: 1.2;
+  }
+  .year-entries { display: flex; flex-direction: column; gap: 4mm; }
+
+  .entry {
+    display: grid;
+    grid-template-columns: 34mm 1fr;
+    gap: 5mm;
+    padding-bottom: 3.5mm;
+    border-bottom: 0.5px solid var(--line);
+    align-items: baseline;
+  }
+  .entry:last-child { border-bottom: none; }
+
+  .entry-role {
+    font-family: 'Inter', sans-serif;
+    font-size: 10.5px;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    letter-spacing: 0.18em;
+    font-weight: 500;
+  }
+  .entry-content { display: flex; flex-direction: column; gap: 1mm; }
+
+  .entry-title {
+    font-family: var(--font-display);
+    font-size: 20px;
+    color: var(--ink);
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+  }
+  .entry-title .type {
+    font-family: var(--font-display);
+    font-style: italic;
+    color: var(--ink-faint);
+    font-size: 15px;
+    margin-left: 4px;
+  }
+  .entry-meta {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 14px;
+    color: var(--ink-mute);
+    line-height: 1.35;
+    letter-spacing: -0.005em;
+  }
+
+  .figurations-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5mm 7mm;
+  }
+  .fig-item {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 13.5px;
+    color: var(--ink-mute);
+    line-height: 1.35;
+    padding-bottom: 2mm;
+    border-bottom: 0.5px solid var(--line);
+    letter-spacing: -0.005em;
+  }
+  .fig-item .fig-title {
+    font-family: var(--font-display);
+    font-style: normal;
+    color: var(--ink);
+    font-size: 15px;
+  }
+
+  /* ============ BOTTOM ============ */
+  .bottom-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 10mm;
+    padding-top: 6mm;
+    border-top: 0.5px solid var(--line-strong);
+  }
+
+  .formation .entry-title { font-size: 18px; margin-bottom: 1mm; }
+  .formation .entry-meta { margin-bottom: 1.5mm; }
+  .formation .entry-year {
+    font-family: 'Inter', sans-serif;
+    font-size: 10.5px;
+    color: var(--accent);
+    letter-spacing: 0.18em;
+    font-weight: 500;
+    text-transform: uppercase;
+  }
+
+  .skills-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3mm 7mm;
+  }
+  .skill-row {
+    display: grid;
+    grid-template-columns: 22mm 1fr;
+    gap: 3mm;
+    align-items: baseline;
+    padding-bottom: 2.5mm;
+    border-bottom: 0.5px solid var(--line);
+  }
+  .skill-label {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    color: var(--ink-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-weight: 500;
+  }
+  .skill-value {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 15px;
+    color: var(--ink-mute);
+    line-height: 1.35;
+  }
+
+  /* ============ FOOTER ============ */
+  .cv-footer {
+    margin-top: auto;
+    padding-top: 6mm;
+    border-top: 0.5px solid var(--line-strong);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+  .footer-left .eyebrow { margin-bottom: 2mm; }
+  .footer-url {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 26px;
+    color: var(--accent);
+    letter-spacing: -0.015em;
+  }
+  .footer-right {
+    text-align: right;
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    color: var(--ink-faint);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    line-height: 1.6;
+    font-weight: 500;
+  }
+
+  /* ============ TOOLBAR (mode édit) ============ */
+  .edit-toolbar {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    width: 280px;
+    max-height: calc(100vh - 32px);
+    background: rgba(26, 20, 16, 0.97);
+    color: var(--ink);
+    border: 0.5px solid var(--line-strong);
+    border-radius: 6px;
+    z-index: 1000;
+    font-family: 'Inter', sans-serif;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+    backdrop-filter: blur(8px);
+    transition: transform 0.25s ease;
+    display: flex;
+    flex-direction: column;
+  }
+  .edit-toolbar.collapsed { transform: translateX(calc(100% + 24px)); }
+  .edit-toolbar-scroll {
+    overflow-y: auto;
+    padding: 14px 14px 4px;
+    flex: 1;
+    min-height: 0;
+  }
+  .edit-toolbar-scroll::-webkit-scrollbar { width: 6px; }
+  .edit-toolbar-scroll::-webkit-scrollbar-track { background: transparent; }
+  .edit-toolbar-scroll::-webkit-scrollbar-thumb {
+    background: rgba(201, 168, 124, 0.3);
+    border-radius: 3px;
+  }
+  .edit-toolbar-scroll::-webkit-scrollbar-thumb:hover { background: rgba(201, 168, 124, 0.5); }
+  .edit-toolbar h3 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 16px;
+    margin-bottom: 2px;
+    color: var(--accent);
+  }
+  .edit-toolbar .sub {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--ink-faint);
+    margin-bottom: 10px;
+  }
+  .edit-toolbar .group {
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 0.5px solid var(--line);
+  }
+  .edit-toolbar .group:last-of-type { border-bottom: none; margin-bottom: 0; }
+  .edit-toolbar label {
+    display: block;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--ink-faint);
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+  .edit-toolbar .font-btns {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 4px;
+  }
+  .edit-toolbar .font-btn {
+    background: transparent;
+    color: var(--ink-mute);
+    border: 0.5px solid var(--line);
+    padding: 6px 4px;
+    font-size: 9.5px;
+    cursor: pointer;
+    border-radius: 3px;
+    text-align: center;
+    transition: all 0.15s ease;
+    line-height: 1.2;
+  }
+  .edit-toolbar .font-btn:hover { color: var(--ink); border-color: var(--accent); }
+  .edit-toolbar .font-btn.active {
+    background: var(--accent);
+    color: var(--bg-deep);
+    border-color: var(--accent);
+    font-weight: 600;
+  }
+  .edit-toolbar .font-btn .preview {
+    display: block;
+    font-size: 13px;
+    margin-top: 2px;
+  }
+  .edit-toolbar input[type="range"] {
+    width: 100%;
+    accent-color: var(--accent);
+  }
+  .edit-toolbar .row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 6px;
+  }
+  .edit-toolbar input[type="color"] {
+    width: 36px; height: 26px;
+    border: 0.5px solid var(--line);
+    background: transparent;
+    cursor: pointer;
+    border-radius: 3px;
+    padding: 0;
+  }
+  .edit-toolbar .value {
+    font-size: 11px;
+    color: var(--ink-mute);
+    font-family: 'Inter', sans-serif;
+  }
+  .edit-toolbar .actions {
+    position: sticky;
+    bottom: 0;
+    background: rgba(26, 20, 16, 0.98);
+    border-top: 0.5px solid var(--line-strong);
+    padding: 12px 14px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    backdrop-filter: blur(8px);
+    border-radius: 0 0 6px 6px;
+  }
+  .edit-toolbar .btn {
+    background: transparent;
+    color: var(--ink);
+    border: 0.5px solid var(--line-strong);
+    padding: 9px;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    cursor: pointer;
+    border-radius: 3px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    transition: all 0.15s ease;
+  }
+  .edit-toolbar .btn:hover { border-color: var(--accent); color: var(--accent); }
+  .edit-toolbar .btn.primary {
+    background: var(--accent);
+    color: var(--bg-deep);
+    border-color: var(--accent);
+    grid-column: span 2;
+    padding: 11px;
+    font-weight: 600;
+    font-size: 11px;
+  }
+  .edit-toolbar .btn.primary:hover { background: #E0BE8E; color: var(--bg-deep); }
+  .edit-toolbar .hint-text {
+    font-size: 10px;
+    color: var(--ink-faint);
+    line-height: 1.4;
+    margin-bottom: 10px;
+    font-style: italic;
+  }
+  .edit-toolbar .style-btns {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr) 1.8fr;
+    gap: 6px;
+  }
+  .edit-toolbar .style-btn {
+    background: transparent;
+    color: var(--ink-mute);
+    border: 0.5px solid var(--line);
+    padding: 8px 4px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 3px;
+    font-family: 'DM Serif Display', serif;
+    transition: all 0.15s ease;
+  }
+  .edit-toolbar .style-btn.italic { font-style: italic; }
+  .edit-toolbar .style-btn:hover { color: var(--ink); border-color: var(--accent); }
+  .edit-toolbar .style-btn.small {
+    font-family: 'Inter', sans-serif;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 500;
+  }
+
+  .toggle-btn {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    z-index: 1001;
+    background: var(--accent);
+    color: var(--bg-deep);
+    border: none;
+    padding: 10px 14px;
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 3px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+    display: none;
+  }
+  .edit-toolbar.collapsed ~ .toggle-btn { display: block; }
+
+  .edit-hint {
+    position: fixed;
+    bottom: 16px;
+    left: 16px;
+    background: rgba(201, 168, 124, 0.12);
+    border: 0.5px solid var(--accent);
+    color: var(--accent);
+    padding: 8px 14px;
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    border-radius: 3px;
+    z-index: 999;
+  }
+  .edit-hint b { font-weight: 600; }
+
+  /* ============ PRINT ============ */
+  @page {
+    size: A4 portrait;
+    margin: 0;
+  }
+  @media print {
+    html, body {
+      background: var(--bg-deep) !important;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    .page {
+      margin: 0 !important;
+      box-shadow: none !important;
+    }
+    .edit-toolbar, .toggle-btn, .edit-hint { display: none !important; }
+    [contenteditable]:hover, [contenteditable]:focus {
+      outline: none !important;
+    }
+  }
+</style>
+</head>
+<body>
+  <main class="page" id="cv-page">
+
+    <!-- ====== HEADER ====== -->
+    <header class="cv-header">
+      <div class="photo-wrap">
+        <img src="teddy-cv-comedien.jpg" alt="Teddy Vidal — Comédien" />
+      </div>
+      <div class="identity">
+        <div class="id-top">
+          <div class="eyebrow" contenteditable="true">— Comédien · Paris</div>
+          <h1 class="name" contenteditable="true">Teddy <span class="accent">Vidal</span></h1>
+          <p class="tagline" contenteditable="true">
+            Comédien basé à Paris. Bilingue espagnol, voix médium grave, accent neutre. Polyvalent fiction, publicité, court-métrage.
+          </p>
+        </div>
+        <div class="id-bottom">
+          <div class="contact-block">
+            <div class="eyebrow eyebrow-mute" contenteditable="true">— Contact</div>
+            <div class="line" contenteditable="true">+33 6 58 68 33 72 · t.vidalozzi@gmail.com · vidalozzi.fr</div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ====== FILMOGRAPHIE ====== -->
+    <section class="filmo">
+      <div class="section-head">
+        <div class="eyebrow" contenteditable="true">— Filmographie</div>
+        <h2 class="section-title" contenteditable="true">Rôles &amp; productions.</h2>
+      </div>
+
+      <div class="year-block">
+        <div class="year-label" contenteditable="true">2026</div>
+        <div class="year-entries">
+          <div class="entry">
+            <div class="entry-role" contenteditable="true">Comédien</div>
+            <div class="entry-content">
+              <div class="entry-title" contenteditable="true">RSF <span class="type">— Publicité</span></div>
+              <div class="entry-meta" contenteditable="true">Prod · Si maman me voyait</div>
+            </div>
+          </div>
+          <div class="entry">
+            <div class="entry-role" contenteditable="true">Comédien</div>
+            <div class="entry-content">
+              <div class="entry-title" contenteditable="true">Toupret <span class="type">— Publicité YouTube</span></div>
+              <div class="entry-meta" contenteditable="true">Prod · Factum</div>
+            </div>
+          </div>
+          <div class="entry">
+            <div class="entry-role" contenteditable="true">Comédien</div>
+            <div class="entry-content">
+              <div class="entry-title" contenteditable="true">Magicien du possible <span class="type">— Court-métrage</span></div>
+              <div class="entry-meta" contenteditable="true">Prod · Greg Guillotin</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="year-block">
+        <div class="year-label" contenteditable="true">2022</div>
+        <div class="year-entries">
+          <div class="entry">
+            <div class="entry-role" contenteditable="true">Comédien</div>
+            <div class="entry-content">
+              <div class="entry-title" contenteditable="true">Nicolas Champagne <span class="type">— Publicité</span></div>
+              <div class="entry-meta" contenteditable="true">Prod · 34K Film</div>
+            </div>
+          </div>
+          <div class="entry">
+            <div class="entry-role" contenteditable="true">Comédien</div>
+            <div class="entry-content">
+              <div class="entry-title" contenteditable="true">PCS MasterCard <span class="type">— Publicité TV + Print</span></div>
+              <div class="entry-meta" contenteditable="true">Prod · THE CABS</div>
+            </div>
+          </div>
+          <div class="entry">
+            <div class="entry-role" contenteditable="true">Silhouette parlante</div>
+            <div class="entry-content">
+              <div class="entry-title" contenteditable="true">Capucine <span class="type">— Série RTL9</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="year-block">
+        <div class="year-label mute" contenteditable="true">2022 · Figurations</div>
+        <div class="figurations-list">
+          <div class="fig-item" contenteditable="true"><span class="fig-title">@venir</span> — Série TF1</div>
+          <div class="fig-item" contenteditable="true"><span class="fig-title">La vie pour de vrai</span> — Film</div>
+          <div class="fig-item" contenteditable="true"><span class="fig-title">Wonderman</span> — Série Netflix</div>
+          <div class="fig-item" contenteditable="true"><span class="fig-title">10 jours encore sans maman</span> — Film</div>
+          <div class="fig-item" contenteditable="true"><span class="fig-title">Dogman</span> — Film (silhouette)</div>
+          <div class="fig-item" contenteditable="true"><span class="fig-title">Les 3 Mousquetaires</span> — Film</div>
+          <div class="fig-item" contenteditable="true"><span class="fig-title">Bendo</span> — Série Netflix</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="bottom-grid">
+      <section class="formation">
+        <div class="section-head"><div class="eyebrow" contenteditable="true">— Formation</div></div>
+        <div class="entry-content">
+          <div class="entry-title" contenteditable="true">Cours de théâtre</div>
+          <div class="entry-meta" contenteditable="true">Marie Bray · Amicale laïque, Brétigny-sur-Orge</div>
+          <div class="entry-year" contenteditable="true">Depuis septembre 2025</div>
+        </div>
+      </section>
+
+      <section class="skills">
+        <div class="section-head"><div class="eyebrow" contenteditable="true">— Compétences</div></div>
+        <div class="skills-grid">
+          <div class="skill-row"><div class="skill-label" contenteditable="true">Langues</div><div class="skill-value" contenteditable="true">FR · ES bilingue · EN</div></div>
+          <div class="skill-row"><div class="skill-label" contenteditable="true">Voix</div><div class="skill-value" contenteditable="true">Médium grave · Accent neutre</div></div>
+          <div class="skill-row"><div class="skill-label" contenteditable="true">Sports</div><div class="skill-value" contenteditable="true">Musculation · Boxe anglaise · Tennis · Football</div></div>
+          <div class="skill-row"><div class="skill-label" contenteditable="true">Profil</div><div class="skill-value" contenteditable="true">Athlétique</div></div>
+          <div class="skill-row"><div class="skill-label" contenteditable="true">Permis</div><div class="skill-value" contenteditable="true">B</div></div>
+          <div class="skill-row"><div class="skill-label" contenteditable="true">Autres</div><div class="skill-value" contenteditable="true">DJ</div></div>
+        </div>
+      </section>
+    </div>
+
+    <footer class="cv-footer">
+      <div class="footer-left">
+        <div class="eyebrow" contenteditable="true">— Book complet</div>
+        <div class="footer-url" contenteditable="true">www.vidalozzi.fr</div>
+      </div>
+      <div class="footer-right" contenteditable="true">
+        CV · 2026<br/>
+        Teddy Vidal
+      </div>
+    </footer>
+
+  </main>
+
+  <!-- ====== EDIT TOOLBAR ====== -->
+  <aside class="edit-toolbar" id="toolbar">
+    <div class="edit-toolbar-scroll">
+    <h3>Mode édit</h3>
+    <div class="sub">Modifie tout, imprime en PDF</div>
+
+    <div class="group">
+      <label>Typo — sélection ou global</label>
+      <div class="hint-text">Sélectionne un mot pour ne le changer que lui. Sinon ça change tout.</div>
+      <div class="font-btns">
+        <button class="font-btn active" data-font="'DM Serif Display', serif">DM Serif<span class="preview" style="font-family:'DM Serif Display',serif">Teddy <i>Vidal</i></span></button>
+        <button class="font-btn" data-font="'Bodoni Moda', serif">Bodoni<span class="preview" style="font-family:'Bodoni Moda',serif">Teddy <i>Vidal</i></span></button>
+        <button class="font-btn" data-font="'Playfair Display', serif">Playfair<span class="preview" style="font-family:'Playfair Display',serif">Teddy <i>Vidal</i></span></button>
+        <button class="font-btn" data-font="'Cormorant Garamond', serif">Cormorant<span class="preview" style="font-family:'Cormorant Garamond',serif">Teddy <i>Vidal</i></span></button>
+        <button class="font-btn" data-font="'Instrument Serif', serif">Instrument<span class="preview" style="font-family:'Instrument Serif',serif">Teddy <i>Vidal</i></span></button>
+        <button class="font-btn" data-font="'Inter', sans-serif">Inter<span class="preview" style="font-family:'Inter',sans-serif;font-weight:500">Teddy <i>Vidal</i></span></button>
+      </div>
+    </div>
+
+    <div class="group">
+      <label>Style — sur sélection</label>
+      <div class="style-btns">
+        <button class="style-btn" data-cmd="bold" title="Gras">B</button>
+        <button class="style-btn italic" data-cmd="italic" title="Italique">I</button>
+        <button class="style-btn" data-cmd="underline" title="Souligné">U</button>
+        <button class="style-btn small" id="clearFormatBtn" title="Effacer le formatage de la sélection">Effacer style</button>
+      </div>
+    </div>
+
+    <div class="group">
+      <label>Taille — sélection ou nom</label>
+      <div class="row">
+        <input type="range" id="sizeSlider" min="8" max="140" value="82" step="1" />
+        <span class="value" id="sizeValue">82px</span>
+      </div>
+      <div class="hint-text">Sélectionne du texte pour changer sa taille. Sinon ça change le nom.</div>
+    </div>
+
+    <div class="group">
+      <label>Couleur — sélection</label>
+      <div class="row">
+        <span class="value">Couleur du texte sélectionné</span>
+        <input type="color" id="selColor" value="#C9A87C" />
+      </div>
+    </div>
+
+    <div class="group">
+      <label>Couleurs globales</label>
+      <div class="row">
+        <span class="value">Fond</span>
+        <input type="color" id="bgColor" value="#1A1410" />
+      </div>
+      <div class="row">
+        <span class="value">Accent doré</span>
+        <input type="color" id="accentColor" value="#C9A87C" />
+      </div>
+      <div class="row">
+        <span class="value">Texte global</span>
+        <input type="color" id="inkColor" value="#F2EBDD" />
+      </div>
+    </div>
+
+    </div><!-- /edit-toolbar-scroll -->
+
+    <div class="actions">
+      <button class="btn primary" id="printBtn">📥 Imprimer en PDF</button>
+      <button class="btn" id="resetBtn">Reset total</button>
+      <button class="btn" id="hideBtn">Masquer</button>
+    </div>
+  </aside>
+
+  <button class="toggle-btn" id="showBtn">⚙ Édit</button>
+
+  <div class="edit-hint">
+    <b>Astuce :</b> clique sur n'importe quel texte pour le modifier directement.
+  </div>
+
+<script>
+  const root = document.documentElement;
+  const toolbar = document.getElementById('toolbar');
+  const showBtn = document.getElementById('showBtn');
+  const page = document.querySelector('main.page');
+
+  // ===== Préserver la sélection quand on clique sur la toolbar =====
+  let lastSelection = null;
+  function saveSelection() {
+    const sel = window.getSelection();
+    if (sel && sel.rangeCount > 0 && !sel.isCollapsed) {
+      lastSelection = sel.getRangeAt(0).cloneRange();
+    }
+  }
+  function restoreSelection() {
+    if (!lastSelection) return false;
+    const sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(lastSelection);
+    return true;
+  }
+  function hasActiveSelection() {
+    const sel = window.getSelection();
+    return (sel && sel.rangeCount > 0 && !sel.isCollapsed && sel.toString().trim().length > 0);
+  }
+
+  // Capture la sélection dès qu'elle change dans la page
+  document.addEventListener('selectionchange', () => {
+    if (hasActiveSelection()) saveSelection();
+  });
+
+  // Empêche le blur du contenteditable quand on clique sur la toolbar
+  toolbar.addEventListener('mousedown', (e) => {
+    if (e.target.tagName !== 'INPUT') e.preventDefault();
+  });
+
+  // ===== Polices =====
+  document.querySelectorAll('.font-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const font = btn.dataset.font;
+      const hadSel = restoreSelection();
+
+      if (hadSel && hasActiveSelection()) {
+        // Appliquer à la sélection
+        document.execCommand('styleWithCSS', false, true);
+        document.execCommand('fontName', false, font.replace(/['"]/g, '').split(',')[0].trim());
+        // execCommand génère parfois sans la fallback : on cible et on met la vraie valeur
+        document.querySelectorAll('[style*="font-family"]').forEach(el => {
+          const family = el.style.fontFamily;
+          if (family && !family.includes(',')) el.style.fontFamily = font;
+        });
+      } else {
+        // Appliquer globalement
+        document.querySelectorAll('.font-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        root.style.setProperty('--font-name', font);
+        root.style.setProperty('--font-display', font);
+      }
+      saveState();
+    });
+  });
+
+  // ===== Style sur sélection (Gras / Italique / Souligné / Effacer) =====
+  document.querySelectorAll('.style-btn[data-cmd]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const hadSel = restoreSelection();
+      if (!hadSel) return;
+      document.execCommand('styleWithCSS', false, true);
+      document.execCommand(btn.dataset.cmd, false, null);
+      saveState();
+    });
+  });
+
+  document.getElementById('clearFormatBtn').addEventListener('click', () => {
+    const hadSel = restoreSelection();
+    if (!hadSel) return;
+    document.execCommand('removeFormat', false, null);
+    // Retire aussi les fontFamily inline dans la range
+    const sel = window.getSelection();
+    if (sel.rangeCount) {
+      const range = sel.getRangeAt(0);
+      const frag = range.cloneContents();
+      frag.querySelectorAll('[style*="font-family"]').forEach(el => el.style.fontFamily = '');
+    }
+    saveState();
+  });
+
+  // ===== Taille (sélection ou nom global) =====
+  const sizeSlider = document.getElementById('sizeSlider');
+  const sizeValue = document.getElementById('sizeValue');
+  sizeSlider.addEventListener('input', () => {
+    const px = sizeSlider.value + 'px';
+    sizeValue.textContent = px;
+    const hadSel = restoreSelection();
+    if (hadSel && hasActiveSelection()) {
+      // Wrap selection dans un span avec font-size
+      const sel = window.getSelection();
+      const range = sel.getRangeAt(0);
+      const span = document.createElement('span');
+      span.style.fontSize = px;
+      try {
+        span.appendChild(range.extractContents());
+        range.insertNode(span);
+        // re-sélectionner pour pouvoir continuer à ajuster
+        sel.removeAllRanges();
+        const newRange = document.createRange();
+        newRange.selectNodeContents(span);
+        sel.addRange(newRange);
+        lastSelection = newRange.cloneRange();
+      } catch(e) { /* ignore si range invalide */ }
+    } else {
+      root.style.setProperty('--name-size', px);
+    }
+    saveState();
+  });
+
+  // ===== Couleur sur sélection =====
+  document.getElementById('selColor').addEventListener('input', e => {
+    const hadSel = restoreSelection();
+    if (!hadSel) return;
+    document.execCommand('styleWithCSS', false, true);
+    document.execCommand('foreColor', false, e.target.value);
+    saveState();
+  });
+
+  // ===== Couleurs globales =====
+  document.getElementById('bgColor').addEventListener('input', e => {
+    root.style.setProperty('--bg-deep', e.target.value);
+    saveState();
+  });
+  document.getElementById('accentColor').addEventListener('input', e => {
+    root.style.setProperty('--accent', e.target.value);
+    saveState();
+  });
+  document.getElementById('inkColor').addEventListener('input', e => {
+    root.style.setProperty('--ink', e.target.value);
+    saveState();
+  });
+
+  // ===== Reset total =====
+  document.getElementById('resetBtn').addEventListener('click', () => {
+    if (!confirm('Annuler toutes tes modifications ?')) return;
+    try { localStorage.removeItem(STORAGE_KEY); } catch(e) {}
+    location.reload();
+  });
+
+  // ===== Masquer / Afficher =====
+  document.getElementById('hideBtn').addEventListener('click', () => {
+    toolbar.classList.add('collapsed');
+  });
+  showBtn.addEventListener('click', () => {
+    toolbar.classList.remove('collapsed');
+  });
+
+  // ===== Impression =====
+  document.getElementById('printBtn').addEventListener('click', () => {
+    toolbar.classList.add('collapsed');
+    setTimeout(() => window.print(), 150);
+  });
+
+  // ===== Sauvegarde locale =====
+  const STORAGE_VERSION = 'v3';
+  const STORAGE_KEY = 'cv-comedien-state-' + STORAGE_VERSION;
+  try {
+    Object.keys(localStorage).forEach(k => {
+      if (k.startsWith('cv-comedien-state') && k !== STORAGE_KEY) localStorage.removeItem(k);
+    });
+  } catch(e) {}
+  function saveState() {
+    const state = {
+      html: document.querySelector('main.page').innerHTML,
+      bg: getComputedStyle(root).getPropertyValue('--bg-deep').trim(),
+      accent: getComputedStyle(root).getPropertyValue('--accent').trim(),
+      ink: getComputedStyle(root).getPropertyValue('--ink').trim(),
+      font: getComputedStyle(root).getPropertyValue('--font-name').trim(),
+      size: getComputedStyle(root).getPropertyValue('--name-size').trim(),
+    };
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch(e) {}
+  }
+  function loadState() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return;
+      const state = JSON.parse(raw);
+      if (state.html) document.querySelector('main.page').innerHTML = state.html;
+      if (state.bg) root.style.setProperty('--bg-deep', state.bg);
+      if (state.accent) { root.style.setProperty('--accent', state.accent); document.getElementById('accentColor').value = state.accent; }
+      if (state.ink) { root.style.setProperty('--ink', state.ink); document.getElementById('inkColor').value = state.ink; }
+      if (state.font) root.style.setProperty('--font-name', state.font);
+      if (state.font) root.style.setProperty('--font-display', state.font);
+      if (state.size) { root.style.setProperty('--name-size', state.size); const px = parseInt(state.size); if (px) { sizeSlider.value = px; sizeValue.textContent = px + 'px'; } }
+    } catch(e) {}
+  }
+  loadState();
+
+  // Auto-save sur edit
+  document.querySelector('main.page').addEventListener('input', () => saveState());
+  document.querySelectorAll('input').forEach(i => i.addEventListener('change', saveState));
+  document.querySelectorAll('.font-btn').forEach(b => b.addEventListener('click', () => setTimeout(saveState, 50)));
+
+  // Click outside : sortir du mode édit
+  document.addEventListener('mousedown', (e) => {
+    const inEditable = e.target.closest('[contenteditable="true"]');
+    const inToolbar = e.target.closest('.edit-toolbar') || e.target.closest('.toggle-btn');
+    if (!inEditable && !inToolbar) {
+      if (document.activeElement && document.activeElement.blur) {
+        document.activeElement.blur();
+      }
+      const sel = window.getSelection ? window.getSelection() : null;
+      if (sel && sel.removeAllRanges) sel.removeAllRanges();
+    }
+  });
+
+  // Escape : sortir du mode édit
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      if (document.activeElement && document.activeElement.blur) {
+        document.activeElement.blur();
+      }
+      const sel = window.getSelection ? window.getSelection() : null;
+      if (sel && sel.removeAllRanges) sel.removeAllRanges();
+    }
+  });
+</script>
+</body>
+</html>
