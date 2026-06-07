@@ -20,7 +20,7 @@ function TalentHero({ t }) {
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 40, alignItems: "flex-end" }}>
           <p style={{ fontSize: 18, lineHeight: 1.55, color: "var(--ink-mute)", maxWidth: 520 }}>{t.talent.heroSub}</p>
           <div style={{ display: "flex", justifyContent: "flex-end", gap: 8 }}>
-            <a className="btn-ghost" href="#press" style={{ display: "inline-flex" }}>↓ {t.talent.pressKit}</a>
+            <a className="btn-ghost" href="assets/cv/cv-teddy-vidal-comedien-2026.pdf" download="CV-Teddy-Vidal-Comedien-2026.pdf" style={{ display: "inline-flex" }}>↓ {t.talent.pressKit}</a>
           </div>
         </div>
       </div>
