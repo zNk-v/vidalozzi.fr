@@ -181,7 +181,7 @@ function HomeAbout({ t }) {
 function HomeShowreel({ t }) {
   const [interactive, setInteractive] = React.useState(false);
   return (
-    <section style={{ padding: "0 0 120px", background: "linear-gradient(to bottom, var(--bg-deep) 0%, var(--bg-deep) 75%, var(--bg) 100%)" }}>
+    <section style={{ padding: 0, background: "var(--bg-deep)" }}>
       <div className="wrap">
         <div
           onMouseLeave={() => setInteractive(false)}
@@ -202,6 +202,7 @@ function HomeShowreel({ t }) {
           }
         </div>
       </div>
+      <div style={{ height: 120, background: "linear-gradient(to bottom, var(--bg-deep) 0%, var(--bg) 100%)" }} />
     </section>);
 
 }
@@ -212,7 +213,7 @@ function HomePage({ t }) {
     <>
       <HomeHero t={t} />
       <HomeSplit t={t} />
-      <BrandsMarquee label={t.home.brandsLabel} />
+      <BrandsMarquee label={t.home.brandsLabel} noBorderBottom />
       <HomeShowreel t={t} />
       <HomeAbout t={t} />
       <Testimonials t={t} />

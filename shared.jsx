@@ -194,7 +194,7 @@ function BrandLogo({ brand }) {
 
 }
 
-function BrandsMarquee({ label }) {
+function BrandsMarquee({ label, noBorderBottom }) {
   const items = window.BRANDS;
   const Track = () =>
   <div className="marquee-track">
@@ -204,7 +204,7 @@ function BrandsMarquee({ label }) {
     </div>;
 
   return (
-    <section style={{ padding: "72px 0", borderTop: "0.5px solid var(--line)", borderBottom: "0.5px solid var(--line)", background: "var(--bg-deep)" }}>
+    <section style={{ padding: "72px 0", borderTop: "0.5px solid var(--line)", borderBottom: noBorderBottom ? "0" : "0.5px solid var(--line)", background: "var(--bg-deep)" }}>
       <div className="wrap" style={{ marginBottom: 36 }}>
         <span className="eyebrow">— {label}</span>
       </div>
