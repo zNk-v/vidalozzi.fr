@@ -217,11 +217,17 @@ function BrandsMarquee({ label }) {
 
 // ── Témoignages ─────────────────────────────────────────────────────
 function Testimonials({ t }) {
+  const PER_PAGE = 4;
   const [idx, setIdx] = useState(0);
   const [isMobile, setIsMobile] = useState(() =>
     typeof window !== "undefined" && window.matchMedia("(max-width: 860px)").matches);
   const trackRef = useRef(null);
   const items = t.testimonials;
+  const pageCount = Math.max(1, Math.ceil(items.length / PER_PAGE));
+  const total = isMobile ? items.length : pageCount;
+  const visibleItems = isMobile ? items : items.slice(idx * PER_PAGE, (idx + 1) * PER_PAGE);
+
+  useEffect(() => { if (idx >= total) setIdx(0); }, [isMobile, total]);
 
   useEffect(() => {
     const mq = window.matchMedia("(max-width: 860px)");
@@ -257,7 +263,7 @@ function Testimonials({ t }) {
   }, [isMobile]);
 
   const goTo = (newIdx) => {
-    const n = (newIdx + items.length) % items.length;
+    const n = (newIdx + total) % total;
     setIdx(n);
     const track = trackRef.current;
     if (track && isMobile && track.children[n]) {
@@ -276,22 +282,24 @@ function Testimonials({ t }) {
           </div>
           <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
             <span className="mono testimonials-counter" style={{ fontSize: 11, color: "var(--ink-faint)", marginRight: 6, fontVariantNumeric: "tabular-nums" }}>
-              {String(idx + 1).padStart(2, "0")} / {String(items.length).padStart(2, "0")}
+              {String(idx + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
             </span>
             <button className="nav-cta" onClick={() => goTo(idx - 1)} aria-label="Previous">←</button>
             <button className="nav-cta" onClick={() => goTo(idx + 1)} aria-label="Next">→</button>
           </div>
         </div>
         <div ref={trackRef} className="testimonials-grid">
-          {items.map((it, i) =>
-          <div key={i} className={"lift testimonial-card" + (i === idx ? " is-active" : "")} style={{
-            padding: 40,
-            border: "0.5px solid var(--line-strong)",
-            borderRadius: 4,
-            background: i === idx ? "var(--bg-elev)" : "transparent",
-            opacity: i === idx ? 1 : 0.5,
-            transition: "all 0.3s"
-          }}>
+          {visibleItems.map((it, i) => {
+            const mobileActive = isMobile && i === idx;
+            return (
+            <div key={(isMobile ? "m-" : "p-" + idx + "-") + i} className={"lift testimonial-card" + (mobileActive ? " is-active" : "")} style={{
+              padding: 40,
+              border: "0.5px solid var(--line-strong)",
+              borderRadius: 4,
+              background: isMobile ? (mobileActive ? "var(--bg-elev)" : "transparent") : "var(--bg-elev)",
+              opacity: isMobile ? (mobileActive ? 1 : 0.5) : 1,
+              transition: "all 0.3s"
+            }}>
               <div style={{ fontFamily: "Bodoni Moda, serif", fontSize: 48, lineHeight: 0.5, color: "var(--accent)", marginBottom: 16 }}>"</div>
               <p style={{ fontSize: 19, lineHeight: 1.5, color: "var(--ink)", marginBottom: 28, fontFamily: "Instrument Serif, serif", fontStyle: "italic", letterSpacing: "0.005em" }}>
                 {it.q}
@@ -301,11 +309,13 @@ function Testimonials({ t }) {
                 const wrapProps = it.url
                   ? { href: it.url, target: "_blank", rel: "noopener noreferrer", style: { borderTop: "0.5px solid var(--line)", paddingTop: 16, display: "flex", alignItems: "center", gap: 16, textDecoration: "none", color: "inherit" } }
                   : { style: { borderTop: "0.5px solid var(--line)", paddingTop: 16, display: "flex", alignItems: "center", gap: 16 } };
+                const logoBg = it.logoBg || "var(--ivory, #F4EFE6)";
+                const logoScale = it.logoScale || "72%";
                 return (
                   <Wrap {...wrapProps}>
-                    <div className="ph ph-portrait" style={{ width: 44, height: 44, borderRadius: "50%", overflow: "hidden", background: it.logo ? "var(--ivory, #F4EFE6)" : undefined, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                    <div className="ph ph-portrait" style={{ width: 44, height: 44, borderRadius: "50%", overflow: "hidden", background: it.logo ? logoBg : undefined, display: "flex", alignItems: "center", justifyContent: "center" }}>
                       {it.logo
-                        ? <img src={it.logo} alt={it.a} style={{ width: "72%", height: "72%", objectFit: "contain" }} />
+                        ? <img src={it.logo} alt={it.a} style={{ width: logoScale, height: logoScale, objectFit: "contain" }} />
                         : <span className="ph-coords" style={{ display: "none" }}></span>}
                     </div>
                     <div>
@@ -316,7 +326,8 @@ function Testimonials({ t }) {
                 );
               })()}
             </div>
-          )}
+            );
+          })}
         </div>
         {isMobile && (
           <div className="testimonials-dots" aria-hidden="true">
