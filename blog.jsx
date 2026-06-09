@@ -168,6 +168,33 @@ function BlogPage({ t, lang }) {
   );
 }
 
+// ── Parseur de liens Markdown inline [texte](url) → JSX ─────────────
+// Permet d'écrire des liens dans blog-data.js sans casser la structure JSON.
+// Lien interne (relatif ou /chemin) : ouvre dans l'onglet courant.
+// Lien externe (http*) : nouvelle fenêtre + rel sécurisé.
+function renderInline(text) {
+  if (!text || typeof text !== "string") return text;
+  const re = /\[([^\]]+)\]\(([^)]+)\)/g;
+  const out = [];
+  let last = 0;
+  let m;
+  let key = 0;
+  while ((m = re.exec(text)) !== null) {
+    if (m.index > last) out.push(text.slice(last, m.index));
+    const label = m[1];
+    const href = m[2];
+    const isExternal = /^https?:\/\//i.test(href);
+    out.push(
+      isExternal
+        ? <a key={key++} href={href} target="_blank" rel="noopener noreferrer">{label}</a>
+        : <a key={key++} href={href}>{label}</a>
+    );
+    last = m.index + m[0].length;
+  }
+  if (last < text.length) out.push(text.slice(last));
+  return out.length === 1 && typeof out[0] === "string" ? text : out;
+}
+
 // ── Rendu d'un bloc de corps d'article ──────────────────────────────
 function ArticleBlock({ block }) {
   if (block.type === "h2") return <h2 className="display article-h2">{block.text}</h2>;
@@ -178,12 +205,12 @@ function ArticleBlock({ block }) {
     </blockquote>
   );
   if (block.type === "ul") return (
-    <ul className="article-list">{block.items.map((it, i) => <li key={i}>{it}</li>)}</ul>
+    <ul className="article-list">{block.items.map((it, i) => <li key={i}>{renderInline(it)}</li>)}</ul>
   );
   if (block.type === "ol") return (
-    <ol className="article-list article-list-ol">{block.items.map((it, i) => <li key={i}>{it}</li>)}</ol>
+    <ol className="article-list article-list-ol">{block.items.map((it, i) => <li key={i}>{renderInline(it)}</li>)}</ol>
   );
-  return <p className="article-p">{block.text}</p>;
+  return <p className="article-p">{renderInline(block.text)}</p>;
 }
 
 // ── Lecteur d'article ───────────────────────────────────────────────
