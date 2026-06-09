@@ -418,6 +418,13 @@ html[data-editmode="0"] .brand-edit-controls { display: none !important; }
 .lift.spotlight-tilt:hover {
   transform: perspective(900px) rotateX(var(--rx)) rotateY(var(--ry)) translateY(-3px);
 }
+/* Variante : halo conservé (via ::after + --mx/--my), tilt 3D neutralisé. */
+.lift.spotlight-tilt.spotlight-no-tilt {
+  transform: none;
+}
+.lift.spotlight-tilt.spotlight-no-tilt:hover {
+  transform: translateY(-3px);
+}
 /* Désactivation tactile + reduce-motion */
 @media (hover: none) {
   .spotlight-tilt {

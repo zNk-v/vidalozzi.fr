@@ -438,22 +438,66 @@ function UgcAddons({ t }) {
   );
 }
 
+function AudienceSwitch({ value, onChange, labels }) {
+  const isAgency = value === "agency";
+  const labelStyle = (active) => ({
+    background: "transparent", border: 0, padding: 0, cursor: "pointer",
+    color: active ? "var(--accent)" : "var(--ink-faint)",
+    fontFamily: "JetBrains Mono, monospace", fontSize: 12,
+    letterSpacing: "0.18em", textTransform: "uppercase",
+    fontWeight: active ? 600 : 400,
+    transition: "color 200ms ease",
+  });
+  return (
+    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: 18, marginTop: -16, marginBottom: 40 }}>
+      <button type="button" onClick={() => onChange("brand")} style={labelStyle(!isAgency)}>{labels.brand}</button>
+      <button
+        type="button"
+        role="switch"
+        aria-checked={isAgency}
+        aria-label={`${labels.brand} / ${labels.agency}`}
+        onClick={() => onChange(isAgency ? "brand" : "agency")}
+        style={{
+          position: "relative", width: 52, height: 28, borderRadius: 999,
+          background: isAgency ? "var(--accent)" : "rgba(255,255,255,0.06)",
+          border: "0.5px solid var(--line-strong)", cursor: "pointer", padding: 0,
+          transition: "background 200ms ease",
+        }}
+      >
+        <span style={{
+          position: "absolute", top: 2, left: isAgency ? 25 : 2,
+          width: 22, height: 22, borderRadius: 999,
+          background: isAgency ? "var(--bg-deep)" : "var(--ink)",
+          transition: "left 220ms cubic-bezier(0.4, 0, 0.2, 1)",
+        }} />
+      </button>
+      <button type="button" onClick={() => onChange("agency")} style={labelStyle(isAgency)}>{labels.agency}</button>
+    </div>
+  );
+}
+
 function UgcPacks({ t }) {
+  const [audience, setAudience] = React.useState("brand");
+  const isBrand = audience === "brand";
+  const packs = isBrand ? t.ugc.packs : t.ugc.packsAgency;
+  const head = isBrand ? t.ugc.packsHead : t.ugc.packsHeadAgency;
+  const single = packs.length === 1;
   return (
     <section style={{ background: "var(--bg-deep)", borderTop: "0.5px solid var(--line)" }}>
       <div className="wrap">
         <div className="section-head">
           <div>
             <div className="eyebrow" style={{ marginBottom: 16 }}>— {t.ugc.packsLabel}</div>
-            <h2 className="display">{t.ugc.packsHead}</h2>
+            <h2 className="display">{head}</h2>
           </div>
         </div>
-        <div className="mobile-carousel" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16 }}>
-          {t.ugc.packs.map((p, i) => (            <div key={i} className="lift spotlight-tilt pack-card" style={{
+        <AudienceSwitch value={audience} onChange={setAudience} labels={t.ugc.audienceLabel} />
+        <div className="mobile-carousel" style={{ display: "grid", gridTemplateColumns: single ? "minmax(0, 560px)" : "repeat(3, 1fr)", gap: 16, justifyContent: single ? "center" : "stretch" }}>
+          {packs.map((p, i) => (            <div key={i} className={`lift spotlight-tilt pack-card${single ? " spotlight-no-tilt" : ""}`} style={{
               padding: 32,
-              border: p.featured ? "0.5px solid var(--accent)" : "0.5px solid var(--line-strong)",
+              border: (p.featured || single) ? "0.5px solid var(--accent)" : "0.5px solid var(--line-strong)",
               borderRadius: 4,
-              background: p.featured ? "linear-gradient(180deg, rgba(201,168,124,0.06), rgba(14,11,8,0))" : "transparent",
+              background: (p.featured || single) ? "linear-gradient(180deg, rgba(201,168,124,0.06), rgba(14,11,8,0))" : "transparent",
               position: "relative",
               minHeight: 480,
               display: "flex", flexDirection: "column",
@@ -463,7 +507,7 @@ function UgcPacks({ t }) {
                   <span className="tag-dot" style={{ background: "var(--bg-deep)" }} />{t.ugc.featuredLabel}
                 </span>
               )}
-              <div className="display" style={{ fontSize: 14, color: p.featured ? "var(--accent)" : "var(--ink-faint)", textTransform: "uppercase", letterSpacing: "0.16em", fontFamily: "JetBrains Mono", marginBottom: 16 }}>
+              <div className="display" style={{ fontSize: 14, color: (p.featured || single) ? "var(--accent)" : "var(--ink-faint)", textTransform: "uppercase", letterSpacing: "0.16em", fontFamily: "JetBrains Mono", marginBottom: 16 }}>
                 {String(i + 1).padStart(2, "0")} · {p.name.toUpperCase()}
               </div>
               <h3 className="display" style={{ fontSize: 56, marginBottom: 8 }}>{p.name}</h3>
@@ -472,7 +516,10 @@ function UgcPacks({ t }) {
               <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: 10, fontSize: 13, marginBottom: p.footer ? 20 : 32, flex: 1 }}>
                 {p.features.map((f, j) => (
                   <li key={j} style={{ display: "flex", gap: 12, alignItems: "flex-start", color: "var(--ink-mute)" }}>
-                    <span style={{ color: "var(--accent)", marginTop: 2 }}>+</span>{f}
+                    <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true" style={{ marginTop: 4, flexShrink: 0, color: "var(--accent)" }}>
+                      <path d="M2 6.5 L4.8 9.2 L10 3.5" stroke="currentColor" strokeWidth="1.25" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                    <span style={{ lineHeight: 1.55 }}>{f}</span>
                   </li>
                 ))}
               </ul>
@@ -481,13 +528,13 @@ function UgcPacks({ t }) {
                   {p.footer}
                 </p>
               )}
-              <a className={p.featured ? "btn-primary" : "btn-ghost"} href="https://calendly.com/vidalozzi" style={{ justifyContent: "space-between" }}>
+              <a className={(p.featured || single) ? "btn-primary" : "btn-ghost"} href="https://calendly.com/vidalozzi" style={{ alignSelf: "center" }}>
                 {t.book}<span>→</span>
               </a>
             </div>
           ))}
         </div>
-        <UgcAddons t={t} />
+        {isBrand && <UgcAddons t={t} />}
       </div>
     </section>
   );

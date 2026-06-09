@@ -48,6 +48,8 @@ window.COPY = {
       ],
       packsLabel: "Packs",
       packsHead: "Trois formules. Une exécution.",
+      packsHeadAgency: "Sur mesure. Sur devis.",
+      audienceLabel: { brand: "Marque", agency: "Agence" },
       featuredLabel: "Le plus choisi",
       addonsLabel: "Add-on",
       addons: [
@@ -67,6 +69,9 @@ window.COPY = {
         { name: "Essentiel", price: "À partir de 390€", desc: "Le pack d'entrée. Vous arrivez avec votre script, je m'occupe du reste.", features: ["1 vidéo (15-60s), format vertical", "Script fourni par la marque", "Tournage avec équipement pro (caméra + micro)", "Montage selon votre charte", "1 retouche incluse", "Droits organique 3 mois (vos réseaux)", "Livraison sous 7 jours ouvrés"], footer: "Ajoutez les options selon votre besoin (droits ads, scripts, hooks, rush…) via la grille d'add-ons ci-dessous." },
         { name: "Performance", price: "À partir de 990€", desc: "Concept, scripts et production. Volume + tests créatifs pour vraiment performer.", features: ["3 vidéos (15-60s), format vertical", "Concept créatif + scripts rédigés par mes soins", "Multi-hooks A/B (2 hooks par vidéo)", "1 retouche par vidéo incluse", "Droits paid 6 mois inclus (Meta, TikTok, YouTube)", "Livraison sous 10 jours ouvrés"], footer: "Soit 330€ par vidéo, droits ads inclus. Idéal pour lancer une campagne avec testing créatif.", featured: true },
         { name: "Campagne", price: "Sur devis", desc: "Un partenariat complet, pensé pour performer en continu.", features: ["5+ vidéos premium (15-60s)", "Voix-off française", "Brief stratégique (angles, cibles, calendrier de diffusion)", "Whitelisting Meta inclus (1 mois)", "Scripts itératifs sur toute la durée", "Droits paid 12 mois (paid & organique)"] },
+      ],
+      packsAgency: [
+        { name: "Sur mesure", price: "Sur devis", desc: "Tournage sur site adapté au brief de votre client. Devis construit par couches (tournage, droits, options) pour s'aligner sur votre budget paid.", features: ["Forfait demi-journée ou journée sur site (Paris, IDF), déplacement inclus", "Scope cadré par votre brief client (nombre de vidéos, format, durée)", "Droits paid 3 / 6 / 12 mois sur Meta, TikTok et YouTube", "Droits organique modulables (3 mois à illimité, comptes client)", "Options à la carte : montage, whitelisting Meta, déplacement France entière, rush 48 h", "Contrat-cadre partenaire possible : récurrence sur 12 mois, tarif préférentiel"], footer: "Envoyez le brief client par mail. Devis détaillé sous 48 h." },
       ],
       processLabel: "Process",
       processHead: "Comment on travaille.",
@@ -207,6 +212,8 @@ window.COPY = {
       ],
       packsLabel: "Packs",
       packsHead: "Three packs. One execution.",
+      packsHeadAgency: "Tailored. On quote.",
+      audienceLabel: { brand: "Brand", agency: "Agency" },
       featuredLabel: "Most chosen",
       addonsLabel: "Add-on",
       addons: [
@@ -226,6 +233,9 @@ window.COPY = {
         { name: "Essential", price: "From €390", desc: "The entry pack. You come with your script, I handle the rest.", features: ["1 video (15-60s), vertical format", "Script provided by the brand", "Shot with pro equipment (camera + mic)", "Edit matching your brand guidelines", "1 revision included", "Organic rights 3 months (your channels)", "Delivery in 7 business days"], footer: "Add the options that fit your needs (ad rights, scripts, hooks, rush…) via the add-ons grid below." },
         { name: "Performance", price: "From €990", desc: "Concept, scripts and production. Volume + creative testing to truly perform.", features: ["3 videos (15-60s), vertical format", "Creative concept + scripts written by me", "Multi-hooks A/B (2 hooks per video)", "1 revision per video included", "Paid rights 6 months included (Meta, TikTok, YouTube)", "Delivery in 10 business days"], footer: "That's €330 per video, ad rights included. Ideal for launching a campaign with creative testing.", featured: true },
         { name: "Campaign", price: "On quote", desc: "A complete partnership, built to perform continuously.", features: ["5+ premium videos (15-60s)", "French voiceover", "Strategic brief (angles, targets, distribution calendar)", "Meta whitelisting included (1 month)", "Iterative scripts throughout", "Paid rights 12 months (paid & organic)"] },
+      ],
+      packsAgency: [
+        { name: "Tailored", price: "On quote", desc: "On-site shoots tailored to your client's brief. Quote built in layers (shoot, rights, options) to align with your paid budget.", features: ["Half-day or full-day on-site (Paris, Île-de-France), travel included", "Scope defined by your client brief (videos, format, duration)", "Paid rights 3 / 6 / 12 months on Meta, TikTok and YouTube", "Organic rights flexible (3 months to unlimited, client accounts)", "Add-ons à la carte: edit, Meta whitelisting, nationwide travel, 48h rush", "Framework agreement available: 12-month recurrence, preferred rate"], footer: "Send the client brief by email. Detailed quote within 48h." },
       ],
       processLabel: "Process",
       processHead: "How we work.",
