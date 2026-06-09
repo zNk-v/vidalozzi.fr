@@ -73,7 +73,7 @@ function PostCard({ post, lang, ui, large }) {
   return (
     <a href={post.slug + ".html"} className="blog-card lift" data-large={large ? "1" : undefined}>
       <div className={"ph blog-thumb" + (large ? " blog-thumb-lg" : "")}>
-        <img className="blog-cover-img" src={"assets/blog/" + post.slug + ".jpg"} alt="" loading="lazy" />
+        <img className="blog-cover-img" src={"assets/blog/" + post.slug + ".jpg"} alt="" loading="lazy" onError={(e) => { e.currentTarget.style.display = "none"; }} />
         <span className="ph-label">{post.hero}</span>
         <span className="ph-coords">VIDALOZZI · JOURNAL</span>
       </div>
@@ -287,7 +287,7 @@ function ArticlePage({ t, lang, slug }) {
 
         <div className="wrap reveal">
           <div className="ph article-hero">
-            <img className="blog-cover-img" src={"assets/blog/" + post.slug + ".jpg"} alt="" />
+            <img className="blog-cover-img" src={"assets/blog/" + post.slug + ".jpg"} alt="" onError={(e) => { e.currentTarget.style.display = "none"; }} />
             <span className="ph-label">{post.hero}</span>
             <span className="ph-coords">VIDALOZZI · JOURNAL</span>
           </div>
