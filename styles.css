@@ -1310,6 +1310,22 @@ body.nav-open .nav-burger span:nth-child(2) { transform: translateY(-2.5px) rota
   font-size: 18.5px; line-height: 1.75; color: var(--ink);
   margin: 0 0 26px; text-wrap: pretty;
 }
+/* Liens internes au corps des articles : hover doré + souligné animé */
+.article-p a,
+.article-list li a {
+  color: inherit;
+  text-decoration: none;
+  background-image: linear-gradient(var(--accent), var(--accent));
+  background-repeat: no-repeat;
+  background-size: 0% 1px;
+  background-position: 0 100%;
+  transition: background-size 0.35s ease, color 0.25s ease;
+}
+.article-p a:hover,
+.article-list li a:hover {
+  color: var(--accent);
+  background-size: 100% 1px;
+}
 .article-body > .article-p:first-child { font-size: 21px; line-height: 1.7; color: var(--ink); }
 .article-h2 { font-size: clamp(28px, 3vw, 38px); line-height: 1.05; letter-spacing: -0.02em; margin: 52px 0 22px; }
 .article-list { margin: 0 0 30px; padding-left: 0; list-style: none; display: flex; flex-direction: column; gap: 14px; }
