@@ -146,7 +146,7 @@ function HomeSplit({ t }) {
 function HomeAbout({ t }) {
   const stats = [t.home.stat1, t.home.stat2, t.home.stat3, t.home.stat4];
   return (
-    <section style={{ borderTop: "0.5px solid var(--line)" }}>
+    <section className="home-about" style={{ borderTop: "0.5px solid var(--line)" }}>
       <div className="wrap">
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1.4fr", gap: 80, alignItems: "flex-start", marginBottom: 80 }}>
           <div style={{ aspectRatio: "3/4", position: "sticky", top: 100, borderRadius: 4 }}>
@@ -195,7 +195,7 @@ function HomeShowreel({ t }) {
           }
         </div>
       </div>
-      <div style={{ height: 120, background: "linear-gradient(to bottom, var(--bg-deep) 0%, var(--bg) 100%)" }} />
+      <div className="showreel-fade" />
     </section>);
 
 }

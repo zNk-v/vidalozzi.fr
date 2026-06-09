@@ -478,6 +478,19 @@ html[data-editmode="0"] .brand-edit-controls { display: none !important; }
 .footer-social a { display:inline-flex; color: inherit; transition: color .2s ease, transform .2s ease; }
 .footer-social a:hover { color: var(--accent); transform: translateY(-2px); }
 
+/* Fondu sous le showreel : transition noir → marron vers la section
+   suivante. Hauteur réduite sur mobile pour éviter un vide trop long. */
+.showreel-fade {
+  height: 120px;
+  background: linear-gradient(to bottom, var(--bg-deep) 0%, var(--bg) 100%);
+}
+@media (max-width: 720px) {
+  .showreel-fade { height: 48px; }
+  /* Resserre la section À propos après le showreel sur mobile pour
+     éviter une longue zone sombre/vide entre la vidéo et le portrait. */
+  section.home-about { padding-top: 32px !important; }
+}
+
 /* Relief — ombrage doux pour les photos fixes et les cartes témoignages
    Double couche : un halo lointain pour l'ambiance + un contact rapproché
    pour ancrer l'élément. */
