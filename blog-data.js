@@ -646,7 +646,7 @@ window.BLOG_POSTS = [
   {
     slug: "choisir-createur-ugc",
     category: { fr: "Méthode", en: "Method" },
-    dateISO: "2026-06-10",
+    dateISO: "2026-06-17",
     readMin: 7,
     hero: "CASTING / CRÉATEUR",
     fr: {
