@@ -229,6 +229,9 @@ function Testimonials({ t }) {
   const total = isMobile ? Math.max(1, items.length) : pageCount;
   const visibleItems = isMobile ? items : items.slice(idx * PER_PAGE, (idx + 1) * PER_PAGE);
   const filterLabels = t.testimonialsFilters || { all: "Tous", talent: "Talent", ugc: "UGC" };
+  const avg = items.length ? items.reduce((s, it) => s + (it.stars || 5), 0) / items.length : 0;
+  const avgLabel = t.testimonialsRating || { count: (n) => `${n} avis`, of: "sur 5" };
+  const localeLang = t.testimonialsLocale || "fr-FR";
 
   useEffect(() => { if (idx >= total) setIdx(0); }, [isMobile, total]);
   useEffect(() => { setIdx(0); }, [filter]);
@@ -285,6 +288,19 @@ function Testimonials({ t }) {
             <h2 className="display">{t.testimonialsHead}</h2>
           </div>
           <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap", justifyContent: "flex-end" }}>
+            {items.length > 0 && (
+              <div className="testimonials-rating" aria-label={`Note moyenne ${avg.toFixed(1)} ${avgLabel.of}, ${items.length} avis`}>
+                <span className="testimonial-stars" aria-hidden="true">
+                  {Array.from({ length: 5 }).map((_, s) => (
+                    <span key={s} className={s < Math.round(avg) ? "is-on" : "is-off"}>★</span>
+                  ))}
+                </span>
+                <span className="mono testimonials-rating-value">
+                  {avg.toLocaleString(localeLang, { minimumFractionDigits: 1, maximumFractionDigits: 1 })}<span style={{ color: "var(--ink-faint)" }}>/5</span>
+                </span>
+                <span className="mono testimonials-rating-count">· {avgLabel.count(items.length)}</span>
+              </div>
+            )}
             <div className="testimonials-filters" role="group" aria-label="Filtrer les avis">
               {[
                 { key: "ALL", label: filterLabels.all },

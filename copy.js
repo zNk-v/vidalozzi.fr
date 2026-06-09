@@ -128,6 +128,8 @@ window.COPY = {
     testimonialsLabel: "Témoignages",
     testimonialsHead: "Ce qu'ils en disent.",
     testimonialsFilters: { all: "Tous", ugc: "UGC", talent: "Talent" },
+    testimonialsLocale: "fr-FR",
+    testimonialsRating: { of: "sur 5", count: (n) => `${n} avis` },
     testimonials: [
       { q: "J'ai eu le plaisir de collaborer avec Teddy Vidal sur plusieurs projets. Ponctuel, efficace en préparation comme en tournage, toujours de bonne humeur, il est également coopératif et force de proposition.", a: "Nicolas Stouff", r: "Réalisateur Producteur · The CABS", logo: "assets/logos/thecabs.png", logoBg: "#fff", logoScale: "92%", url: "https://www.thecabs.tv", tag: "TALENT" },
       { q: "La collaboration avec Teddy s'est très bien passée. Teddy a été réactif et arrangeant durant toute la durée du projet. Nous n'hésiterons pas à refaire appel à lui pour de futurs projets.", a: "DIGITAL VIRGO FRANCE", r: "OUEST FRANCE", logo: "assets/logos/digital-virgo.png", tag: "UGC" },
@@ -285,6 +287,8 @@ window.COPY = {
     testimonialsLabel: "Testimonials",
     testimonialsHead: "What they say.",
     testimonialsFilters: { all: "All", ugc: "UGC", talent: "Talent" },
+    testimonialsLocale: "en-US",
+    testimonialsRating: { of: "out of 5", count: (n) => `${n} review${n > 1 ? "s" : ""}` },
     testimonials: [
       { q: "I had the pleasure of collaborating with Teddy Vidal on several projects. Punctual, effective both in prep and on set, always in good spirits — cooperative and proactive with ideas.", a: "Nicolas Stouff", r: "Director & Producer · The CABS", logo: "assets/logos/thecabs.png", logoBg: "#fff", logoScale: "92%", url: "https://www.thecabs.tv", tag: "TALENT" },
       { q: "Teddy gets a brand in one brief. Delivered content beats our paid benchmarks every time.", a: "Léa Marchand", r: "Head of Growth · Maison du Café", tag: "UGC" },
