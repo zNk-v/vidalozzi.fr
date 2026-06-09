@@ -478,6 +478,16 @@ html[data-editmode="0"] .brand-edit-controls { display: none !important; }
 .footer-social a { display:inline-flex; color: inherit; transition: color .2s ease, transform .2s ease; }
 .footer-social a:hover { color: var(--accent); transform: translateY(-2px); }
 
+/* Relief — ombrage doux pour les photos fixes et les cartes témoignages
+   Double couche : un halo lointain pour l'ambiance + un contact rapproché
+   pour ancrer l'élément. */
+.testimonial-card,
+#home-portrait,
+.talent-portfolio-grid image-slot {
+  box-shadow: 0 28px 60px -22px rgba(0,0,0,0.65), 0 8px 20px -6px rgba(0,0,0,0.3);
+  border-radius: 4px;
+}
+
 /* Misc */
 .divider { height: 0.5px; background: var(--line); width: 100%; }
 .tag { display:inline-flex; align-items:center; gap: 6px; padding: 6px 12px; border-radius: 999px; border: 0.5px solid var(--line-strong); font-family: "JetBrains Mono", monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-mute); }

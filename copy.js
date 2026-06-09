@@ -6,7 +6,7 @@ window.COPY = {
     home: {
       eyebrow: "Paris · Représenté par Pop Agency & Enjoy Model",
       heroLine1: "L'image",
-      heroLine2: "fait foi.",
+      heroLine2: "en évidence.",
       heroSub: "Teddy Vidal — créateur de contenu UGC, mannequin et comédien. Une présence éditoriale au service des marques et des directeurs artistiques.",
       pickPath: "Choisissez votre voie",
       ugcCard: {
@@ -170,7 +170,7 @@ window.COPY = {
     home: {
       eyebrow: "Paris · Repped by Pop Agency & Enjoy Model",
       heroLine1: "The image",
-      heroLine2: "speaks first.",
+      heroLine2: "stands out.",
       heroSub: "Teddy Vidal — UGC creator, model and actor. An editorial presence at the service of brands and creative directors.",
       pickPath: "Choose your path",
       ugcCard: {

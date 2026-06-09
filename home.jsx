@@ -43,12 +43,7 @@ function HomeHero({ t }) {
         <span className="tag" style={{ position: "absolute", top: 96, left: 48, background: "rgba(30,29,29,0.45)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)", color: "rgba(244,239,230,0.95)", borderColor: "rgba(244,239,230,0.18)" }}>
           <span className="tag-dot" />Available
         </span>
-        <span className="ph-coords" style={{ position: "absolute", top: "auto", left: "auto", bottom: 24, right: 48, color: "rgba(244,239,230,0.7)", fontSize: 10 }}>© LOUISS_PHOTOGRAPHY · 2025
-
-        </span>
-        <span className="ph-label" style={{ position: "absolute", top: "auto", bottom: 24, left: 48, color: "rgba(244,239,230,0.7)" }}>
-          SHOT 01 / EDITORIAL
-        </span>
+        <span className="ph-coords" style={{ position: "absolute", top: "auto", left: "auto", bottom: 24, right: 48, color: "rgba(244,239,230,0.7)", fontSize: 10 }}>© LOUISS_PHOTOGRAPHY · 2026</span>
 
         {/* Centered hero text */}
         <div style={{
@@ -156,8 +151,6 @@ function HomeAbout({ t }) {
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1.4fr", gap: 80, alignItems: "flex-start", marginBottom: 80 }}>
           <div style={{ aspectRatio: "3/4", position: "sticky", top: 100, borderRadius: 4 }}>
             <image-slot id="home-portrait" src="assets/home-portrait.webp" shape="rect" fit="contain" placeholder="Drop portrait" style={{ display: "block", width: "100%", height: "100%" }}></image-slot>
-            <span className="ph-label" style={{ position: "absolute", top: 14, left: 14, color: "rgba(244,239,230,0.92)", pointerEvents: "none", zIndex: 3 }}>PORTRAIT · 02</span>
-            <span className="ph-coords" style={{ position: "absolute", bottom: 14, right: 14, color: "rgba(244,239,230,0.7)", pointerEvents: "none", zIndex: 3 }}>TEDDY_VIDAL_01.RAW</span>
           </div>
           <div>
             <div className="eyebrow" style={{ marginBottom: 24 }}>— {t.home.aboutLabel}</div>
