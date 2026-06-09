@@ -24,7 +24,7 @@
 ## Pages principales
 
 - [Accueil](https://vidalozzi.fr/) : Présentation, services UGC et talent
-- [UGC pour les marques](https://vidalozzi.fr/ugc.html) : Services, tarifs (Essentiel 500€, Performance 1 400€, Campagne sur devis), FAQ
+- [UGC pour les marques](https://vidalozzi.fr/ugc.html) : Services, tarifs (Essentiel 390€, Performance 990€, Campagne sur devis), FAQ
 - [Talent — Mannequin & Comédien](https://vidalozzi.fr/talent.html) : Press kit, mensurations, filmographie, agences
 - [Journal](https://vidalozzi.fr/blog.html) : Articles sur l'UGC, les briefs, la production
 
@@ -32,8 +32,8 @@
 
 Voir [/pricing.md](https://vidalozzi.fr/pricing.md) pour le détail machine-readable.
 
-- **Essentiel** : à partir de 500 € — 1 vidéo (15-30s), 2 révisions, droits paid 6 mois
-- **Performance** : à partir de 1 400 € — 3 vidéos, multi-hooks A/B, droits paid 12 mois
+- **Essentiel** : à partir de 390 € — 1 vidéo (15-30s), 2 révisions, droits paid 6 mois
+- **Performance** : à partir de 990 € — 3 vidéos, multi-hooks A/B, droits paid 12 mois
 - **Campagne** : sur devis — 5+ vidéos premium, voix-off, whitelisting Meta
 
 ## Articles (journal)

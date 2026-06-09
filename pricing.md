@@ -6,14 +6,14 @@ Devise : EUR · Marché : France · TVA non applicable (article 293 B du CGI)
 
 ## Forfaits UGC
 
-### 01 · Essentiel — à partir de 500 €
+### 01 · Essentiel — à partir de 390 €
 - **Livrables** : 1 vidéo UGC (15–30 s)
 - **Brief** : fourni par la marque
 - **Révisions** : 2 incluses
 - **Droits publicitaires** : 6 mois (paid & organique)
 - **Délai** : 5 jours ouvrés
 
-### 02 · Performance — à partir de 1 400 €
+### 02 · Performance — à partir de 990 €
 - **Livrables** : 3 vidéos UGC (15–45 s)
 - **Brief** : concept + scripts rédigés en interne
 - **Variations** : multi-hooks A/B (2 hooks par vidéo)
