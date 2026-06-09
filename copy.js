@@ -131,6 +131,7 @@ window.COPY = {
       { q: "La collaboration avec Teddy s'est très bien passée. Teddy a été réactif et arrangeant durant toute la durée du projet. Nous n'hésiterons pas à refaire appel à lui pour de futurs projets.", a: "DIGITAL VIRGO FRANCE", r: "OUEST FRANCE", logo: "assets/logos/digital-virgo.png" },
       { q: "Une présence rare à la caméra. On sent l'acteur derrière le mannequin — exactement ce qu'on cherchait pour la campagne.", a: "Stéphane R.", r: "Directeur artistique · Atelier Hervé" },
       { q: "La collab avec Teddy a été super fluide. Niveau son et images, tout est impeccable. de plus, il a été rapide pour délivrer les rushs et a su interpréter le script avec justesse.", a: "COSMY", r: "Marie Michelle", logo: "assets/logos/cosmy.png" },
+      { q: "J'ai eu le plaisir de collaborer avec Teddy Vidal sur plusieurs projets. Ponctuel, efficace en préparation comme en tournage, toujours de bonne humeur, il est également coopératif et force de proposition.", a: "Nicolas Stouff", r: "Producteur · The CABS", logo: "assets/logos/thecabs.png", url: "https://www.thecabs.tv" },
       { q: "Un vrai partenaire créatif. Teddy propose, ajuste, et finit par élever le brief plutôt que simplement l'exécuter. On gagne du temps et de la qualité.", a: "Camille D.", r: "Brand Manager · Maison Lumen" },
     ],
     contact: {
@@ -285,6 +286,7 @@ window.COPY = {
     testimonials: [
       { q: "Teddy gets a brand in one brief. Delivered content beats our paid benchmarks every time.", a: "Léa Marchand", r: "Head of Growth · Maison du Café" },
       { q: "Rare presence on camera. You feel the actor behind the model — exactly what we wanted for the campaign.", a: "Stéphane R.", r: "Creative Director · Atelier Hervé" },
+      { q: "I had the pleasure of collaborating with Teddy Vidal on several projects. Punctual, effective both in prep and on set, always in good spirits — cooperative and proactive with ideas.", a: "Nicolas Stouff", r: "Producer · The CABS", logo: "assets/logos/thecabs.png", url: "https://www.thecabs.tv" },
       { q: "Tight process, always early on delivery. The kind of collaborator you call back.", a: "Karim B.", r: "Founder · Studio Néon" },
       { q: "A real creative partner. Teddy proposes, adjusts, and ends up elevating the brief rather than just executing it. We gain time and quality.", a: "Camille D.", r: "Brand Manager · Maison Lumen" },
     ],
