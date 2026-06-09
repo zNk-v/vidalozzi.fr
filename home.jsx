@@ -181,7 +181,7 @@ function HomeAbout({ t }) {
 function HomeShowreel({ t }) {
   const [interactive, setInteractive] = React.useState(false);
   return (
-    <section style={{ padding: "0 0 120px" }}>
+    <section style={{ padding: "0 0 120px", background: "linear-gradient(to bottom, var(--bg-deep) 0%, var(--bg-deep) 75%, var(--bg) 100%)" }}>
       <div className="wrap">
         <div
           onMouseLeave={() => setInteractive(false)}
