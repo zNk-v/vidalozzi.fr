@@ -992,6 +992,73 @@ body.nav-open .nav-burger span:nth-child(2) { transform: translateY(-2.5px) rota
 .testimonials-counter { display: inline-block; }
 .testimonials-dots { display: none; }
 
+/* Filtres catégorie (TALENT / UGC / Tous) */
+.testimonials-filters {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.testimonials-filter {
+  appearance: none;
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  padding: 6px 12px;
+  border: 0.5px solid var(--line-strong);
+  border-radius: 999px;
+  background: transparent;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+}
+.testimonials-filter:hover { color: var(--ink); border-color: var(--accent); }
+.testimonials-filter.is-active {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: rgba(201, 168, 124, 0.08);
+}
+
+/* 5 étoiles */
+.testimonial-stars {
+  display: flex;
+  gap: 3px;
+  font-size: 14px;
+  letter-spacing: 0;
+  line-height: 1;
+}
+.testimonial-stars .is-on { color: var(--accent); }
+.testimonial-stars .is-off { color: var(--line-strong); }
+
+/* Tampon catégorie sur les cartes témoignages */
+.testimonial-stamp {
+  position: absolute;
+  top: 22px;
+  right: 22px;
+  transform: rotate(8deg);
+  transform-origin: center;
+  display: inline-flex;
+  align-items: center;
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  padding: 7px 13px;
+  border: 0.5px solid var(--accent);
+  border-radius: 999px;
+  background: transparent;
+  pointer-events: none;
+  user-select: none;
+  white-space: nowrap;
+}
+@media (max-width: 860px) {
+  .testimonial-stamp { top: 16px; right: 16px; font-size: 10px; padding: 5px 11px; }
+}
+
 /* On desktop testimonials inline grid keeps its 2-col layout */
 .testimonials-grid {
   display: grid;

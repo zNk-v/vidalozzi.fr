@@ -219,15 +219,19 @@ function BrandsMarquee({ label }) {
 function Testimonials({ t }) {
   const PER_PAGE = 4;
   const [idx, setIdx] = useState(0);
+  const [filter, setFilter] = useState("ALL");
   const [isMobile, setIsMobile] = useState(() =>
     typeof window !== "undefined" && window.matchMedia("(max-width: 860px)").matches);
   const trackRef = useRef(null);
-  const items = t.testimonials;
+  const allItems = t.testimonials;
+  const items = filter === "ALL" ? allItems : allItems.filter(it => it.tag === filter);
   const pageCount = Math.max(1, Math.ceil(items.length / PER_PAGE));
-  const total = isMobile ? items.length : pageCount;
+  const total = isMobile ? Math.max(1, items.length) : pageCount;
   const visibleItems = isMobile ? items : items.slice(idx * PER_PAGE, (idx + 1) * PER_PAGE);
+  const filterLabels = t.testimonialsFilters || { all: "Tous", talent: "Talent", ugc: "UGC" };
 
   useEffect(() => { if (idx >= total) setIdx(0); }, [isMobile, total]);
+  useEffect(() => { setIdx(0); }, [filter]);
 
   useEffect(() => {
     const mq = window.matchMedia("(max-width: 860px)");
@@ -280,12 +284,28 @@ function Testimonials({ t }) {
             <div className="eyebrow" style={{ marginBottom: 16 }}>— {t.testimonialsLabel}</div>
             <h2 className="display">{t.testimonialsHead}</h2>
           </div>
-          <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-            <span className="mono testimonials-counter" style={{ fontSize: 11, color: "var(--ink-faint)", marginRight: 6, fontVariantNumeric: "tabular-nums" }}>
-              {String(idx + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
+          <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap", justifyContent: "flex-end" }}>
+            <div className="testimonials-filters" role="group" aria-label="Filtrer les avis">
+              {[
+                { key: "ALL", label: filterLabels.all },
+                { key: "UGC", label: filterLabels.ugc },
+                { key: "TALENT", label: filterLabels.talent },
+              ].map(f => (
+                <button
+                  key={f.key}
+                  type="button"
+                  className={"testimonials-filter" + (filter === f.key ? " is-active" : "")}
+                  onClick={() => setFilter(f.key)}
+                  aria-pressed={filter === f.key}>
+                  {f.label}
+                </button>
+              ))}
+            </div>
+            <span className="mono testimonials-counter" style={{ fontSize: 11, color: "var(--ink-faint)", marginRight: 6, marginLeft: 6, fontVariantNumeric: "tabular-nums" }}>
+              {String(items.length === 0 ? 0 : idx + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
             </span>
-            <button className="nav-cta" onClick={() => goTo(idx - 1)} aria-label="Previous">←</button>
-            <button className="nav-cta" onClick={() => goTo(idx + 1)} aria-label="Next">→</button>
+            <button className="nav-cta" onClick={() => goTo(idx - 1)} aria-label="Previous" disabled={items.length === 0}>←</button>
+            <button className="nav-cta" onClick={() => goTo(idx + 1)} aria-label="Next" disabled={items.length === 0}>→</button>
           </div>
         </div>
         <div ref={trackRef} className="testimonials-grid">
@@ -298,12 +318,19 @@ function Testimonials({ t }) {
               borderRadius: 4,
               background: isMobile ? (mobileActive ? "var(--bg-elev)" : "transparent") : "var(--bg-elev)",
               opacity: isMobile ? (mobileActive ? 1 : 0.5) : 1,
-              transition: "all 0.3s"
+              transition: "all 0.3s",
+              position: "relative"
             }}>
+              {it.tag && <span className="testimonial-stamp" aria-label={`Catégorie : ${it.tag}`}>{it.tag}</span>}
               <div style={{ fontFamily: "Bodoni Moda, serif", fontSize: 48, lineHeight: 0.5, color: "var(--accent)", marginBottom: 16 }}>"</div>
-              <p style={{ fontSize: 19, lineHeight: 1.5, color: "var(--ink)", marginBottom: 28, fontFamily: "Instrument Serif, serif", fontStyle: "italic", letterSpacing: "0.005em" }}>
+              <p style={{ fontSize: 19, lineHeight: 1.5, color: "var(--ink)", marginBottom: 18, fontFamily: "Instrument Serif, serif", fontStyle: "italic", letterSpacing: "0.005em" }}>
                 {it.q}
               </p>
+              <div className="testimonial-stars" aria-label={`Note : ${it.stars || 5} sur 5`} style={{ marginBottom: 22 }}>
+                {Array.from({ length: 5 }).map((_, s) => (
+                  <span key={s} aria-hidden="true" className={s < (it.stars || 5) ? "is-on" : "is-off"}>★</span>
+                ))}
+              </div>
               {(() => {
                 const Wrap = it.url ? "a" : "div";
                 const wrapProps = it.url
