@@ -1,6 +1,42 @@
 // VIDALOZZI — Homepage
 const { useState, useEffect } = React;
 
+// Compteur animé : compte de 0 à la valeur quand le chiffre entre à l'écran.
+// Accepte un suffixe non numérique ("120+" → 120 puis "+").
+function CountUp({ value }) {
+  const ref = React.useRef(null);
+  const m = String(value).match(/^(\d+)(.*)$/);
+  const target = m ? parseInt(m[1], 10) : null;
+  const suffix = m ? m[2] : "";
+  const [display, setDisplay] = useState(target === null ? value : 0);
+
+  useEffect(() => {
+    if (target === null) return;
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduced || !("IntersectionObserver" in window)) { setDisplay(target); return; }
+    const el = ref.current;
+    if (!el) return;
+    let raf = 0;
+    const io = new IntersectionObserver((entries) => {
+      if (!entries[0].isIntersecting) return;
+      io.disconnect();
+      const dur = 1400;
+      const start = performance.now();
+      const tick = (now) => {
+        const p = Math.min((now - start) / dur, 1);
+        const eased = 1 - Math.pow(1 - p, 3);
+        setDisplay(Math.round(target * eased));
+        if (p < 1) raf = requestAnimationFrame(tick);
+      };
+      raf = requestAnimationFrame(tick);
+    }, { threshold: 0.4 });
+    io.observe(el);
+    return () => { io.disconnect(); cancelAnimationFrame(raf); };
+  }, [target]);
+
+  return <span ref={ref} style={{ fontVariantNumeric: "tabular-nums" }}>{display}{suffix}</span>;
+}
+
 function HomeHero({ t }) {
   const [scrollY, setScrollY] = useState(0);
   const [mobile, setMobile] = useState(() => window.matchMedia("(max-width: 860px)").matches);
@@ -159,7 +195,7 @@ function HomeAbout({ t }) {
             <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 32, paddingTop: 40, borderTop: "0.5px solid var(--line)" }}>
               {stats.map((s, i) =>
               <div key={i}>
-                  <div className="display" style={{ fontSize: 56, color: "var(--accent)" }}>{s.v}</div>
+                  <div className="display" style={{ fontSize: 56, color: "var(--accent)" }}><CountUp value={s.v} /></div>
                   <div className="label-xs" style={{ marginTop: 8 }}>{s.l}</div>
                 </div>
               )}

@@ -163,6 +163,7 @@ function UgcReel({ t }) {
         onPointerCancel={onUp}
       >
         <div
+          className="ugc-reel-row"
           onTransitionEnd={onEnd}
           style={{
             display: "flex",
@@ -175,7 +176,7 @@ function UgcReel({ t }) {
           {tiles.map((_, k) => {
             const id = slots[k % len];
             return (
-              <div key={`${id}-${k}`} style={{ flex: `0 0 ${tileW}px`, width: tileW }}>
+              <div key={`${id}-${k}`} className="ugc-reel-tile" style={{ flex: `0 0 ${tileW}px`, width: tileW }}>
                 <video-slot
                   id={id}
                   src={`assets/videos/${id}.mp4`}
