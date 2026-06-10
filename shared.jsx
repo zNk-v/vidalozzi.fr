@@ -217,67 +217,47 @@ function BrandsMarquee({ label, noBorderBottom }) {
 
 // ── Témoignages ─────────────────────────────────────────────────────
 function Testimonials({ t }) {
-  const PER_PAGE = 4;
-  const [idx, setIdx] = useState(0);
   const [filter, setFilter] = useState("ALL");
-  const [isMobile, setIsMobile] = useState(() =>
-    typeof window !== "undefined" && window.matchMedia("(max-width: 860px)").matches);
-  const trackRef = useRef(null);
+  const [idx, setIdx] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const interacted = useRef(false);
+  const touchX = useRef(null);
   const allItems = t.testimonials;
   const items = filter === "ALL" ? allItems : allItems.filter(it => it.tag === filter);
-  const pageCount = Math.max(1, Math.ceil(items.length / PER_PAGE));
-  const total = isMobile ? Math.max(1, items.length) : pageCount;
-  const visibleItems = isMobile ? items : items.slice(idx * PER_PAGE, (idx + 1) * PER_PAGE);
+  const total = items.length;
+  const safeIdx = total ? Math.min(idx, total - 1) : 0;
+  const it = items[safeIdx];
   const filterLabels = t.testimonialsFilters || { all: "Tous", talent: "Talent", ugc: "UGC" };
-  const avg = items.length ? items.reduce((s, it) => s + (it.stars || 5), 0) / items.length : 0;
+  const avg = total ? items.reduce((s, x) => s + (x.stars || 5), 0) / total : 0;
   const avgLabel = t.testimonialsRating || { count: (n) => `${n} avis`, of: "sur 5" };
   const localeLang = t.testimonialsLocale || "fr-FR";
 
-  useEffect(() => { if (idx >= total) setIdx(0); }, [isMobile, total]);
   useEffect(() => { setIdx(0); }, [filter]);
 
+  // Défilement automatique : un avis toutes les 7s, en pause au survol,
+  // coupé dès que le visiteur navigue lui-même ou préfère moins d'animations.
   useEffect(() => {
-    const mq = window.matchMedia("(max-width: 860px)");
-    const onChange = () => setIsMobile(mq.matches);
-    mq.addEventListener ? mq.addEventListener("change", onChange) : mq.addListener(onChange);
-    return () => {
-      mq.removeEventListener ? mq.removeEventListener("change", onChange) : mq.removeListener(onChange);
-    };
-  }, []);
+    if (paused || interacted.current || total < 2) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const iv = setInterval(() => setIdx(i => (i + 1) % total), 7000);
+    return () => clearInterval(iv);
+  }, [paused, total, filter]);
 
-  // Sync idx when user manually swipes/scrolls (mobile)
-  useEffect(() => {
-    const track = trackRef.current;
-    if (!track || !isMobile) return;
-    let ticking = false;
-    const onScroll = () => {
-      if (ticking) return;
-      ticking = true;
-      requestAnimationFrame(() => {
-        ticking = false;
-        const center = track.scrollLeft + track.clientWidth / 2;
-        let best = 0, bestDist = Infinity;
-        Array.from(track.children).forEach((c, i) => {
-          const cardCenter = c.offsetLeft + c.clientWidth / 2;
-          const d = Math.abs(cardCenter - center);
-          if (d < bestDist) { bestDist = d; best = i; }
-        });
-        setIdx(best);
-      });
-    };
-    track.addEventListener("scroll", onScroll, { passive: true });
-    return () => track.removeEventListener("scroll", onScroll);
-  }, [isMobile]);
-
-  const goTo = (newIdx) => {
-    const n = (newIdx + total) % total;
-    setIdx(n);
-    const track = trackRef.current;
-    if (track && isMobile && track.children[n]) {
-      const card = track.children[n];
-      track.scrollTo({ left: card.offsetLeft - track.offsetLeft, behavior: "smooth" });
-    }
+  const goTo = (n) => { interacted.current = true; if (total) setIdx((n + total) % total); };
+  const onTouchStart = (e) => { touchX.current = e.touches ? e.touches[0].clientX : null; };
+  const onTouchEnd = (e) => {
+    if (touchX.current === null) return;
+    const dx = (e.changedTouches ? e.changedTouches[0].clientX : touchX.current) - touchX.current;
+    touchX.current = null;
+    if (Math.abs(dx) > 48) goTo(safeIdx + (dx < 0 ? 1 : -1));
   };
+
+  const logoBg = it && (it.logoBg || "var(--ivory, #F4EFE6)");
+  const logoScale = it && (it.logoScale || "72%");
+  const AuthorWrap = it && it.url ? "a" : "div";
+  const authorProps = it && it.url
+    ? { href: it.url, target: "_blank", rel: "noopener noreferrer", style: { textDecoration: "none", color: "inherit" } }
+    : {};
 
   return (
     <section>
@@ -287,105 +267,74 @@ function Testimonials({ t }) {
             <div className="eyebrow" style={{ marginBottom: 16 }}>— {t.testimonialsLabel}</div>
             <h2 className="display">{t.testimonialsHead}</h2>
           </div>
-          <div style={{ display: "flex", gap: 8, alignItems: "center", flexWrap: "wrap", justifyContent: "flex-end" }}>
-            {items.length > 0 && (
-              <div className="testimonials-rating" aria-label={`Note moyenne ${avg.toFixed(1)} ${avgLabel.of}, ${items.length} avis`}>
-                <span className="testimonial-stars" aria-hidden="true">
-                  {Array.from({ length: 5 }).map((_, s) => (
-                    <span key={s} className={s < Math.round(avg) ? "is-on" : "is-off"}>★</span>
-                  ))}
-                </span>
-                <span className="mono testimonials-rating-value">
-                  {avg.toLocaleString(localeLang, { minimumFractionDigits: 1, maximumFractionDigits: 1 })}<span style={{ color: "var(--ink-faint)" }}>/5</span>
-                </span>
-                <span className="mono testimonials-rating-count">· {avgLabel.count(items.length)}</span>
-              </div>
-            )}
-            <div className="testimonials-filters" role="group" aria-label="Filtrer les avis">
-              {[
-                { key: "ALL", label: filterLabels.all },
-                { key: "UGC", label: filterLabels.ugc },
-                { key: "TALENT", label: filterLabels.talent },
-              ].map(f => (
-                <button
-                  key={f.key}
-                  type="button"
-                  className={"testimonials-filter" + (filter === f.key ? " is-active" : "")}
-                  onClick={() => setFilter(f.key)}
-                  aria-pressed={filter === f.key}>
-                  {f.label}
-                </button>
-              ))}
-            </div>
-            <span className="mono testimonials-counter" style={{ fontSize: 11, color: "var(--ink-faint)", marginRight: 6, marginLeft: 6, fontVariantNumeric: "tabular-nums" }}>
-              {String(items.length === 0 ? 0 : idx + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
-            </span>
-            <button className="nav-cta" onClick={() => goTo(idx - 1)} aria-label="Previous" disabled={items.length === 0}>←</button>
-            <button className="nav-cta" onClick={() => goTo(idx + 1)} aria-label="Next" disabled={items.length === 0}>→</button>
-          </div>
-        </div>
-        <div ref={trackRef} className="testimonials-grid">
-          {visibleItems.map((it, i) => {
-            const mobileActive = isMobile && i === idx;
-            return (
-            <div key={(isMobile ? "m-" : "p-" + idx + "-") + i} className={"lift testimonial-card" + (mobileActive ? " is-active" : "")} style={{
-              padding: 40,
-              border: "0.5px solid var(--line-strong)",
-              borderRadius: 4,
-              background: isMobile ? (mobileActive ? "var(--bg-elev)" : "transparent") : "var(--bg-elev)",
-              opacity: isMobile ? (mobileActive ? 1 : 0.5) : 1,
-              transition: "all 0.3s",
-              position: "relative"
-            }}>
-              {it.tag && <span className="testimonial-stamp" aria-label={`Catégorie : ${it.tag}`}>{it.tag}</span>}
-              <div style={{ fontFamily: "Bodoni Moda, serif", fontSize: 48, lineHeight: 0.5, color: "var(--accent)", marginBottom: 16 }}>"</div>
-              <p style={{ fontSize: 19, lineHeight: 1.5, color: "var(--ink)", marginBottom: 18, fontFamily: "Instrument Serif, serif", fontStyle: "italic", letterSpacing: "0.005em" }}>
-                {it.q}
-              </p>
-              <div className="testimonial-stars" aria-label={`Note : ${it.stars || 5} sur 5`} style={{ marginBottom: 22 }}>
-                {Array.from({ length: 5 }).map((_, s) => (
-                  <span key={s} aria-hidden="true" className={s < (it.stars || 5) ? "is-on" : "is-off"}>★</span>
-                ))}
-              </div>
-              {(() => {
-                const Wrap = it.url ? "a" : "div";
-                const wrapProps = it.url
-                  ? { href: it.url, target: "_blank", rel: "noopener noreferrer", style: { borderTop: "0.5px solid var(--line)", paddingTop: 16, display: "flex", alignItems: "center", gap: 16, textDecoration: "none", color: "inherit" } }
-                  : { style: { borderTop: "0.5px solid var(--line)", paddingTop: 16, display: "flex", alignItems: "center", gap: 16 } };
-                const logoBg = it.logoBg || "var(--ivory, #F4EFE6)";
-                const logoScale = it.logoScale || "72%";
-                return (
-                  <Wrap {...wrapProps}>
-                    <div className="ph ph-portrait" style={{ width: 44, height: 44, borderRadius: "50%", overflow: "hidden", background: it.logo ? logoBg : undefined, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                      {it.logo
-                        ? <img src={it.logo} alt={it.a} style={{ width: logoScale, height: logoScale, objectFit: "contain" }} />
-                        : <span className="ph-coords" style={{ display: "none" }}></span>}
-                    </div>
-                    <div>
-                      <div style={{ fontSize: 14, fontWeight: 500, lineHeight: 1.25 }}>{it.a}</div>
-                      <div style={{ fontSize: 11, color: "var(--ink-faint)", letterSpacing: "0.06em", textTransform: "uppercase", marginTop: 5, lineHeight: 1.3 }}>{it.r}</div>
-                    </div>
-                  </Wrap>
-                );
-              })()}
-            </div>
-            );
-          })}
-        </div>
-        {isMobile && (
-          <div className="testimonials-dots" aria-hidden="true">
-            {items.map((_, i) => (
+          <div className="testimonials-filters" role="group" aria-label="Filtrer les avis">
+            {[
+              { key: "ALL", label: filterLabels.all },
+              { key: "UGC", label: filterLabels.ugc },
+              { key: "TALENT", label: filterLabels.talent },
+            ].map(f => (
               <button
-                key={i}
-                onClick={() => goTo(i)}
-                className={"testimonials-dot" + (i === idx ? " is-active" : "")}
-                aria-label={`Go to testimonial ${i + 1}`} />
+                key={f.key}
+                type="button"
+                className={"testimonials-filter" + (filter === f.key ? " is-active" : "")}
+                onClick={() => setFilter(f.key)}
+                aria-pressed={filter === f.key}>
+                {f.label}
+              </button>
             ))}
           </div>
+        </div>
+
+        {it && (
+          <div
+            className="testimonial-solo"
+            onMouseEnter={() => setPaused(true)}
+            onMouseLeave={() => setPaused(false)}
+            onTouchStart={onTouchStart}
+            onTouchEnd={onTouchEnd}
+          >
+            <blockquote key={filter + "-" + safeIdx} className="testimonial-solo-quote">
+              <p className="testimonial-solo-text">{it.q}</p>
+              <footer className="testimonial-solo-author">
+                <AuthorWrap {...authorProps} className="testimonial-solo-id">
+                  <span className="ph ph-portrait testimonial-solo-avatar" style={{ background: it.logo ? logoBg : undefined }}>
+                    {it.logo && <img src={it.logo} alt={it.a} style={{ width: logoScale, height: logoScale, objectFit: "contain" }} />}
+                  </span>
+                  <span>
+                    <cite className="testimonial-solo-name">{it.a}</cite>
+                    <span className="testimonial-solo-role">{it.r}</span>
+                  </span>
+                </AuthorWrap>
+              </footer>
+            </blockquote>
+          </div>
         )}
+
+        {/* data-no-edit : contenu 100% dynamique (note, compteur) — le
+            content-editor ne doit pas remplacer ces nœuds texte, sinon
+            React perd la main dessus et l'affichage se fige. */}
+        <div className="testimonial-solo-nav" data-no-edit="true">
+          <div className="testimonials-rating" aria-label={`Note moyenne ${avg.toFixed(1)} ${avgLabel.of}, ${total} avis`}>
+            <span className="testimonial-stars" aria-hidden="true">
+              {Array.from({ length: 5 }).map((_, s) => (
+                <span key={s} className={s < Math.round(avg) ? "is-on" : "is-off"}>★</span>
+              ))}
+            </span>
+            <span className="mono testimonials-rating-value">
+              {avg.toLocaleString(localeLang, { minimumFractionDigits: 1, maximumFractionDigits: 1 })}<span style={{ color: "var(--ink-faint)" }}>/5</span>
+            </span>
+            <span className="mono testimonials-rating-count">· {avgLabel.count(total)}</span>
+          </div>
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            <span className="mono testimonials-counter" style={{ fontSize: 11, color: "var(--ink-faint)", fontVariantNumeric: "tabular-nums" }}>
+              {String(total ? safeIdx + 1 : 0).padStart(2, "0")} / {String(Math.max(total, 1)).padStart(2, "0")}
+            </span>
+            <button className="nav-cta" onClick={() => goTo(safeIdx - 1)} aria-label="Avis précédent" disabled={total < 2}>←</button>
+            <button className="nav-cta" onClick={() => goTo(safeIdx + 1)} aria-label="Avis suivant" disabled={total < 2}>→</button>
+          </div>
+        </div>
       </div>
     </section>);
-
 }
 
 // ── Contact ─────────────────────────────────────────────────────────

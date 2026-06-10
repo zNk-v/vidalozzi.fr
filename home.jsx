@@ -34,7 +34,7 @@ function CountUp({ value }) {
     return () => { io.disconnect(); cancelAnimationFrame(raf); };
   }, [target]);
 
-  return <span ref={ref} style={{ fontVariantNumeric: "tabular-nums" }}>{display}{suffix}</span>;
+  return <span ref={ref} data-no-edit="true" style={{ fontVariantNumeric: "tabular-nums" }}>{display}{suffix}</span>;
 }
 
 function HomeHero({ t }) {
