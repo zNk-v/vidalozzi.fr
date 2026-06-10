@@ -1406,3 +1406,11 @@ body.nav-open .nav-burger span:nth-child(2) { transform: translateY(-2.5px) rota
   .blog-grid { grid-template-columns: 1fr !important; gap: 36px !important; }
   .article-p, .article-body > .article-p:first-child { font-size: 17.5px !important; }
 }
+
+/* ── Transitions de page (cross-fade entre navigations) ─────────────── */
+@view-transition { navigation: auto; }
+::view-transition-old(root) { animation-duration: 0.28s; animation-timing-function: ease; }
+::view-transition-new(root) { animation-duration: 0.28s; animation-timing-function: ease; }
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root), ::view-transition-new(root) { animation: none; }
+}

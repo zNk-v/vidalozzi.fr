@@ -99,6 +99,17 @@
 
   const iconVideo = '<svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="14" height="12" rx="2"/><path d="m16 10 6-3v10l-6-3"/></svg>';
 
+  // Shared viewport observer: defers network fetch until a slot nears the
+  // viewport, and pauses playback once it scrolls away.
+  const visObserver = ('IntersectionObserver' in window)
+    ? new IntersectionObserver((entries) => {
+        entries.forEach((e) => {
+          const el = e.target;
+          if (typeof el._onVisibility === 'function') el._onVisibility(e.isIntersecting);
+        });
+      }, { rootMargin: '200px 400px', threshold: 0.01 })
+    : null;
+
   class VideoSlot extends HTMLElement {
     static get observedAttributes() { return ['id', 'placeholder', 'poster', 'autoplay', 'loop', 'label', 'src']; }
     constructor() {
@@ -216,6 +227,10 @@
 
     attributeChangedCallback() { this._sync(); }
 
+    disconnectedCallback() {
+      if (visObserver) visObserver.unobserve(this);
+    }
+
     _sync() {
       this._cap.textContent = this.getAttribute('placeholder') || 'Drop video';
       if (this.hasAttribute('poster')) this._video.poster = this.getAttribute('poster');
@@ -267,26 +282,56 @@
       const p = v.play(); if (p && p.catch) p.catch(() => {});
       this._renderMuteIcon(true);
       this._vol.value = 0;
+      if (visObserver) visObserver.observe(this);
     }
 
     _useSrc(src) {
       if (this._objUrl) { URL.revokeObjectURL(this._objUrl); this._objUrl = null; }
-      this._video.src = src;
       this._video.style.display = 'block';
       this._empty.style.display = 'none';
       this._filled = true;
       this.setAttribute('data-filled', '');
-      const v = this._video;
-      v.muted = true;
-      const p = v.play(); if (p && p.catch) p.catch(() => {});
       this._renderMuteIcon(true);
       this._vol.value = 0;
+      this._video.muted = true;
+      if (visObserver) {
+        // Defer the actual fetch until the slot nears the viewport.
+        this._video.preload = 'none';
+        this._pendingSrc = src;
+        visObserver.observe(this);
+      } else {
+        this._video.src = src;
+        const p = this._video.play(); if (p && p.catch) p.catch(() => {});
+      }
+    }
+
+    _onVisibility(visible) {
+      const v = this._video;
+      if (visible) {
+        if (this._pendingSrc) {
+          v.src = this._pendingSrc;
+          this._pendingSrc = null;
+        }
+        if (v.paused && !this._userPaused) {
+          const p = v.play(); if (p && p.catch) p.catch(() => {});
+        }
+      } else if (!v.paused) {
+        this._autoPaused = true;
+        v.pause();
+      }
     }
 
     _toggle() {
       if (!this._filled) return;
       const v = this._video;
-      if (v.paused) v.play(); else v.pause();
+      if (v.paused) {
+        this._userPaused = false;
+        if (this._pendingSrc) { v.src = this._pendingSrc; this._pendingSrc = null; }
+        const p = v.play(); if (p && p.catch) p.catch(() => {});
+      } else {
+        this._userPaused = true;
+        v.pause();
+      }
     }
     _toggleMute() {
       const v = this._video;

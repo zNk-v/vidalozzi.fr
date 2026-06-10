@@ -179,6 +179,7 @@ function UgcReel({ t }) {
                 <video-slot
                   id={id}
                   src={`assets/videos/${id}.mp4`}
+                  poster={`assets/videos/${id}-poster.webp`}
                   label={`UGC_${id.split("-")[2].padStart(2, "0")}`}
                   placeholder="Drop video"
                   autoplay="autoplay"
