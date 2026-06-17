@@ -45,4 +45,10 @@
     <priority>0.7</priority>
   </url>
   <!-- Articles programmés : ajoutés automatiquement ici par .github/workflows/publish-articles.yml le jour de leur dateISO -->
+  <url>
+    <loc>https://vidalozzi.fr/choisir-createur-ugc.html</loc>
+    <lastmod>2026-06-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
 </urlset>
