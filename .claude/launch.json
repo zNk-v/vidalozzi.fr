@@ -4,7 +4,7 @@
     {
       "name": "vidalozzi-static",
       "runtimeExecutable": "python3",
-      "runtimeArgs": ["-m", "http.server", "4173", "--directory", "/Users/vidalozzi/Documents/vidalozzi.fr"],
+      "runtimeArgs": ["-m", "http.server", "4173", "--directory", "/Users/vidalozzi/dev/vidalozzi.fr"],
       "port": 4173
     }
   ]

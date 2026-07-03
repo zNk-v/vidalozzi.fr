@@ -30,13 +30,34 @@ function UgcHero({ t }) {
   );
 }
 
-// ── Carrousel UGC : 1 rangée de 8 vidéos, auto-slide /3s, drag + swipe + dots ──
+// ── Carrousel UGC : rangée filtrable par secteur, auto-slide /3s, drag + swipe + dots ──
 const UGC_GAP = 16;
-const UGC_ROW = ["ugc-tile-1", "ugc-tile-2", "ugc-tile-3", "ugc-tile-4", "ugc-tile-5", "ugc-tile-6", "ugc-tile-7", "ugc-tile-8"];
+// Chaque vidéo + son secteur d'activité (rubrique de réalisation)
+const UGC_TILES = [
+  { id: "ugc-tile-1", cat: "app" },
+  { id: "ugc-tile-2", cat: "auto" },
+  { id: "ugc-tile-3", cat: "food" },
+  { id: "ugc-tile-4", cat: "app" },
+  { id: "ugc-tile-5", cat: "food" },
+  { id: "ugc-tile-6", cat: "food" },
+  { id: "ugc-tile-7", cat: "app" },
+  { id: "ugc-tile-8", cat: "food" },
+  { id: "ugc-tile-9", cat: "auto" },   // Orok × Autobacs
+  { id: "ugc-tile-10", cat: "auto" },  // Orok
+];
+const UGC_CATS = ["all", "auto", "app", "food"];   // ordre d'affichage des filtres
+const UGC_CAT_FALLBACK = { all: "Tout", app: "Application", food: "Restaurant · Food", auto: "Auto" };
 
 function UgcReel({ t }) {
-  const len = UGC_ROW.length;            // 8 vidéos uniques
-  const COPIES = 2;                       // clones pour boucle infinie
+  const [filter, setFilter] = React.useState("all");
+  const row = React.useMemo(
+    () => (filter === "all" ? UGC_TILES : UGC_TILES.filter((v) => v.cat === filter)).map((v) => v.id),
+    [filter]
+  );
+  const labels = (t.ugc && t.ugc.filters) || UGC_CAT_FALLBACK;
+
+  const len = row.length;                          // vidéos du secteur actif
+  const COPIES = Math.max(2, Math.ceil(10 / len)); // assez de clones pour remplir la vue
 
   const [tileW, setTileW] = React.useState(280);
   const [step, setStep] = React.useState(0);
@@ -77,6 +98,13 @@ function UgcReel({ t }) {
     }, 3000);
     return () => clearInterval(id);
   }, []);
+
+  // Change de secteur -> on revient au début, sans animer le saut
+  React.useEffect(() => {
+    setAnim(false);
+    setStep(0);
+    paused.current = false;
+  }, [filter]);
 
   // Reset transparent en fin de transition (boucle infinie)
   const onEnd = () => {
@@ -200,8 +228,27 @@ function UgcReel({ t }) {
   return (
     <section style={{ padding: "0 0 80px" }}>
       <div className="wrap">
+        <div className="ugc-filterbar" role="tablist" aria-label="Filtrer par secteur">
+          {UGC_CATS.map((c) => {
+            const on = filter === c;
+            const n = c === "all" ? UGC_TILES.length : UGC_TILES.filter((v) => v.cat === c).length;
+            return (
+              <button
+                key={c}
+                type="button"
+                role="tab"
+                aria-selected={on}
+                onClick={() => setFilter(c)}
+                className={"ugc-filter" + (on ? " is-active" : "")}
+              >
+                {labels[c] || UGC_CAT_FALLBACK[c]}
+                <span className="ugc-filter-count">{n}</span>
+              </button>
+            );
+          })}
+        </div>
         <div ref={wrapRef} style={{ userSelect: "none" }}>
-          {renderRow(UGC_ROW)}
+          {renderRow(row)}
         </div>
         {/* Pavé de navigation */}
         <div style={{ display: "flex", justifyContent: "center", gap: 10, marginTop: 28 }}>

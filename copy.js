@@ -36,6 +36,7 @@ window.COPY = {
       heroLine2: "qui",
       heroLine3: "convertit.",
       heroSub: "Format natif, ton authentique, exécution premium. Je conçois et tourne des UGC qui performent en paid social, sur TikTok, Reels et YouTube Shorts.",
+      filters: { all: "Tout", app: "Application", food: "Restaurant · Food", auto: "Auto" },
       servicesLabel: "Services",
       servicesHead: "Ce que je livre.",
       services: [
@@ -200,6 +201,7 @@ window.COPY = {
       heroLine2: "that",
       heroLine3: "converts.",
       heroSub: "Native format, authentic tone, premium execution. I conceive and shoot UGC that performs on paid social, TikTok, Reels and YouTube Shorts.",
+      filters: { all: "All", app: "App", food: "Restaurant · Food", auto: "Auto" },
       servicesLabel: "Services",
       servicesHead: "What I deliver.",
       services: [

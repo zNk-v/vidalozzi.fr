@@ -1492,3 +1492,11 @@ body.nav-open .nav-burger span:nth-child(2) { transform: translateY(-2.5px) rota
 @media (max-width: 860px) {
   .testimonial-solo { min-height: 340px; align-items: flex-start; }
 }
+
+/* ── Filtres UGC par secteur ─────────────────────────────────── */
+.ugc-filterbar { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 32px; }
+.ugc-filter { all: unset; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; padding: 9px 16px; border: 0.5px solid var(--line-strong); border-radius: 999px; font-family: "JetBrains Mono", monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-mute); transition: color .25s ease, border-color .25s ease, background .25s ease; }
+.ugc-filter:hover { color: var(--ink); border-color: var(--ink-faint); }
+.ugc-filter.is-active { background: var(--accent); border-color: var(--accent); color: var(--bg-deep); }
+.ugc-filter-count { font-size: 10px; opacity: .55; }
+.ugc-filter.is-active .ugc-filter-count { opacity: .75; }
